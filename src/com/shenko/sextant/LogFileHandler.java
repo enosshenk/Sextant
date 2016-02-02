@@ -3,7 +3,7 @@ package com.shenko.sextant;
 import java.io.*;
 
 
-public class LogFileHandler {
+public class LogFileHandler extends Thread {
 	
 	// Editable Variables
 	static String LogDirectory = "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Naval Action\\logs";
@@ -14,7 +14,8 @@ public class LogFileHandler {
 	static File CurrentLog;
 	BufferedReader Reader;
 	
-	public LogFileHandler()
+	//public LogFileHandler()
+	public void run()
 	{
 		Parser = new LogParser();
 		
