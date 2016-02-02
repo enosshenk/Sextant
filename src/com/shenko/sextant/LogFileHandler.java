@@ -43,6 +43,10 @@ public class LogFileHandler {
 				{
 					Thread.sleep(1*1000);
 				}
+				else
+				{
+					ParseLine(Line);
+				}
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -51,7 +55,7 @@ public class LogFileHandler {
 				System.out.println("BARF");
 			}
 			
-			ParseLine(Line);
+			
 			
 		}
 	}
