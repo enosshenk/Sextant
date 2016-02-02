@@ -68,6 +68,24 @@ public class LogFileHandler {
 		//	System.out.println(Line);
 			Parser.ParsePortData(Line);
 		}
+		
+		if (Line.contains("CurrentShipItemID"))
+		{
+			// Line is a player data block
+			Parser.ParsePlayerData(Line);
+		}
+		
+		if (Line.contains("SellPrice") && Line.contains("BuyPrice"))
+		{
+			// Line is a port shop data block
+			Parser.ParseShopData(Line);
+		}
+		
+		if (Line.contains("Key") && Line.contains("Value"))
+		{
+			// Line is consumption/production block for a port
+			Parser.ParsePortProductionData(Line);
+		}
 	}
 	
 	
