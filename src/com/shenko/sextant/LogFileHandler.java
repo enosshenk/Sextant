@@ -36,6 +36,7 @@ public class LogFileHandler {
 		
 		while (true)
 		{
+			// Load them sexy new lines
 			try {
 				Line = Reader.readLine();
 				if (Line == null)

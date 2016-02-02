@@ -22,6 +22,7 @@ public class LogParser {
 		
 		if (Element.isJsonObject())
 		{
+			// Get json objects
 			JsonObject Port = Element.getAsJsonObject();
 			JsonObject PortPosition = Port.get("Position").getAsJsonObject();
 			
