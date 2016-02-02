@@ -6,17 +6,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Sextant {
 
-	//public static LogFileHandler Handler;
+	public static LogFileHandler Handler;
 	public static SQLHandler mySql;
 	
 	public static void main(String [] args) {
 		System.out.println("Started...");
-		//Handler = new LogFileHandler();
+		Handler = new LogFileHandler();
+		Handler.start();
 		mySql = new SQLHandler();
 		mySql.connect();
-		//mySql.connect();
 		// Get latest log
-		//System.out.println(Handler.GetLatestLogFile());	
+		System.out.println(Handler.GetLatestLogFile());	
 		
 	}	
 
