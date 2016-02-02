@@ -38,7 +38,7 @@ public class SQLHandler {
 		
 
 		preparedStatement = connect
-				.prepareStatement("insert into sql5105183.Ports values (?, ?, ?, ?, ?)");
+				.prepareStatement("insert into sql5105183.Ports(Id, name, x, y, nation) values (?, ?, ?, ?, ?)");
 		// "myuser, webpage, datum, summery, COMMENTS from feedback.comments");
 		// Parameters start with 1
 		preparedStatement.setString(1, "9999");
@@ -50,6 +50,7 @@ public class SQLHandler {
 
 		preparedStatement.close();
 		connect.close();
+		System.out.println("done.");
 		//preparedStatement = connect
 		//		.prepareStatement("SELECT * from sql5105183.Ports");
 		//resultSet = preparedStatement.executeQuery();
