@@ -15,6 +15,7 @@ public class SQLHandler {
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 
+	private DatabaseCredentials Credentials = new DatabaseCredentials();
 	
 	public void connect() {
 		System.out.println("Starting SQLHandler...");
@@ -29,9 +30,9 @@ public class SQLHandler {
 		System.out.println("Connecting to database...");
 		connect = DriverManager
 			.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?"
-			+ "user=sql5105183&password=sCHT8AcwwT");
+			+ Credentials.UserPass);
 		/*connect = DriverManager
-				.getConnection("jdbc:mysql://sql5.freemysqlhosting.net","sql5105183","sCHT8AcwwT");*/
+				.getConnection("jdbc:mysql://sql5.freemysqlhosting.net","uuuuuuu","pppppp");*/
 			
 		
 		//return connect;
