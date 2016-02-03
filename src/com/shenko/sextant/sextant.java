@@ -13,14 +13,19 @@ public class sextant {
 	public static Window frame;
 	public static String playerName;
 	public static int logStatus; 
-	public static boolean GUILoaded=false;
+	public static boolean GUILoaded;
 		//this will be 0 until we hit EOF and then receive a new message. This indicate we've got an active log file.
 		//then it'll be 1 when reading, and 2 when EOF.
+	public static int CurrentPort;
 		
 	
 	public static void main(String [] args) {
 		System.out.println("Started...");
 		
+		GUILoaded=false;
+		CurrentPort=0;
+		logStatus=0;
+				
 		EventQueue.invokeLater(new Runnable() { //this makes the window.
 		//EventQueue.invokeAndWait(new Runnable() { //this makes the window.
 			public void run() {
@@ -57,7 +62,7 @@ public class sextant {
 	public static void reloadLog(){
 			
 		Handler.interrupt();
-		frame.setLogStatus(3); //loading new log file, and wait.
+		frame.setLogStatus(-1); //loading new log file, and wait.
 		System.out.println(Handler.getState());
 		Handler = new LogFileHandler();
 		Handler.start();

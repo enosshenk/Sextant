@@ -6,7 +6,6 @@ public class LogParser {
 
 	JsonParser Parser;
 	
-	int CurrentPort;
 	
 	public LogParser()
 	{
@@ -45,6 +44,7 @@ public class LogParser {
 							String name = mySQL.verifyItem(item);
 	
 							System.out.println( "Item:       " + name +"\n" );	
+							mySQL.writeSale(item);
 						}
 					}
 					else
@@ -94,9 +94,9 @@ public class LogParser {
 			int Contested = Port.get("Contested").getAsInt();
 			
 			// Update player current port maybe
-			if (CurrentPort != ID)
+			if (sextant.CurrentPort != ID)
 			{
-				CurrentPort = ID;
+				sextant.CurrentPort = ID; //TODO did you want to do more here? if not, we can delete that if statement and just leave this line.
 			}
 		}
 		else
@@ -134,8 +134,6 @@ public class LogParser {
 			int ShipTemplateID = Player.get("CurrentShipItemTemplateId").getAsInt();
 			int CurrentPortID = Player.get("CurrentPortId").getAsInt();
 			
-			
-			
 			// Iterate outpost array
 			for (int i=0; i < PlayerOutposts.size(); i++)
 			{
@@ -145,9 +143,10 @@ public class LogParser {
 			}
 			
 			// Update current port more
-			if (CurrentPort != CurrentPortID)
+			if (sextant.CurrentPort != CurrentPortID)
 			{
-				CurrentPort = CurrentPortID;
+				sextant.CurrentPort = CurrentPortID;
+				System.out.println("CurrentPort: "+sextant.CurrentPort);
 			}
 			
 		}
@@ -156,35 +155,7 @@ public class LogParser {
 			System.out.println("Player JSON data invaid");
 		}
 	}
-	
-	public void ParseShopData(String inData)
-	{
-		// Parse a block of port trade data
-		// Expecting a JSON array here, anything else is cocked up
-		JsonElement Element = Parser.parse(inData);
-		
-		if (Element.isJsonArray())
-		{
-			JsonArray ShopData = Element.getAsJsonArray();
-			
-			for (int i=0; i < ShopData.size(); i++)
-			{
-				JsonObject Data = ShopData.get(i).getAsJsonObject();
-				
-				int TemplateID = Data.get("TemplateId").getAsInt();
-				int Quantity = Data.get("Quantity").getAsInt();
-				int SellPrice = Data.get("SellPrice").getAsInt();
-				int BuyPrice = Data.get("BuyPrice").getAsInt();
-				
-				// Have to just assume CurrentPort is where we are for this
-				// So send the data to the DB
-			}
-		}
-		else
-		{
-			System.out.println("Port Shop JSON data invalid or was not JSONArray");
-		}
-	}
+
 	
 	public void ParsePortProductionData(String inData)
 	{

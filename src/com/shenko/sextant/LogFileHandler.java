@@ -104,10 +104,17 @@ public class LogFileHandler extends Thread {
 			Parser.ParsePlayerData(Line);
 		}
 		
-		if (Line.contains("SellPrice") && Line.contains("BuyPrice"))
+		if (Line.contains("SellPrice") && Line.contains("BuyPrice")) // only run this if we're realtime. Old-ass items aren't useful here since the time isn't reliable.
 		{
-			// Line is a port shop data block
-			Parser.ParseShopData(Line);
+			if(sextant.logStatus>0 && sextant.CurrentPort>0)
+			{// Line is a port shop data block
+				Parser.ParseSaleData(Line);
+			}
+			else
+			{
+			System.out.println("Log or port status insufficient for buy/sell: "+sextant.logStatus+" "+sextant.CurrentPort);
+			}
+			
 		}
 		
 		if (Line.contains("Key") && Line.contains("Value"))

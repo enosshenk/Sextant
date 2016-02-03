@@ -152,6 +152,51 @@ public class SQLHandler {
 			
 	}
 
+	public void writeSale(JsonObject item) {
+		//System.out.println("Starting SQLHandler for WritePort...");
+		
+		try {
+
+			/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+			System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
+			System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
+			System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
+			System.out.println( "Port:        we don't know");*/
+			
+			
+			String query = "insert into sql5105183.Sales("
+				+ "PortID, "
+				+ "ItemID, "
+				+ "quantity, "
+				+ "sellPrice, "
+				+ "buyPrice, "
+				+ "addedBy) "
+				+ "values ("
+				+ sextant.CurrentPort + ", "
+				+ item.get("TemplateId").getAsInt() + ", "	
+				+ item.get("Quantity").getAsInt() + ", "
+				+ item.get("SellPrice").getAsInt() + ", "
+				+ item.get("BuyPrice").getAsInt() + ", "
+				+ "\""+sextant.playerName+"\")";
+						
+			
+			//System.out.println(query);
+			System.out.println("executing "+query);
+				executePush(query);
+				
+			
+			//System.out.println("done.");
+			
+		} catch (Exception e) {
+			System.out.println("onono...writeSale");
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+			
+	}
+	
+	
 	public String verifyItem(JsonObject item) { 
 		//feed this an item like {"TemplateId":173,"Quantity":1,"SellPrice":9380,"BuyPrice":10318}, 
 		//get back a name (even if we have to prompt the user)
