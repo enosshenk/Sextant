@@ -9,6 +9,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+import javax.swing.Spring;
+
+import com.google.gson.JsonObject;
+
 public class SQLHandler {
 	private Connection connect = null;
 	private Statement statement = null;
@@ -17,61 +22,177 @@ public class SQLHandler {
 
 	private DatabaseCredentials Credentials = new DatabaseCredentials();
 	
-	public void connect() {
-		System.out.println("Starting SQLHandler...");
-		
-	//	connect();
-	//}
-	//public void connect() throws Exception {
+	private void executePush(String query) {
+		System.out.println("Starting SQLHandler with: "+query);
+		Connection connect = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String toReturn = null; 
+
 	try {
 		// This will load the MySQL driver, each DB has its own driver
 		Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
 		System.out.println("Connecting to database...");
-		connect = DriverManager
-			.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?"
-			+ Credentials.UserPass);
-		/*connect = DriverManager
-				.getConnection("jdbc:mysql://sql5.freemysqlhosting.net","uuuuuuu","pppppp");*/
-			
+		connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
+	
+		stmt = connect.createStatement();
 		
-		//return connect;
-		
-
-		preparedStatement = connect
-				.prepareStatement("insert into sql5105183.Ports(Id, name, x, y, nation) values (?, ?, ?, ?, ?)");
-		// "myuser, webpage, datum, summery, COMMENTS from feedback.comments");
-		// Parameters start with 1
-		preparedStatement.setString(1, "9999");
-		preparedStatement.setString(2, "TestCity");
-		preparedStatement.setString(3, "-217801");
-		preparedStatement.setString(4, "-168800");
-		preparedStatement.setString(5, "1");
-		preparedStatement.executeUpdate();
-
-		preparedStatement.close();
+		String lquery=query.toLowerCase(); //let's make the next statement easier.		
+		stmt.executeUpdate(query); //that's Update for insert / update / delete, and executeQuery for just queries.
+		stmt.close();
 		connect.close();
-		System.out.println("done.");
-		//preparedStatement = connect
-		//		.prepareStatement("SELECT * from sql5105183.Ports");
-		//resultSet = preparedStatement.executeQuery();
-		//System.out.println(resultSet);
+		System.out.println("executed " + query);
+	
 	  }catch(SQLException se){
 	      //Handle errors for JDBC
-		  System.out.println("ono...");
+		  System.out.println("ono... SQL error");
 	      se.printStackTrace();
-	} catch (Exception e) {
-		System.out.println("onono...");
+	      	} catch (Exception e) {
+		System.out.println("onono... SQLHandler");
 		e.printStackTrace();
-	} finally {
-		close();
-	}
-		
+			} finally {
 	}
 	
 	
+	}
+	private String executePull(String query) {
+		System.out.println("Starting SQLHandler with: "+query);
+		Connection connect = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String toReturn = null; 
 
+	try {
+		// This will load the MySQL driver, each DB has its own driver
+		Class.forName("com.mysql.jdbc.Driver");
+		// Setup the connection with the DB
+		System.out.println("Connecting to database...");
+		connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
+		stmt = connect.createStatement();
+		
+		String lquery=query.toLowerCase(); //let's make the next statement easier.		
+		rs = stmt.executeQuery(query);
+		if(rs.next())
+			{
+			toReturn = rs.getString("Name");
+			}
+		stmt.close();
+		connect.close();
+		System.out.println("executed " + query);
+	
+	  }catch(SQLException se){
+	      //Handle errors for JDBC
+		  System.out.println("ono... SQL error");
+	      se.printStackTrace();
+	      return toReturn;
+	} catch (Exception e) {
+		System.out.println("onono... SQLHandler");
+		e.printStackTrace();
+		return toReturn;
+	} finally {
+	}
+	
+	return toReturn;
+	}
+	
+	public void writePort(JsonObject Port) {
+		System.out.println("Starting SQLHandler for WritePort...");
+		
+		try {
+
+			JsonObject PortPosition = Port.get("Position").getAsJsonObject();	
+			
+			String query = "insert into sql5105183.Ports("
+				+ "Id, "
+				+ "name, "
+				+ "x, "
+				+ "y, "
+				+ "nation) "
+				+ "values ("
+				+ Integer.toString(Port.get("Id").getAsInt()) + ", "
+				+ "\"" + Port.get("Name").getAsString() + "\", " // don't forget the quotes!
+				+ Integer.toString(PortPosition.get("x").getAsInt()) + ", "
+				+ Integer.toString(PortPosition.get("z").getAsInt()) + ", "
+				+ Integer.toString(Port.get("Nation").getAsInt())	+ ") " 
+				+ "ON DUPLICATE KEY UPDATE "
+				+ "nation="	+ Integer.toString(Port.get("Nation").getAsInt());
+	
+			System.out.println(query);
+			
+				executePush(query);
+			
+			System.out.println("done.");
+			
+		} catch (Exception e) {
+			System.out.println("onono...writePort");
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+			
+	}
+
+	public String verifyItem(JsonObject item) { 
+		//feed this an item like {"TemplateId":173,"Quantity":1,"SellPrice":9380,"BuyPrice":10318}, 
+		//get back a name (even if we have to prompt the user)
+		System.out.println("Starting SQLHandler for WritePort...");
+		String name = null;
+		//ResultSet rs = null;
+		String id = null;
+		try {
+
+			id = Integer.toString(item.get("TemplateId").getAsInt());		
+			String query = "select Name from sql5105183.ItemIDs where ItemID="
+				+ id; 
+	
+			System.out.println(query);
+			
+			name = executePull(query);
+			if(name==null || name.isEmpty())
+			{
+				name = (String)JOptionPane.showInputDialog(
+			                    null, //frame, let's see if this works			             
+			                    "You found a new item!\n"
+			                    + "Please find this item and type the name.\n"
+			                    + "Quantity: " + item.get("Quantity").getAsInt() 
+			                    + "\nBuy: " + item.get("BuyPrice").getAsInt() 
+			                    + "\nSell: "+ item.get("SellPrice").getAsInt(),
+			                    "Teach me, O Great One.",
+			                    JOptionPane.PLAIN_MESSAGE,
+			                    null,
+			                    null,
+			                    "item name");
+
+				//If a string was returned, say so.
+				if ((name != null) && (name.length() > 0)) {
+					if (name.contains("item name"))
+					{
+						System.out.println("\"Item Name\" is not the name of that item. You are a bad person.");
+						System.exit(1);
+					}
+					query = "insert into sql5105183.ItemIDs (ItemID, Name) values ("+ id +", \""+ name +"\") on duplicate key update Name=\""+name+"\"";
+					executePush(query);
+					System.out.println("Thanks! Item name updated / added.");
+				}
+				else
+				{
+					System.out.println("Empty box. Enjoy getting that box again and again.");
+				}
+			
+				
+								
+			}
+			
+		} catch (Exception e) {
+			System.out.println("onono...");
+			e.printStackTrace();
+		} finally {
+		}
+
+		return name;
+	}	
 	
 	public void readDataBase() throws Exception {
 		try {
@@ -87,7 +208,7 @@ public class SQLHandler {
 			// Result set get the result of the SQL query
 			resultSet = statement
 					.executeQuery("select * from feedback.comments");
-			writeResultSet(resultSet);
+			//writeResultSet(resultSet);
 
 			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connect
@@ -97,7 +218,6 @@ public class SQLHandler {
 			preparedStatement.setString(1, "Test");
 			preparedStatement.setString(2, "TestEmail");
 			preparedStatement.setString(3, "TestWebpage");
-			preparedStatement.setDate(4, new java.sql.Date(2009, 12, 11));
 			preparedStatement.setString(5, "TestSummary");
 			preparedStatement.setString(6, "TestComment");
 			preparedStatement.executeUpdate();
@@ -105,7 +225,7 @@ public class SQLHandler {
 			preparedStatement = connect
 					.prepareStatement("SELECT myuser, webpage, datum, summery, COMMENTS from feedback.comments");
 			resultSet = preparedStatement.executeQuery();
-			writeResultSet(resultSet);
+			//writeResultSet(resultSet);
 
 			// Remove again the insert comment
 			preparedStatement = connect
@@ -137,25 +257,7 @@ public class SQLHandler {
 		}
 	}
 
-	private void writePort(ResultSet resultSet) throws SQLException {
-		// ResultSet is initially before the first data set
-		while (resultSet.next()) {
-			// It is possible to get the columns via name
-			// also possible to get the columns via the column number
-			// which starts at 1
-			// e.g. resultSet.getSTring(2);
-			String user = resultSet.getString("myuser");
-			String website = resultSet.getString("webpage");
-			String summery = resultSet.getString("summery");
-			Date date = resultSet.getDate("datum");
-			String comment = resultSet.getString("comments");
-			System.out.println("User: " + user);
-			System.out.println("Website: " + website);
-			System.out.println("Summery: " + summery);
-			System.out.println("Date: " + date);
-			System.out.println("Comment: " + comment);
-		}
-	}
+
 
 		// You need to close the resultSet
 		private void close() {

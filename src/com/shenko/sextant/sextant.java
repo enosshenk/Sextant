@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Sextant {
+public class sextant {
 
 	public static LogFileHandler Handler;
 	public static SQLHandler mySql;

@@ -14,10 +14,55 @@ public class LogParser {
 		
 	}
 	
+	public void ParseSaleData(String inData) //, int portID) //passed the line with multiple items for sale. We'll also need the port location, so add that 
+	{
+		// Parse a port data block
+		System.out.println("found new sale: " + inData);
+		
+		while(inData.contains("{"))
+		{
+			if((inData.indexOf("{")>0) && (inData.indexOf("}")+1>inData.indexOf("{")) ) // trap bad indices
+			{
+				String sale = inData.substring(inData.indexOf("{"), inData.indexOf("}")+1); // set sale to a probably-valid JSON object
+				System.out.println("sale: " + sale);
+				inData=inData.substring(inData.indexOf("}")+1); //(no longer) recursively call this function with the remaining string, so sale gets processed below, and we run the rest of this shit through this function again
+				if((sale != null) && (sale.length()>0))
+				{
+					JsonElement Element = Parser.parse(sale);
+					if (Element.isJsonObject())
+					{
+						// Get json objects
+						JsonObject item = Element.getAsJsonObject();
+						if (!item.isJsonNull())
+						{
+							System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+							System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
+							System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
+							System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
+							System.out.println( "Port:        we don't know");
+							
+							SQLHandler mySQL = new SQLHandler();
+							String name = mySQL.verifyItem(item);
+	
+							System.out.println( "Item:       " + name +"\n" );	
+						}
+					}
+					else
+					{
+						System.out.println("kill me now");
+					}
+				}
+			}
+		}
+	}	
+	
 	public void ParsePortData(String inData)
 	{
-		// Parse a port data block	
+		// Parse a port data block
+	
 		JsonElement Element = Parser.parse(inData);
+		
+		System.out.println("found new Port");
 		
 		if (Element.isJsonObject())
 		{
@@ -25,7 +70,19 @@ public class LogParser {
 			JsonObject Port = Element.getAsJsonObject();
 			JsonObject PortPosition = Port.get("Position").getAsJsonObject();
 			
-			int ID = Port.get("Id").getAsInt();
+	
+			SQLHandler mySQL = new SQLHandler();
+			mySQL.writePort(Port);
+			
+			System.out.println( "Port Name: " + Port.get("Name").getAsString() );	
+			System.out.println( "Port Nation: " + Port.get("Nation").getAsInt() );	
+			System.out.println( "Port ID: " + Port.get("Id").getAsInt() );
+			System.out.println( "Port Position X " + PortPosition.get("x").getAsInt() );
+			System.out.println( "Port Position Z " + PortPosition.get("z").getAsInt() );
+
+			int ID = Port.get("Id").getAsInt(); 
+			//got a little mixed up on the github and had to merge. Is this shit old, or did you make these changes and recommit?
+			// ES - Just assigning these values to variables for ease of use later
 			String Name = Port.get("Name").getAsString();							
 			int PositionX = PortPosition.get("x").getAsInt();
 			int PositionZ = PortPosition.get("z").getAsInt();
@@ -82,6 +139,10 @@ public class LogParser {
 			}
 			
 		}
+		else
+		{
+			System.out.println("Player JSON data invaid");
+		}
 	}
 	
 	public void ParseShopData(String inData)
@@ -107,6 +168,10 @@ public class LogParser {
 				// So send the data to the DB
 			}
 		}
+		else
+		{
+			System.out.println("Port Shop JSON data invalid or was not JSONArray");
+		}
 	}
 	
 	public void ParsePortProductionData(String inData)
@@ -129,6 +194,10 @@ public class LogParser {
 				// Value is number produced or consumed per hour. Game displays this as per day
 				// Do we * 24 here or somewhere else?
 			}
+		}
+		else
+		{
+			System.out.println("Port Production/Consumption JSON data invalid or was not JSONArray");
 		}
 	}
 }
