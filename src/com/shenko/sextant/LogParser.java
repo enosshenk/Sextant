@@ -17,14 +17,14 @@ public class LogParser {
 	public void ParseSaleData(String inData) //, int portID) //passed the line with multiple items for sale. We'll also need the port location, so add that 
 	{
 		// Parse a port data block
-		System.out.println("found new sale: " + inData);
+		//System.out.println("found new sale: " + inData);
 		
 		while(inData.contains("{"))
 		{
 			if((inData.indexOf("{")>0) && (inData.indexOf("}")+1>inData.indexOf("{")) ) // trap bad indices
 			{
 				String sale = inData.substring(inData.indexOf("{"), inData.indexOf("}")+1); // set sale to a probably-valid JSON object
-				System.out.println("sale: " + sale);
+				//System.out.println("sale: " + sale);
 				inData=inData.substring(inData.indexOf("}")+1); //(no longer) recursively call this function with the remaining string, so sale gets processed below, and we run the rest of this shit through this function again
 				if((sale != null) && (sale.length()>0))
 				{
@@ -35,12 +35,12 @@ public class LogParser {
 						JsonObject item = Element.getAsJsonObject();
 						if (!item.isJsonNull())
 						{
-							System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+							/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
 							System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
 							System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
 							System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
 							System.out.println( "Port:        we don't know");
-							
+							*/
 							SQLHandler mySQL = new SQLHandler();
 							String name = mySQL.verifyItem(item);
 	
@@ -59,10 +59,11 @@ public class LogParser {
 	public void ParsePortData(String inData)
 	{
 		// Parse a port data block
+		
 	
 		JsonElement Element = Parser.parse(inData);
 		
-		System.out.println("found new Port");
+		//System.out.println("found new Port");
 		
 		if (Element.isJsonObject())
 		{
@@ -74,11 +75,11 @@ public class LogParser {
 			SQLHandler mySQL = new SQLHandler();
 			mySQL.writePort(Port);
 			
-			System.out.println( "Port Name: " + Port.get("Name").getAsString() );	
+			/*System.out.println( "Port Name: " + Port.get("Name").getAsString() );	
 			System.out.println( "Port Nation: " + Port.get("Nation").getAsInt() );	
 			System.out.println( "Port ID: " + Port.get("Id").getAsInt() );
 			System.out.println( "Port Position X " + PortPosition.get("x").getAsInt() );
-			System.out.println( "Port Position Z " + PortPosition.get("z").getAsInt() );
+			System.out.println( "Port Position Z " + PortPosition.get("z").getAsInt() );*/
 
 			int ID = Port.get("Id").getAsInt(); 
 			//got a little mixed up on the github and had to merge. Is this shit old, or did you make these changes and recommit?
@@ -108,7 +109,14 @@ public class LogParser {
 	{
 		// Parse player data block
 		// This is a lot of shit
+		
+
+		inData = inData.substring(inData.indexOf("{")); // let's just get the JSON
+		//System.out.println(inData);
 		JsonElement Element = Parser.parse(inData);
+		
+
+		System.out.println("Parsing player data");
 		
 		if (Element.isJsonObject())
 		{
@@ -118,11 +126,15 @@ public class LogParser {
 			JsonArray PlayerOutposts = Player.get("PortContainers").getAsJsonArray();
 			
 			String Name = Player.get("Name").getAsString();
+			//System.out.println("Player Name: " + Name);
+			sextant.setPlayerName(Name);
 			int Nation = Player.get("Nation").getAsInt();
 			int WorldPositionX = PlayerPosition.get("x").getAsInt();
 			int WorldPositionY = PlayerPosition.get("y").getAsInt();
-			int ShipTemplateID = Player.get("CurrentShipItemTemplateID").getAsInt();
+			int ShipTemplateID = Player.get("CurrentShipItemTemplateId").getAsInt();
 			int CurrentPortID = Player.get("CurrentPortId").getAsInt();
+			
+			
 			
 			// Iterate outpost array
 			for (int i=0; i < PlayerOutposts.size(); i++)

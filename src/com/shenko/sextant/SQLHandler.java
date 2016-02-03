@@ -23,7 +23,7 @@ public class SQLHandler {
 	private DatabaseCredentials Credentials = new DatabaseCredentials();
 	
 	private void executePush(String query) {
-		System.out.println("Starting SQLHandler with: "+query);
+		//System.out.println("Starting SQLHandler with: "+query);
 		Connection connect = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -33,7 +33,7 @@ public class SQLHandler {
 		// This will load the MySQL driver, each DB has its own driver
 		Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
-		System.out.println("Connecting to database...");
+		//System.out.println("Connecting to database...");
 		connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
 		stmt = connect.createStatement();
@@ -42,7 +42,7 @@ public class SQLHandler {
 		stmt.executeUpdate(query); //that's Update for insert / update / delete, and executeQuery for just queries.
 		stmt.close();
 		connect.close();
-		System.out.println("executed " + query);
+		//System.out.println("executed " + query);
 	
 	  }catch(SQLException se){
 	      //Handle errors for JDBC
@@ -57,7 +57,7 @@ public class SQLHandler {
 	
 	}
 	private String executePull(String query) {
-		System.out.println("Starting SQLHandler with: "+query);
+		//System.out.println("Starting SQLHandler with: "+query);
 		Connection connect = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -67,7 +67,7 @@ public class SQLHandler {
 		// This will load the MySQL driver, each DB has its own driver
 		Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
-		System.out.println("Connecting to database...");
+		//System.out.println("Connecting to database...");
 		connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
 		stmt = connect.createStatement();
@@ -80,7 +80,7 @@ public class SQLHandler {
 			}
 		stmt.close();
 		connect.close();
-		System.out.println("executed " + query);
+		//System.out.println("executed " + query);
 	
 	  }catch(SQLException se){
 	      //Handle errors for JDBC
@@ -98,7 +98,7 @@ public class SQLHandler {
 	}
 	
 	public void writePort(JsonObject Port) {
-		System.out.println("Starting SQLHandler for WritePort...");
+		//System.out.println("Starting SQLHandler for WritePort...");
 		
 		try {
 
@@ -109,21 +109,39 @@ public class SQLHandler {
 				+ "name, "
 				+ "x, "
 				+ "y, "
-				+ "nation) "
+				+ "nation, "
+				+ "capital, "
+				+ "startcity, " // start and starting are both sql reserved keywords haha, bullshit.
+				+ "regional, "
+				+ "size, "
+				+ "depth, "
+				+ "contested, "
+				+ "addedBy) "
 				+ "values ("
 				+ Integer.toString(Port.get("Id").getAsInt()) + ", "
 				+ "\"" + Port.get("Name").getAsString() + "\", " // don't forget the quotes!
 				+ Integer.toString(PortPosition.get("x").getAsInt()) + ", "
 				+ Integer.toString(PortPosition.get("z").getAsInt()) + ", "
-				+ Integer.toString(Port.get("Nation").getAsInt())	+ ") " 
+				+ Integer.toString(Port.get("Nation").getAsInt())	+ ", " 
+				+ (Port.get("Capital").getAsBoolean()?1:0) +", " //neat, huh? ?1:0 returns 1 if the preceding is true, 0 if false. I think java does this anyway though. No, in this case, this is necessary
+				+ (Port.get("NationStartingPort").getAsBoolean()?1:0) + ", " // No, in this case, this is necessary
+				+ (Port.get("Regional").getAsBoolean()?1:0) + ", " // No, in this case, this is necessary
+				+ Integer.toString(Port.get("Size").getAsInt()) + ", "
+				+ Integer.toString(Port.get("Depth").getAsInt()) + ", "
+				+ Integer.toString(Port.get("Contested").getAsInt()) + ", \""
+				+ sextant.playerName + "\") "
 				+ "ON DUPLICATE KEY UPDATE "
-				+ "nation="	+ Integer.toString(Port.get("Nation").getAsInt());
+				+ "nation="	+ Integer.toString(Port.get("Nation").getAsInt())
+				+ ", addedBy=\"" + sextant.playerName + "\""
+				;
 	
-			System.out.println(query);
+			
+			
+			//System.out.println(query);
 			
 				executePush(query);
 			
-			System.out.println("done.");
+			//System.out.println("done.");
 			
 		} catch (Exception e) {
 			System.out.println("onono...writePort");
@@ -137,7 +155,7 @@ public class SQLHandler {
 	public String verifyItem(JsonObject item) { 
 		//feed this an item like {"TemplateId":173,"Quantity":1,"SellPrice":9380,"BuyPrice":10318}, 
 		//get back a name (even if we have to prompt the user)
-		System.out.println("Starting SQLHandler for WritePort...");
+		//System.out.println("Starting SQLHandler for VerifyItem...");
 		String name = null;
 		//ResultSet rs = null;
 		String id = null;
@@ -147,7 +165,7 @@ public class SQLHandler {
 			String query = "select Name from sql5105183.ItemIDs where ItemID="
 				+ id; 
 	
-			System.out.println(query);
+			//System.out.println(query);
 			
 			name = executePull(query);
 			if(name==null || name.isEmpty())
@@ -158,7 +176,9 @@ public class SQLHandler {
 			                    + "Please find this item and type the name.\n"
 			                    + "Quantity: " + item.get("Quantity").getAsInt() 
 			                    + "\nBuy: " + item.get("BuyPrice").getAsInt() 
-			                    + "\nSell: "+ item.get("SellPrice").getAsInt(),
+			                    + "\nSell: "+ item.get("SellPrice").getAsInt()
+			                    + "Please be careful and check for multiple items with\n"
+			                    + "the same information",
 			                    "Teach me, O Great One.",
 			                    JOptionPane.PLAIN_MESSAGE,
 			                    null,
@@ -172,7 +192,8 @@ public class SQLHandler {
 						System.out.println("\"Item Name\" is not the name of that item. You are a bad person.");
 						System.exit(1);
 					}
-					query = "insert into sql5105183.ItemIDs (ItemID, Name) values ("+ id +", \""+ name +"\") on duplicate key update Name=\""+name+"\"";
+					query = "insert into sql5105183.ItemIDs (ItemID, Name, addedBy) values ("+ id +", \""+ name +"\", \""+sextant.playerName+"\") "
+							+ "on duplicate key update Name=\""+name+"\", addedBy=\""+sextant.playerName+"\"";
 					executePush(query);
 					System.out.println("Thanks! Item name updated / added.");
 				}
@@ -194,7 +215,7 @@ public class SQLHandler {
 		return name;
 	}	
 	
-	public void readDataBase() throws Exception {
+	public void readDataBase() throws Exception { //this is an example i pasted in here, none of this shit works yet.
 		try {
 			// This will load the MySQL driver, each DB has its own driver
 			Class.forName("com.mysql.jdbc.Driver");
