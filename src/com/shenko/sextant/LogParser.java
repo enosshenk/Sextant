@@ -128,9 +128,14 @@ public class LogParser {
 			String Name = Player.get("Name").getAsString();
 			//System.out.println("Player Name: " + Name);
 			sextant.setPlayerName(Name);
+			
 			int Nation = Player.get("Nation").getAsInt();
 			int WorldPositionX = PlayerPosition.get("x").getAsInt();
 			int WorldPositionY = PlayerPosition.get("y").getAsInt();
+			
+			sextant.frame.setLoc(PlayerPosition.get("x").getAsInt(), PlayerPosition.get("z").getAsInt());
+			
+			
 			int ShipTemplateID = Player.get("CurrentShipItemTemplateId").getAsInt();
 			int CurrentPortID = Player.get("CurrentPortId").getAsInt();
 			
