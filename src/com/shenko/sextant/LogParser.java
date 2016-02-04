@@ -171,6 +171,8 @@ public class LogParser {
 		if (Element.isJsonArray())
 		{
 			JsonArray ProductionData = Element.getAsJsonArray();
+
+			sextant.mySql.writeProduction(ProductionData);
 			
 			for (int i=0; i < ProductionData.size(); i++)
 			{
@@ -180,7 +182,7 @@ public class LogParser {
 				int Value = Data.get("Value").getAsInt();
 				
 				
-				System.out.println("prod: "+TemplateID+" "+Value);
+				//System.out.println("prod: "+TemplateID+" "+Value);
 				// Value is number produced or consumed per hour. Game displays this as per day
 				// Do we * 24 here or somewhere else?
 			}

@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.Spring;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class SQLHandler {
@@ -234,6 +235,53 @@ public class SQLHandler {
 			
 	}
 	
+	public void writeProduction(JsonArray productionData) {
+		//System.out.println("Starting SQLHandler for WritePort...");
+		String query=null;
+		JsonObject item=null;
+		
+		try {
+
+			/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+			System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
+			System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
+			System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
+			System.out.println( "Port:        we don't know");*/
+			open();
+			for (int i=0; i < productionData.size(); i++)
+			{
+				item = productionData.get(i).getAsJsonObject();
+				query = "insert into sql5105183.Production("
+					+ "PortID, "
+					+ "ItemID, "
+					+ "quantity, "
+					+ "AddedBy) "
+					+ "values ("
+					+ sextant.CurrentPort + ", "
+					+ item.get("Key").getAsInt() + ", "	
+					+ item.get("Value").getAsInt() + ", "
+					+ "\""+sextant.playerName+"\")";
+							
+				
+				//System.out.println(query);
+				System.out.println("executing "+query);
+	
+				stmt.executeUpdate(query);
+			}
+			
+			close();
+			
+			//System.out.println("done.");
+			
+		} catch (Exception e) {
+			System.out.println("onono...writeProduction");
+			e.printStackTrace();
+		} finally {
+			//close();
+		}
+			
+	}
+	
 	
 	public String verifyItem(JsonObject item) { 
 		//feed this an item like {"TemplateId":173,"Quantity":1,"SellPrice":9380,"BuyPrice":10318}, 
@@ -421,7 +469,7 @@ public class SQLHandler {
 				IDs.add(baseID);
 			}
 			
-rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Mastercraft%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
+			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Mastercraft%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
 			
 			while(rs.next())
 			{
@@ -442,11 +490,14 @@ rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Mast
 						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + baseID + ", '" + baseName + "', 'abso-fillDB') ");
 				
 				//System.out.println(
-						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+1) + ", '" + baseName +" - Common" +"', 'abso-fillDB')");
+				stmt.executeUpdate(
+					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+1) + ", '" + baseName +" - Common" +"', 'abso-fillDB')");
 				//System.out.println(
-						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+3) + ", '" + baseName + " - Mastercraft"+"', 'abso-fillDB')");
+				stmt.executeUpdate(
+					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+3) + ", '" + baseName + " - Mastercraft"+"', 'abso-fillDB')");
 				//System.out.println(
-						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+4) + ", '" + baseName + " - Fine" + "', 'abso-fillDB')");
+				stmt.executeUpdate(
+					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+4) + ", '" + baseName + " - Fine" + "', 'abso-fillDB')");
 				//System.out.println("insert into sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+2) + ", '" + baseName + " - Exceptional" + "', 'abso-fillDB')");
 				
 				
