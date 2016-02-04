@@ -130,7 +130,7 @@ public class Window extends JFrame {
 		JLabel label_2 = new JLabel("       ");
 		menuBar.add(label_2);
 		
-		lblY = new JLabel("y");
+		lblY = new JLabel("Z");
 		menuBar.add(lblY);
 		
 		
@@ -164,9 +164,9 @@ public class Window extends JFrame {
 			e1.printStackTrace();
 		}
 		MapPanel = new MapPanel( Image );
-		MapPanel.setMinimumSize(new Dimension(500, Short.MAX_VALUE));
-		MapPanel.setPreferredSize(new Dimension(500, Short.MAX_VALUE));
-		MapPanel.setMaximumSize(new Dimension(550, Short.MAX_VALUE));	
+		MapPanel.setMinimumSize(new Dimension(400, 400));
+		MapPanel.setPreferredSize(new Dimension(400, 400));
+		MapPanel.setMaximumSize(new Dimension(500, 500));	
 		MapPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.add(MapPanel);
 		
@@ -206,11 +206,14 @@ public class Window extends JFrame {
 		
 	}
 	
-	public void setLoc(int x, int y)
+	public void setLoc(int x, int z)
 	{
-		lblX.setText(Integer.toString(x));
-		lblY.setText(Integer.toString(y));
+		lblX.setText(Integer.toString(x * -1));
+		lblY.setText(Integer.toString(z * -1));
 		
+		MapPanel.SetPlayerLocation(x * -1, z * -1);
+		
+		System.out.println("Setting player loc in Window");
 	}
 
 }
