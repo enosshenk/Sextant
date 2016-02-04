@@ -30,6 +30,7 @@ import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class Window extends JFrame {
 
@@ -44,6 +45,8 @@ public class Window extends JFrame {
 	 * Create the frame.
 	 */
 	public Window() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Window.class.getResource("/com/sun/javafx/scene/control/skin/caspian/fxvk-capslock-button.png")));
+		setTitle("Sextant");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
