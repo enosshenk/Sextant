@@ -121,7 +121,7 @@ public class LogFileHandler extends Thread {
 			Parser.ParsePortProductionData(Line);
 		}
 		
-					
+		
 	}
 	
 	

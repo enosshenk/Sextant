@@ -179,6 +179,8 @@ public class LogParser {
 				int TemplateID = Data.get("Key").getAsInt();
 				int Value = Data.get("Value").getAsInt();
 				
+				
+				System.out.println("prod: "+TemplateID+" "+Value);
 				// Value is number produced or consumed per hour. Game displays this as per day
 				// Do we * 24 here or somewhere else?
 			}
