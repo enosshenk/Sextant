@@ -40,11 +40,11 @@ public class LogParser {
 							System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
 							System.out.println( "Port:        we don't know");
 							*/
-							SQLHandler mySQL = new SQLHandler();
-							String name = mySQL.verifyItem(item);
+							
+							String name = sextant.mySql.verifyItem(item);
 	
 							System.out.println( "Item:       " + name +"\n" );	
-							mySQL.writeSale(item);
+							sextant.mySql.writeSale(item);
 						}
 					}
 					else
@@ -72,8 +72,8 @@ public class LogParser {
 			JsonObject PortPosition = Port.get("Position").getAsJsonObject();
 			
 	
-			SQLHandler mySQL = new SQLHandler();
-			mySQL.writePort(Port);
+			
+			sextant.mySql.writePort(Port);
 			
 			/*System.out.println( "Port Name: " + Port.get("Name").getAsString() );	
 			System.out.println( "Port Nation: " + Port.get("Nation").getAsInt() );	

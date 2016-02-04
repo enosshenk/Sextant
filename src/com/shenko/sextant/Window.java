@@ -69,6 +69,17 @@ public class Window extends JFrame {
 		});
 		mnNewMenu.add(mntnSyncDB);
 		
+		JMenu mnAdmin = new JMenu("Admin");
+		mnNewMenu.add(mnAdmin);
+		
+		JMenuItem mntmFilldb = new JMenuItem("FillDB");
+		mntmFilldb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sextant.mySql.fillDB();
+			}
+		});
+		mnAdmin.add(mntmFilldb);
+		
 		JLabel lblNewLabel = new JLabel("       ");
 		menuBar.add(lblNewLabel);
 		
@@ -109,6 +120,9 @@ public class Window extends JFrame {
 		
 		JTextArea textArea = new JTextArea();
 		tabbedPane.addTab("New tab", null, textArea, null);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel);
 		
 		
 		sextant.GUILoaded=true;

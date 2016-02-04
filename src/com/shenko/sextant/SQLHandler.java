@@ -7,7 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.Spring;
@@ -15,35 +18,68 @@ import javax.swing.Spring;
 import com.google.gson.JsonObject;
 
 public class SQLHandler {
-	private Connection connect = null;
-	private Statement statement = null;
-	private PreparedStatement preparedStatement = null;
-	private ResultSet resultSet = null;
+	public Connection connect = null;
+	public Statement stmt = null;
+	public PreparedStatement preparedStatement = null;
+	public ResultSet rs = null;
 
 	private DatabaseCredentials Credentials = new DatabaseCredentials();
 	
+	public void open()
+	{
+		// This will load the MySQL driver, each DB has its own driver
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+			connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
+		
+			stmt = connect.createStatement();
+		
+		} catch (ClassNotFoundException e) {
+			
+		}
+		catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+
+	}
+	
+	private void close()
+	{
+		try {
+			stmt.close();
+			connect.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void executePush(String query) {
 		//System.out.println("Starting SQLHandler with: "+query);
-		Connection connect = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+		//Connection connect = null;
+		//Statement stmt = null;
+		//ResultSet rs = null;
 		String toReturn = null; 
 
 	try {
 		// This will load the MySQL driver, each DB has its own driver
-		Class.forName("com.mysql.jdbc.Driver");
+		//Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
 		//System.out.println("Connecting to database...");
-		connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
+		//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
-		stmt = connect.createStatement();
-		
-		String lquery=query.toLowerCase(); //let's make the next statement easier.		
+		//stmt = connect.createStatement();
+		open();
+		//String lquery=query.toLowerCase(); //let's make the next statement easier.		
 		stmt.executeUpdate(query); //that's Update for insert / update / delete, and executeQuery for just queries.
-		stmt.close();
-		connect.close();
+		//stmt.close();
+		//connect.close();
 		//System.out.println("executed " + query);
-	
+		close();
 	  }catch(SQLException se){
 	      //Handle errors for JDBC
 		  System.out.println("ono... SQL error");
@@ -58,28 +94,30 @@ public class SQLHandler {
 	}
 	private String executePull(String query) {
 		//System.out.println("Starting SQLHandler with: "+query);
-		Connection connect = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+		//Connection connect = null;
+		//Statement stmt = null;
+		//ResultSet rs = null;
 		String toReturn = null; 
 
 	try {
 		// This will load the MySQL driver, each DB has its own driver
-		Class.forName("com.mysql.jdbc.Driver");
+		//Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
 		//System.out.println("Connecting to database...");
-		connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
+		//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
-		stmt = connect.createStatement();
+		//stmt = connect.createStatement();
 		
-		String lquery=query.toLowerCase(); //let's make the next statement easier.		
+		//String lquery=query.toLowerCase(); //let's make the next statement easier.		
+		open();
 		rs = stmt.executeQuery(query);
 		if(rs.next())
 			{
 			toReturn = rs.getString("Name");
 			}
-		stmt.close();
-		connect.close();
+		close();
+		//stmt.close();
+		//connect.close();
 		//System.out.println("executed " + query);
 	
 	  }catch(SQLException se){
@@ -138,16 +176,16 @@ public class SQLHandler {
 			
 			
 			//System.out.println(query);
-			
-				executePush(query);
-			
+			open();
+			stmt.executeUpdate(query);
+			close();
 			//System.out.println("done.");
 			
 		} catch (Exception e) {
 			System.out.println("onono...writePort");
 			e.printStackTrace();
 		} finally {
-			close();
+			//close();
 		}
 			
 	}
@@ -182,8 +220,9 @@ public class SQLHandler {
 			
 			//System.out.println(query);
 			System.out.println("executing "+query);
-				executePush(query);
-				
+			open();
+			stmt.executeUpdate(query);
+			close();
 			
 			//System.out.println("done.");
 			
@@ -191,7 +230,7 @@ public class SQLHandler {
 			System.out.println("onono...writeSale");
 			e.printStackTrace();
 		} finally {
-			close();
+			//close();
 		}
 			
 	}
@@ -211,8 +250,13 @@ public class SQLHandler {
 				+ id; 
 	
 			//System.out.println(query);
+			open();
+			rs = stmt.executeQuery(query);
+			if(rs.next())
+			{
+			name = rs.getString("Name");
+			}
 			
-			name = executePull(query);
 			if(name==null || name.isEmpty())
 			{
 				name = (String)JOptionPane.showInputDialog(
@@ -239,7 +283,7 @@ public class SQLHandler {
 					}
 					query = "insert into sql5105183.ItemIDs (ItemID, Name, addedBy) values ("+ id +", \""+ name +"\", \""+sextant.playerName+"\") "
 							+ "on duplicate key update Name=\""+name+"\", addedBy=\""+sextant.playerName+"\"";
-					executePush(query);
+					stmt.executeUpdate(query);
 					System.out.println("Thanks! Item name updated / added.");
 				}
 				else
@@ -250,6 +294,7 @@ public class SQLHandler {
 				
 								
 			}
+			close();
 			
 		} catch (Exception e) {
 			System.out.println("onono...");
@@ -260,6 +305,8 @@ public class SQLHandler {
 		return name;
 	}	
 	
+	
+	/*
 	public void readDataBase() throws Exception { //this is an example i pasted in here, none of this shit works yet.
 		try {
 			// This will load the MySQL driver, each DB has its own driver
@@ -343,5 +390,84 @@ public class SQLHandler {
 
 			}
 		}
+*/
+		
+		public void fillDB() {
+			String baseName=null;
+			int baseID=0;
+		try {
+			open();
+			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Fine%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
+			//System.out.println("executed " + query);
+			
+			List<String> Names = new ArrayList<String>();
+			List<Integer> IDs = new ArrayList<Integer>();
+			while(rs.next())
+			{
+				baseName=rs.getString("Name");
+				baseName=baseName.substring(0,baseName.indexOf("-")-1); //fine
+				baseID=rs.getInt("ItemID")-4; //fine
+				Names.add(baseName);
+				IDs.add(baseID);
+			}
+			
+			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Common%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
+			
+			while(rs.next())
+			{
+				baseName=rs.getString("Name");
+				baseName=baseName.substring(0,baseName.indexOf("-")-1); //common also
+				baseID=rs.getInt("ItemID")-1; //common
+				Names.add(baseName);
+				IDs.add(baseID);
+			}
+			
+rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Mastercraft%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
+			
+			while(rs.next())
+			{
+				baseName=rs.getString("Name");
+				baseName=baseName.substring(0,baseName.indexOf("-")-1); //common also
+				baseID=rs.getInt("ItemID")-3; //MC
+				Names.add(baseName);
+				IDs.add(baseID);
+			}
+				
+			for(int i=0; i<Names.size(); i++)
+			{
+			
+				baseName=Names.get(i);
+				baseID=IDs.get(i);
+				//stmt.executeUpdate(
+				//System.out.println(
+						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + baseID + ", '" + baseName + "', 'abso-fillDB') ");
+				
+				//System.out.println(
+						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+1) + ", '" + baseName +" - Common" +"', 'abso-fillDB')");
+				//System.out.println(
+						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+3) + ", '" + baseName + " - Mastercraft"+"', 'abso-fillDB')");
+				//System.out.println(
+						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+4) + ", '" + baseName + " - Fine" + "', 'abso-fillDB')");
+				//System.out.println("insert into sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+2) + ", '" + baseName + " - Exceptional" + "', 'abso-fillDB')");
+				
+				
+				
+			}
+			System.out.println("filled.");
+			close();
 
-} 
+		  }catch(SQLException se){
+		      //Handle errors for JDBC
+			  System.out.println("ono... SQL error");
+		      se.printStackTrace();
+		      	} catch (Exception e) {
+			System.out.println("onono... SQLHandler");
+			e.printStackTrace();
+				} finally {
+		}
+		
+	
+		}
+		
+		
+}
