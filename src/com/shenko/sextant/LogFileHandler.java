@@ -69,7 +69,6 @@ public class LogFileHandler extends Thread {
 					}
 					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					exit=true;
 				} catch (InterruptedException e) {
@@ -79,7 +78,6 @@ public class LogFileHandler extends Thread {
 						System.out.println("File closed.");
 						exit=true;
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 						exit=true;
 					}
@@ -123,7 +121,7 @@ public class LogFileHandler extends Thread {
 			Parser.ParsePortProductionData(Line);
 		}
 		
-					
+		
 	}
 	
 	

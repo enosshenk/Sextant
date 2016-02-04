@@ -43,7 +43,6 @@ public class sextant {
 			try {
 				Thread.sleep(2*100); //this is to pause and let the gui load before it breaks shit.
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
