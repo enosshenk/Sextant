@@ -1,17 +1,29 @@
 package com.shenko.sextant;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
+import javax.imageio.ImageIO;
+import javax.print.DocFlavor.URL;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JToolBar;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
+
 import java.awt.Insets;
+
 import javax.swing.JTree;
 import javax.swing.JTextPane;
 import javax.swing.JSpinner;
@@ -22,19 +34,28 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
+
 import java.awt.Color;
 import java.awt.Button;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Window extends JFrame {
 
 	private JPanel contentPane;
+	private MapPanel MapPanel;
 	
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
@@ -45,9 +66,11 @@ public class Window extends JFrame {
 	 * Create the frame.
 	 */
 	public Window() {
-		setTitle("Sextant");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setTitle("Sextant");
+		setSize(800,600);
+		setResizable(false);
+//		setBounds(100, 100, 450, 300);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -109,12 +132,18 @@ public class Window extends JFrame {
 		
 		lblY = new JLabel("y");
 		menuBar.add(lblY);
+		
+		
+		// Set sections up
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setMinimumSize(new Dimension(200, Short.MAX_VALUE));
+		tabbedPane.setPreferredSize(new Dimension(250, Short.MAX_VALUE));
+		tabbedPane.setMaximumSize(new Dimension(250, Short.MAX_VALUE));
 		contentPane.add(tabbedPane);
 		
 		JTree tree = new JTree();
@@ -123,8 +152,23 @@ public class Window extends JFrame {
 		JTextArea textArea = new JTextArea();
 		tabbedPane.addTab("New tab", null, textArea, null);
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
+		// Map panel
+		MapPanel = null;
+		BufferedImage Image = null;
+		// Load the image
+		try {
+			Image = ImageIO.read( getClass().getResourceAsStream("/map.jpg") );
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Image doesn't exist fucker");
+			e1.printStackTrace();
+		}
+		MapPanel = new MapPanel( Image );
+		MapPanel.setMinimumSize(new Dimension(500, Short.MAX_VALUE));
+		MapPanel.setPreferredSize(new Dimension(500, Short.MAX_VALUE));
+		MapPanel.setMaximumSize(new Dimension(550, Short.MAX_VALUE));	
+		MapPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.add(MapPanel);
 		
 		
 		sextant.GUILoaded=true;
@@ -162,11 +206,11 @@ public class Window extends JFrame {
 		
 	}
 	
-public void setLoc(int x, int y)
-{
-	lblX.setText(Integer.toString(x));
-	lblY.setText(Integer.toString(y));
-	
-}
+	public void setLoc(int x, int y)
+	{
+		lblX.setText(Integer.toString(x));
+		lblY.setText(Integer.toString(y));
+		
+	}
 
 }
