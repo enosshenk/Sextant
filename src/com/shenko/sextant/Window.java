@@ -1,17 +1,29 @@
 package com.shenko.sextant;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
+import javax.imageio.ImageIO;
+import javax.print.DocFlavor.URL;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JToolBar;
+
 import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
+
 import java.awt.Insets;
+
 import javax.swing.JTree;
 import javax.swing.JTextPane;
 import javax.swing.JSpinner;
@@ -22,14 +34,23 @@ import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
+
 import java.awt.Color;
 import java.awt.Button;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Window extends JFrame {
 
@@ -45,7 +66,10 @@ public class Window extends JFrame {
 	 */
 	public Window() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setTitle("Sextant");
+		setSize(800,600);
+		setResizable(false);
+//		setBounds(100, 100, 450, 300);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -107,12 +131,18 @@ public class Window extends JFrame {
 		
 		lblY = new JLabel("y");
 		menuBar.add(lblY);
+		
+		
+		// Set sections up
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setMinimumSize(new Dimension(200, Short.MAX_VALUE));
+		tabbedPane.setPreferredSize(new Dimension(250, Short.MAX_VALUE));
+		tabbedPane.setMaximumSize(new Dimension(250, Short.MAX_VALUE));
 		contentPane.add(tabbedPane);
 		
 		JTree tree = new JTree();
@@ -121,8 +151,23 @@ public class Window extends JFrame {
 		JTextArea textArea = new JTextArea();
 		tabbedPane.addTab("New tab", null, textArea, null);
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
+		// Map panel
+		PanPanel MapPanel = null;
+		BufferedImage Image = null;
+		// Load the image
+		try {
+			Image = ImageIO.read( getClass().getResourceAsStream("/map.jpg") );
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Image doesn't exist fucker");
+			e1.printStackTrace();
+		}
+		MapPanel = new PanPanel( Image );
+		MapPanel.setMinimumSize(new Dimension(500, Short.MAX_VALUE));
+		MapPanel.setPreferredSize(new Dimension(500, Short.MAX_VALUE));
+		MapPanel.setMaximumSize(new Dimension(550, Short.MAX_VALUE));	
+		MapPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.add(MapPanel);
 		
 		
 		sextant.GUILoaded=true;
@@ -160,11 +205,84 @@ public class Window extends JFrame {
 		
 	}
 	
-public void setLoc(int x, int y)
-{
-	lblX.setText(Integer.toString(x));
-	lblY.setText(Integer.toString(y));
-	
+	public void setLoc(int x, int y)
+	{
+		lblX.setText(Integer.toString(x));
+		lblY.setText(Integer.toString(y));
+		
+	}
+
 }
 
+class PanPanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+    private int x, y;
+    private int width = 400, height = 400;
+    BufferedImage img;
+    private final static RenderingHints textRenderHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    private final static RenderingHints imageRenderHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    private final static RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    static int startX, startY;
+
+    public PanPanel(BufferedImage img) {
+        x = -2000;
+        y = -3000;
+        this.img = img;
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                super.mousePressed(me);
+                startX = me.getX();
+                startY = me.getY();
+            }
+        });
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent me) {
+                super.mouseDragged(me);
+
+                if (me.getX() < startX) {//moving image to right
+                    x -= 2;
+                } else if (me.getX() > startX) {//moving image to left
+                    x += 2;
+                }
+
+                if (me.getY() < startY) {//moving image up
+                    y -= 2;
+                } else if (me.getY() > startY) {//moving image to down
+                    y += 2;
+                }
+                repaint();
+            }
+        });
+    }
+
+    @Override
+    protected void paintComponent(Graphics grphcs) {
+        super.paintComponent(grphcs);
+        Graphics2D g2d = (Graphics2D) grphcs;
+
+        //turn on some nice effects
+        applyRenderHints(g2d);
+
+        g2d.drawImage(img, x, y, null);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(width, height);
+    }
+
+    public static void applyRenderHints(Graphics2D g2d) {
+        g2d.setRenderingHints(textRenderHints);
+        g2d.setRenderingHints(imageRenderHints);
+        g2d.setRenderingHints(renderHints);
+    }
 }
