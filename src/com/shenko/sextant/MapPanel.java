@@ -48,10 +48,9 @@ public class MapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent me) {
-                super.mousePressed(me);
-                startX = me.getX();
-                startY = me.getY();
+            public void mouseReleased(MouseEvent me) {
+                super.mouseReleased(me);
+                repaint();
             }
         });
 
@@ -59,20 +58,10 @@ public class MapPanel extends JPanel {
             @Override
             public void mouseDragged(MouseEvent me) {
                 super.mouseDragged(me);
-
-                if (me.getX() < startX) {//moving image to right
-                    x -= 2;
-                } else if (me.getX() > startX) {//moving image to left
-                    x += 2;
-                }
-
-                if (me.getY() < startY) {//moving image up
-                    y -= 2;
-                } else if (me.getY() > startY) {//moving image to down
-                    y += 2;
-                }
-                repaint();
-            }
+                CenterViewOnPixel( x + me.getX() * -1, y + me.getY() * -1 );
+              //  repaint();
+            }           
+            
         });
     }
 
