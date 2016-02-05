@@ -441,7 +441,7 @@ public class SQLHandler {
 		}
 */
 		
-	public HashMap getProduction()
+	public HashMap<Integer, Port> getPorts()
 	{
 		/*OK, in one fell swoop, we're going to read the whole production table, and push all the results to the ports
 		 * Here's how it looks: 
@@ -451,7 +451,7 @@ public class SQLHandler {
 		 */
 		
 		
-		HashMap toReturn = new HashMap();
+		HashMap<Integer, Port> toReturn = new HashMap<Integer, Port>();
 		
 		
 		open();
@@ -460,8 +460,6 @@ public class SQLHandler {
 			rs=stmt.executeQuery("SELECT * FROM sql5105183.Ports");
 			while(rs.next())
 			{
-				//construct the JsonObject
-				JsonObject toAdd;
 				String[] fields = {"Id", "name", "x", "y", "nation", "capital", "regional", "depth", "size", "contested", "startcity", "capturer", "modified", "addedBy"};
 				
 				for(String element:fields)
@@ -482,10 +480,11 @@ public class SQLHandler {
 					tempPort.capturer = rs.getString("capturer");
 					tempPort.modified = rs.getString("modified");
 					tempPort.AddedBy = rs.getString("addedBy");
+					toReturn.put(tempPort.ID, tempPort );
 					
 				}
 				
-				//now send it to the right Port
+				
 				
 				
 			}

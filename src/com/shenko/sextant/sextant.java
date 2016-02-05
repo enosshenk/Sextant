@@ -3,7 +3,10 @@ package com.shenko.sextant;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.*;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
@@ -17,7 +20,7 @@ public class sextant {
 		//this will be 0 until we hit EOF and then receive a new message. This indicate we've got an active log file.
 		//then it'll be 1 when reading, and 2 when EOF.
 	public static int CurrentPort;
-		
+	public static HashMap<Integer, Port> portsHash;	
 	
 	public static void main(String [] args) {
 		System.out.println("Started...");
@@ -25,7 +28,25 @@ public class sextant {
 		GUILoaded=false;
 		CurrentPort=0;
 		logStatus=0;
-				
+		
+		mySql = new SQLHandler();
+		portsHash = mySql.getPorts(); //TODO so we should 1) load gui including map, 2) read log, 3) getPorts, 4) push ports to the GUI
+		 //here's some hash usage examples:
+		 //Set<Entry<Integer, Port>> portSet = portsHash.entrySet();
+		 Iterator<Integer> portIterator = portsHash.keySet().iterator();
+		 while(portIterator.hasNext())
+		 {
+			 Integer key = portIterator.next();
+			 System.out.println(key+ ": "+ portsHash.get(key).name);
+		 }
+		 
+		 System.out.println("Number of Ports: "+ portsHash.size());
+		 //boolean x=portsHash.isEmpty();
+		 //boolean portsHash.containsKey(24);
+		 //boolean portsHash.containsValue("Islet");
+		 //Port portsHash.get(24); retrieves the port with ID 24.
+		 
+		
 		EventQueue.invokeLater(new Runnable() { //this makes the window.
 		//EventQueue.invokeAndWait(new Runnable() { //this makes the window.
 			public void run() {
@@ -49,7 +70,7 @@ public class sextant {
 		
 		System.out.println("GUI Loaded: main");
 		
-		mySql = new SQLHandler();
+		
 		Handler = new LogFileHandler();
 		Handler.start();
 
