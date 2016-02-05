@@ -23,7 +23,7 @@ public class MapPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-    private int x, y, newX, newY;
+    private int mapX, mapY, mouseX, mouseY; //(x,y) are the map coords
     private int width = 400, height = 400;
     BufferedImage img;
     private final static RenderingHints textRenderHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -39,8 +39,8 @@ public class MapPanel extends JPanel {
     private boolean Panning = false;
 
     public MapPanel(BufferedImage img) {
-        x = 0;
-        y = 0;
+        mapX = 0;
+        mapY = 0;
         this.img = img;
         PlayerLocation = new GridPoint();
         
@@ -50,31 +50,52 @@ public class MapPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
-                super.mousePressed(me);
+                //super.mousePressed(me);
                 Panning = true;
-                newX = x;
-                newY = y;
+                mouseX = me.getXOnScreen();
+                mouseY = me.getYOnScreen();
+                //newY = y;
             }
             
             @Override
             public void mouseReleased(MouseEvent me) {
-                super.mouseReleased(me);
+                //super.mouseReleased(me);
                 Panning = false;
-                x = newX;
-                y = newY;
+                //x = newX;
+                //y = newY;
+            	//mouseX = me.getXOnScreen();
+                //mouseY = me.getYOnScreen();
             }
         });
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent me) {
-                super.mouseDragged(me);
-                if (Panning)
+            	int newMouseX, newMouseY;
+            	
+            	newMouseX=me.getXOnScreen();
+            	newMouseY=me.getYOnScreen();
+                //super.mouseDragged(me);
+                /*if (Panning)
                 {
+                	                	
                 	newX = x + me.getXOnScreen() * -2;
                 	newY = y + me.getYOnScreen() * -2;                	
                 	CenterViewOnPixel( newX, newY );
+                }*/
+                if (Panning)
+                {
+                	mapX=mapX+(mouseX-newMouseX)*2;
+                	mapY=mapY+(mouseY-newMouseY)*2;
+                	CenterViewOnPixel(mapX, mapY);
                 }
+                
+                
+                //mouseX=newMouseX;
+                //mouseY=newMouseY;
+                
+                
+               
               //  repaint();
             }           
             
@@ -94,10 +115,10 @@ public class MapPanel extends JPanel {
         GridPoint Ship = CoordinateToPixel(PlayerLocation.X, PlayerLocation.Y);
 
         // Draw map image
-        g2d.drawImage(img, x, y, null);
+        g2d.drawImage(img, mapX, mapY, null);
         
         // Draw player location icon
-        ShipIcon.paintIcon(C, grphcs, Ship.X - 16 + x, Ship.Y - 16 + y);
+        ShipIcon.paintIcon(C, grphcs, Ship.X - 16 + mapX, Ship.Y - 16 + mapY);
     }
 
     @Override
@@ -145,8 +166,8 @@ public class MapPanel extends JPanel {
     	// Center the map image at the given game coordinates
     	GridPoint Pixel = CoordinateToPixel(inX, inZ);
     	
-    	x = Pixel.X * -1 + 200;
-    	y = Pixel.Y * -1 + 200;
+    	mapX = Pixel.X * -1 + 200;
+    	mapY = Pixel.Y * -1 + 200;
     	
     	repaint();
     }
@@ -154,8 +175,8 @@ public class MapPanel extends JPanel {
     public void CenterViewOnPixel(int inX, int inY)
     {
     	// Center the map image at the given pixel coordinates
-    	x = inX * -1 + 200;
-    	y = inY * -1 + 200;
+    	mapX = inX * -1 + 200;
+    	mapY = inY * -1 + 200;
     	
     	repaint();
     }
