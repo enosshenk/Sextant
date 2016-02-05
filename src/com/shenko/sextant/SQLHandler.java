@@ -443,13 +443,7 @@ public class SQLHandler {
 		
 	public HashMap<Integer, Port> getPorts()
 	{
-		/*OK, in one fell swoop, we're going to read the whole production table, and push all the results to the ports
-		 * Here's how it looks: 
-		 * read the table
-		 * for each result, identify the port it belongs to, and insert a JsonObject with all the info
-		 * 
-		 */
-		
+		//returns a HashMap of Ports with basic info. Does not include production or sales.
 		
 		HashMap<Integer, Port> toReturn = new HashMap<Integer, Port>();
 		
@@ -489,30 +483,7 @@ public class SQLHandler {
 				
 			}
 		
-		
-		
-		
-		
-		
-		
-		/*	rs=stmt.executeQuery("SELECT * FROM sql5105183.Production);
-			while(rs.next())
-			{
-				//construct the JsonObject
-				JsonObject toAdd;
-				String[] fields = {"PortID", "ItemID", "quantity", "Modified", "AddedBy"};
-				
-				for(String element:fields)
-				{
-					toAdd.addProperty(element, rs.getString(element));
-					System.out.println(element+" "+ rs.getString(element));
-				}
-				
-				//now send it to the right Port
-				
-				
-			}
-			*/
+	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -523,6 +494,42 @@ public class SQLHandler {
 		
 	}
 	
+	/*OK, in one fell swoop, we're going to read the whole production table, and push all the results to the ports
+	 * Here's how it looks: 
+	 * read the table
+	 * for each result, identify the port it belongs to, and insert a JsonObject with all the info
+	 * 
+	 */
+	
+	
+	
+	
+	public HashMap<Integer, Port> getProduction(HashMap<Integer, Port> hm)
+	{
+		try {
+			open();
+			rs=stmt.executeQuery("SELECT * FROM sql5105183.Production");
+			while(rs.next())
+			{
+				//construct the JsonObject
+				production myProduction;
+				
+				myProduction = new production(rs.getInt("PortID"), 
+							rs.getInt("ItemID"), rs.getInt("quantity"), 
+							rs.getString("Modified"), rs.getString("AddedBy"));
+				System.out.println(myProduction);
+				Port myPort=hm.get(myProduction.PortID);		
+				System.out.println(myPort);
+				myPort.productionArray.add(myProduction);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		close();
+		return hm;
+	}
 	
 	
 	

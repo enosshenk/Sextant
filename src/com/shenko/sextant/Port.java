@@ -19,22 +19,18 @@ public class Port {
 	public int ID=0;
 	public int x=0, y=0, nation=0, capital=0, regional=0, depth=0, size=0, contested=0, startcity=0;
 	public String capturer=null, modified = null, AddedBy=null;
+	public ArrayList<production> productionArray=new ArrayList<production>();
+	public ArrayList<sale> salesArray=new ArrayList<sale>();
 	
-	public Port(int passedId)
+	
+	public Port(int ID)
 	{
-		ID=passedId;
+		this.ID=ID;
 	}
 	
-	public ArrayList<JsonObject> production()
-	{
-		return null;
-	}
-	
-	public ArrayList<JsonObject> sales()
-	{
-		return null;
-	}
-	
-	
-	
+	public String toString() {
+        return "Port: "+ID+" "+name+ " ("+x+", "+y+")"; //TODO add more shit here
+    }
 }
+
+
