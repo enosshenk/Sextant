@@ -531,6 +531,32 @@ public class SQLHandler {
 		return hm;
 	}
 	
+	public HashMap<Integer, Port> getSales(HashMap<Integer, Port> hm)
+	{
+		try {
+			open();
+			rs=stmt.executeQuery("SELECT * FROM sql5105183.Sales");
+			while(rs.next())
+			{
+				sale mySale;
+				
+				mySale = new sale(rs.getInt("PortID"), 
+							rs.getInt("ItemID"),  rs.getInt("quantity"), rs.getInt("sellPrice"), rs.getInt("buyPrice"), 
+							rs.getString("Modified"), rs.getString("AddedBy"));
+				System.out.println(mySale);
+				Port myPort=hm.get(mySale.PortID);		
+				System.out.println(myPort);
+				myPort.salesArray.add(mySale);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		close();
+		return hm;
+	}
+	
 	
 	
 		public void fillDB() {
