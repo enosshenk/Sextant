@@ -517,9 +517,9 @@ public class SQLHandler {
 				myProduction = new production(rs.getInt("PortID"), 
 							rs.getInt("ItemID"), rs.getInt("quantity"), 
 							rs.getString("Modified"), rs.getString("AddedBy"));
-				System.out.println(myProduction);
+				//System.out.println(myProduction);
 				Port myPort=hm.get(myProduction.PortID);		
-				System.out.println(myPort);
+				//System.out.println(myPort);
 				myPort.productionArray.add(myProduction);
 			}
 			
@@ -543,9 +543,9 @@ public class SQLHandler {
 				mySale = new sale(rs.getInt("PortID"), 
 							rs.getInt("ItemID"),  rs.getInt("quantity"), rs.getInt("sellPrice"), rs.getInt("buyPrice"), 
 							rs.getString("Modified"), rs.getString("AddedBy"));
-				System.out.println(mySale);
+				//System.out.println(mySale);
 				Port myPort=hm.get(mySale.PortID);		
-				System.out.println(myPort);
+				//System.out.println(myPort);
 				myPort.salesArray.add(mySale);
 			}
 			

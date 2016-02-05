@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 
 import javax.swing.JToolBar;
+import javax.swing.JTree;
 
 import java.awt.GridBagConstraints;
 
@@ -31,6 +32,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
 
@@ -148,9 +150,9 @@ public class Window extends JFrame {
 		tabbedPane.setMaximumSize(new Dimension(250, Short.MAX_VALUE));
 		contentPane.add(tabbedPane);
 		
-		itemTree tree = new itemTree();
-		
-		tabbedPane.addTab("Items by Location", null, tree, null);
+		itemTree tree = new itemTree("item");
+		JScrollPane treeScrollPane = new JScrollPane(tree);
+		tabbedPane.addTab("Items by Location", null, treeScrollPane, null);
 		
 		JTextArea textArea = new JTextArea();
 		tabbedPane.addTab("New tab", null, textArea, null);

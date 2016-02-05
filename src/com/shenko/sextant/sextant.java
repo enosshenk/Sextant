@@ -15,6 +15,7 @@ public class sextant {
 	public static SQLHandler mySql;
 	public static Window frame;
 	public static String playerName;
+	public static ItemTable items;
 	public static int logStatus; 
 	public static boolean GUILoaded;
 		//this will be 0 until we hit EOF and then receive a new message. This indicate we've got an active log file.
@@ -31,7 +32,7 @@ public class sextant {
 		
 		mySql = new SQLHandler();
 		
-		ItemTable items= new ItemTable();
+		items= new ItemTable();
 		//System.out.println(items);
 		
 		portsHash = mySql.getPorts(); //TODO so we should 1) load gui including map, 2) read log, 3) getPorts, 4) push ports to the GUI
@@ -45,7 +46,8 @@ public class sextant {
 			 System.out.println(myPort);
 		 }
 		 
-		mySql.getProduction(portsHash);
+		 mySql.getProduction(portsHash);
+		 mySql.getSales(portsHash);
 		
 		
 		 portIterator = portsHash.keySet().iterator();
