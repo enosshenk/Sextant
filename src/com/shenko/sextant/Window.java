@@ -24,7 +24,6 @@ import javax.swing.JTabbedPane;
 
 import java.awt.Insets;
 
-import javax.swing.JTree;
 import javax.swing.JTextPane;
 import javax.swing.JSpinner;
 import javax.swing.JMenuBar;
@@ -51,6 +50,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class Window extends JFrame {
 
@@ -147,7 +148,8 @@ public class Window extends JFrame {
 		tabbedPane.setMaximumSize(new Dimension(250, Short.MAX_VALUE));
 		contentPane.add(tabbedPane);
 		
-		JTree tree = new JTree();
+		itemTree tree = new itemTree();
+		
 		tabbedPane.addTab("Items by Location", null, tree, null);
 		
 		JTextArea textArea = new JTextArea();
