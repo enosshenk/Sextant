@@ -23,7 +23,7 @@ public class MapPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-    private int x, y;
+    private int x, y, newX, newY;
     private int width = 400, height = 400;
     BufferedImage img;
     private final static RenderingHints textRenderHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -36,6 +36,7 @@ public class MapPanel extends JPanel {
     private ImageIcon ShipIcon;
     
     private boolean StartUp = true;
+    private boolean Panning = false;
 
     public MapPanel(BufferedImage img) {
         x = 0;
@@ -48,9 +49,19 @@ public class MapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             @Override
+            public void mousePressed(MouseEvent me) {
+                super.mousePressed(me);
+                Panning = true;
+                newX = x;
+                newY = y;
+            }
+            
+            @Override
             public void mouseReleased(MouseEvent me) {
                 super.mouseReleased(me);
-                repaint();
+                Panning = false;
+                x = newX;
+                y = newY;
             }
         });
 
@@ -58,7 +69,12 @@ public class MapPanel extends JPanel {
             @Override
             public void mouseDragged(MouseEvent me) {
                 super.mouseDragged(me);
-                CenterViewOnPixel( x + me.getX() * -1, y + me.getY() * -1 );
+                if (Panning)
+                {
+                	newX = x + me.getXOnScreen() * -2;
+                	newY = y + me.getYOnScreen() * -2;                	
+                	CenterViewOnPixel( newX, newY );
+                }
               //  repaint();
             }           
             
@@ -67,7 +83,7 @@ public class MapPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics grphcs) {
-        super.paintComponent(grphcs);
+ //       super.paintComponent(grphcs);
         Graphics2D g2d = (Graphics2D) grphcs;
         Component C = null;
         
