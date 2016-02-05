@@ -557,7 +557,23 @@ public class SQLHandler {
 		return hm;
 	}
 	
-	
+	public void getItemTable(ItemTable items)
+	{
+		try {
+			open();
+			rs=stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs");
+			while(rs.next())
+			{
+				items.add(rs.getInt("ItemID"), rs.getString("Name"), rs.getString("Modified"), rs.getString("AddedBy"));
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		close();
+	}
 	
 		public void fillDB() {
 			String baseName=null;

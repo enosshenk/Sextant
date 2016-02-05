@@ -31,6 +31,8 @@ public class sextant {
 		
 		mySql = new SQLHandler();
 		
+		ItemTable items= new ItemTable();
+		//System.out.println(items);
 		
 		portsHash = mySql.getPorts(); //TODO so we should 1) load gui including map, 2) read log, 3) getPorts, 4) push ports to the GUI
 		 //here's some hash usage examples:
@@ -54,7 +56,7 @@ public class sextant {
 			 System.out.println(myPort);
 			 for(int i=0; i<myPort.productionArray.size(); i++)
 			 {
-				 System.out.println(myPort.productionArray.get(i));
+				 //System.out.println(myPort.productionArray.get(i));
 			 }
 		 }
 		
