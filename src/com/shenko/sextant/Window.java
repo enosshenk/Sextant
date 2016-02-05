@@ -56,6 +56,7 @@ public class Window extends JFrame {
 
 	private JPanel contentPane;
 	private MapPanel MapPanel;
+	private MapPanel MapPanel_1;
 	
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
@@ -163,12 +164,13 @@ public class Window extends JFrame {
 			System.out.println("Image doesn't exist fucker");
 			e1.printStackTrace();
 		}
-		MapPanel = new MapPanel( Image );
-		MapPanel.setMinimumSize(new Dimension(400, 400));
-		MapPanel.setPreferredSize(new Dimension(400, 400));
-		MapPanel.setMaximumSize(new Dimension(500, 500));	
-		MapPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.add(MapPanel);
+		MapPanel_1 = new MapPanel( Image );
+		MapPanel_1.setBackground(new Color(0, 255, 255));
+		MapPanel_1.setMinimumSize(new Dimension(400, 400));
+		MapPanel_1.setPreferredSize(new Dimension(400, 400));
+		MapPanel_1.setMaximumSize(new Dimension(500, 500));	
+		MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.add(MapPanel_1);
 		
 		
 		sextant.GUILoaded=true;
@@ -211,7 +213,7 @@ public class Window extends JFrame {
 		lblX.setText(Integer.toString(x * -1));
 		lblY.setText(Integer.toString(z * -1));
 		
-		MapPanel.SetPlayerLocation(x * -1, z * -1);
+		MapPanel_1.SetPlayerLocation(x * -1, z * -1);
 		
 		System.out.println("Setting player loc in Window");
 	}

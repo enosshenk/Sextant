@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Spring;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class SQLHandler {
@@ -439,6 +441,92 @@ public class SQLHandler {
 		}
 */
 		
+	public HashMap getProduction()
+	{
+		/*OK, in one fell swoop, we're going to read the whole production table, and push all the results to the ports
+		 * Here's how it looks: 
+		 * read the table
+		 * for each result, identify the port it belongs to, and insert a JsonObject with all the info
+		 * 
+		 */
+		
+		
+		HashMap toReturn = new HashMap();
+		
+		
+		open();
+		
+		try {
+			rs=stmt.executeQuery("SELECT * FROM sql5105183.Ports");
+			while(rs.next())
+			{
+				//construct the JsonObject
+				JsonObject toAdd;
+				String[] fields = {"Id", "name", "x", "y", "nation", "capital", "regional", "depth", "size", "contested", "startcity", "capturer", "modified", "addedBy"};
+				
+				for(String element:fields)
+				{
+					//toAdd.addProperty(element, rs.getString(element));
+					Port tempPort = new Port(rs.getInt("Id"));
+					tempPort.ID=rs.getInt("Id");
+					tempPort.name = rs.getString("name");
+					tempPort.x = rs.getInt("x");
+					tempPort.y = rs.getInt("y");
+					tempPort.nation = rs.getInt("nation");
+					tempPort.capital = rs.getInt("capital");
+					tempPort.regional = rs.getInt("regional");
+					tempPort.depth = rs.getInt("depth");
+					tempPort.size = rs.getInt("size");
+					tempPort.contested = rs.getInt("contested");
+					tempPort.startcity = rs.getInt("startcity");
+					tempPort.capturer = rs.getString("capturer");
+					tempPort.modified = rs.getString("modified");
+					tempPort.AddedBy = rs.getString("addedBy");
+					
+				}
+				
+				//now send it to the right Port
+				
+				
+			}
+		
+		
+		
+		
+		
+		
+		
+		/*	rs=stmt.executeQuery("SELECT * FROM sql5105183.Production);
+			while(rs.next())
+			{
+				//construct the JsonObject
+				JsonObject toAdd;
+				String[] fields = {"PortID", "ItemID", "quantity", "Modified", "AddedBy"};
+				
+				for(String element:fields)
+				{
+					toAdd.addProperty(element, rs.getString(element));
+					System.out.println(element+" "+ rs.getString(element));
+				}
+				
+				//now send it to the right Port
+				
+				
+			}
+			*/
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		close();
+		return toReturn;
+		
+		
+	}
+	
+	
+	
+	
 		public void fillDB() {
 			String baseName=null;
 			int baseID=0;
