@@ -33,6 +33,8 @@ public class MapPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private Window OurWindow;
+	
     private int mapX, mapY, mouseX, mouseY; //(x,y) are the map coords
     private int width = 400, height = 400;
     BufferedImage img;
@@ -52,7 +54,9 @@ public class MapPanel extends JPanel {
     
     private List<Port> Ports;
 
-    public MapPanel(BufferedImage img) {
+    public MapPanel(BufferedImage img, Window inWindow) {
+    	OurWindow = inWindow;
+    	
         mapX = 0;
         mapY = 0;
         this.img = img;
@@ -169,10 +173,11 @@ public class MapPanel extends JPanel {
 				 
 				 if ( (MousePos.x > PortLoc.X - 8 && MousePos.x < PortLoc.X + 8) 
 						 && (MousePos.y > PortLoc.Y - 8 && MousePos.y < PortLoc.Y) )
-				 {
-					 // Mouse cursor is over this port yay
-					 TextLayout PortText = GetTextForPort(p, this.getGraphics());
-					 PortText.draw((Graphics2D) this.getGraphics(), PortLoc.X + 16, PortLoc.Y + 16);
+				 {		 
+					 if (OurWindow != null)
+					 {
+						 OurWindow.MouseOverPort(p, new GridPoint(MousePos.x, MousePos.y));
+					 }
 				 }
 	    	}
     	}
@@ -198,10 +203,6 @@ public class MapPanel extends JPanel {
 		 {
 			 Integer key = portIterator.next();
 			 Port Port = sextant.portsHash.get(key);
-			 
-			 GridPoint PortLoc = CoordinateToPixel( Port.x, Port.y );
-			 PortLoc.X = PortLoc.X - 8 + mapX;
-			 PortLoc.Y = PortLoc.Y - 8 + mapY;
 			 Ports.add(Port);
 		 }
     }

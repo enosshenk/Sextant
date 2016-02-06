@@ -61,6 +61,8 @@ public class Window extends JFrame {
 	private MapPanel MapPanel;
 	private MapPanel MapPanel_1;
 	
+	private MapTooltip MapTooltip;
+	
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
 	public JLabel lblFileStatus;
@@ -176,7 +178,7 @@ public class Window extends JFrame {
 			System.out.println("Image doesn't exist fucker");
 			e1.printStackTrace();
 		}
-		MapPanel_1 = new MapPanel( Image );
+		MapPanel_1 = new MapPanel( Image, this );
 		MapPanel_1.setBackground(new Color(0, 255, 255));
 		MapPanel_1.setMinimumSize(new Dimension(400, 400));
 		MapPanel_1.setPreferredSize(new Dimension(400, 400));
@@ -184,12 +186,27 @@ public class Window extends JFrame {
 		MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.add(MapPanel_1);
 		
+		MapTooltip = new MapTooltip();
+		MapTooltip.setVisible(false);
 		
 		sextant.GUILoaded=true;
 		System.out.println("Gui Loaded: window");
 		
 	}
 
+	public void MouseOverPort(Port inPort, GridPoint inPoint)
+	{
+	/*	MapTooltip.setLocation(inPoint.X, inPoint.Y);
+		MapTooltip.SetPort(inPort);
+		MapTooltip.setVisible(true);
+		
+		MapTooltip.setSize(MapTooltip.getPreferredSize());	*/	
+	}
+	
+	public void EndMouseOverPort()
+	{
+		MapTooltip.setVisible(false);
+	}
 	
 	public void setLogStatus (int num)
 	{
