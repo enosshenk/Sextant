@@ -237,6 +237,8 @@ public class SQLHandler {
 			
 	}
 	
+
+	
 	public void writeProduction(JsonArray productionData) {
 		//System.out.println("Starting SQLHandler for WritePort...");
 		String query=null;
@@ -654,6 +656,16 @@ public class SQLHandler {
 		
 	
 		}
-		
+
+		public void hi(String name)
+		{
+			open();
+			try {
+				stmt.executeUpdate("insert ignore sql5105183.users (name, version) values ('" + name + "', '" + sextant.version + "')");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			close();
+		}
 		
 }

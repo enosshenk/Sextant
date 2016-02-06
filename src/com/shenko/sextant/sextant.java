@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
+	
+	public static String version ="0.2";
 
 	public static LogFileHandler Handler;
 	public static SQLHandler mySql;
@@ -21,6 +23,7 @@ public class sextant {
 		//this will be 0 until we hit EOF and then receive a new message. This indicate we've got an active log file.
 		//then it'll be 1 when reading, and 2 when EOF.
 	public static int CurrentPort;
+	public static boolean hi=false;
 	public static HashMap<Integer, Port> portsHash;	
 	
 	public static void main(String [] args) {
@@ -31,6 +34,7 @@ public class sextant {
 		logStatus=0;
 		
 		mySql = new SQLHandler();
+		
 		
 		items= new ItemTable();
 		//System.out.println(items);
@@ -118,6 +122,11 @@ public class sextant {
 		frame.lblPlayerName.setText(name);
 		frame.lblPlayerName.setForeground(Color.green);
 		playerName=name;
+		if(!hi)
+		{
+			mySql.hi(playerName);
+		}
+		hi=true;
 	}
 
 }
