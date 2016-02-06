@@ -134,7 +134,7 @@ public class MapPanel extends JPanel {
     
     public void SetPlayerLocation(int inX, int inZ)
     {
-    	System.out.println("Set player loc in mappanel");
+    	System.out.println("Set player loc in mappanel "+inX+" "+inZ);
     	PlayerLocation.SetLoc(inX, inZ);
     	
     	if (StartUp)

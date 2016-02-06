@@ -25,6 +25,7 @@ public class sextant {
 	public static int CurrentPort;
 	public static boolean hi=false;
 	public static HashMap<Integer, Port> portsHash;	
+	public static String LogDirectory = "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Naval Action\\logs";
 	
 	public static void main(String [] args) {
 		System.out.println("Started...");
@@ -113,6 +114,20 @@ public class sextant {
 		System.out.println(Handler.getState());
 		Handler = new LogFileHandler();
 		Handler.start();
+	}
+	
+	public static void reloadLog(int cherno){
+		
+		if(cherno==1)
+		{
+			LogDirectory = "D:\\Steam Games\\steamapps\\common\\Naval Action\\logs";
+			System.out.println("Cherno Mode");
+			Handler.interrupt();
+			frame.setLogStatus(-1); //loading new log file, and wait.
+			System.out.println(Handler.getState());
+			Handler = new LogFileHandler();
+			Handler.start();
+		}
 	}
 	
 	public static void setPlayerName(String name)

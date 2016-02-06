@@ -6,7 +6,7 @@ import java.io.*;
 public class LogFileHandler extends Thread {
 	
 	// Editable Variables
-	static String LogDirectory = "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Naval Action\\logs";
+	//static String LogDirectory = sextant.LogDirectory; //fucking cherno's SSD
 	static String LogFilePrefix = "custom_";
 	
 	// Internal stuff
@@ -20,6 +20,7 @@ public class LogFileHandler extends Thread {
 		Parser = new LogParser();
 		
 		try {
+			System.out.println("Trying to open log file in "+sextant.LogDirectory);
 			CurrentLog = new File(GetLatestLogFile());
 			System.out.println("Opening "+CurrentLog.getName());
 			FileReader FileReader = new FileReader(CurrentLog);
@@ -31,6 +32,7 @@ public class LogFileHandler extends Thread {
 			System.out.println("Selected file not found! " + CurrentLog);
 		}
 	}
+	
 	
 	public void reload() {} //we do this in sextant, since we need to interrupt this thread and start a new one. 
 
@@ -144,7 +146,7 @@ public class LogFileHandler extends Thread {
 		};
 		
 		// Get all files matching filter
-		File LogDir = new File(LogDirectory);
+		File LogDir = new File(sextant.LogDirectory);
 		File[] Logs = LogDir.listFiles(Filter);
 		
 		long LastModified = Long.MIN_VALUE;

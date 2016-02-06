@@ -98,6 +98,14 @@ public class Window extends JFrame {
 		});
 		mnNewMenu.add(mntnSyncDB);
 		
+		JMenuItem mntnCherno = new JMenuItem("Cherno Special");
+		mntnCherno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sextant.reloadLog(1); //reload with cherno's fucking SSD directory
+			}
+		});
+		mnNewMenu.add(mntnCherno);
+		
 		JMenu mnAdmin = new JMenu("Admin");
 		mnNewMenu.add(mnAdmin);
 		
