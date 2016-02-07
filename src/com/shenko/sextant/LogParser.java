@@ -166,7 +166,10 @@ public class LogParser {
 	{
 		// Parse port consumption and production data
 		// Expecting a JSON array here
-		JsonElement Element = Parser.parse(inData);
+		JsonElement Element;
+		try {
+			Element = Parser.parse(inData);
+		
 		
 		if (Element.isJsonArray())
 		{
@@ -190,6 +193,9 @@ public class LogParser {
 		else
 		{
 			System.out.println("Port Production/Consumption JSON data invalid or was not JSONArray");
+		}
+		} catch (Exception e) {
+			System.out.println("JSON ERROR: "+inData);
 		}
 	}
 }
