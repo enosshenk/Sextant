@@ -239,10 +239,11 @@ public class SQLHandler {
 	
 
 	
-	public void writeProduction(JsonArray productionData) {
+	public void writeProduction(JsonArray productionData) { //TODO: don't replicate existing port production data. 
 		//System.out.println("Starting SQLHandler for WritePort...");
 		String query=null;
 		JsonObject item=null;
+		int myCount=0;
 		
 		try {
 
@@ -251,28 +252,38 @@ public class SQLHandler {
 			System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
 			System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
 			System.out.println( "Port:        we don't know");*/
-			open();
-			for (int i=0; i < productionData.size(); i++)
+			open(); //first, we're going to check and see if it exists already
+			rs=stmt.executeQuery("select count(*) from sql5105183.Production where PortID="+sextant.CurrentPort);
+			if(rs.next())
 			{
-				item = productionData.get(i).getAsJsonObject();
-				query = "insert into sql5105183.Production("
-					+ "PortID, "
-					+ "ItemID, "
-					+ "quantity, "
-					+ "AddedBy) "
-					+ "values ("
-					+ sextant.CurrentPort + ", "
-					+ item.get("Key").getAsInt() + ", "	
-					+ item.get("Value").getAsInt() + ", "
-					+ "\""+sextant.playerName+"\")";
-							
-				
-				//System.out.println(query);
-				System.out.println("executing "+query);
-	
-				stmt.executeUpdate(query);
+			myCount = Integer.parseInt(rs.getString("count(*)"));
 			}
+			close();
+			System.out.println("Production info found in log, table reveals "+myCount+" existing records.");
+			if(myCount==0)
+			{
 			
+				for (int i=0; i < productionData.size(); i++)
+				{
+					item = productionData.get(i).getAsJsonObject();
+					query = "insert into sql5105183.Production("
+						+ "PortID, "
+						+ "ItemID, "
+						+ "quantity, "
+						+ "AddedBy) "
+						+ "values ("
+						+ sextant.CurrentPort + ", "
+						+ item.get("Key").getAsInt() + ", "	
+						+ item.get("Value").getAsInt() + ", "
+						+ "\""+sextant.playerName+"\")";
+								
+					
+					//System.out.println(query);
+					System.out.println("executing "+query);
+		
+					stmt.executeUpdate(query);
+				}
+			}
 			close();
 			
 			//System.out.println("done.");

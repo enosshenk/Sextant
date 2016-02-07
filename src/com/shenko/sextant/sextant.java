@@ -51,7 +51,7 @@ public class sextant {
 			 System.out.println(myPort);
 		 }
 		 
-		 mySql.getProduction(portsHash);
+		 mySql.getProduction(portsHash); 
 		 mySql.getSales(portsHash);
 		
 		
