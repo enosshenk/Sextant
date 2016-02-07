@@ -28,7 +28,8 @@ public class MapTooltip extends JPanel {
 	private Port Port;
 	private int H, H2, W;
 	
-	public int Height, Width;
+	public int Height = 50;
+	public int Width = 50;
 	
 	private TextLayout HeaderText, ProductionHeader, ConsumeHeader;
 	private ArrayList<TextLayout> ProductionText, ConsumeText;
@@ -37,6 +38,9 @@ public class MapTooltip extends JPanel {
 	
 	public MapTooltip()
 	{	
+	//	Graphics g = this.getGraphics();
+	//	frc = ((Graphics2D) g).getFontRenderContext();
+		
 		ProductionText = new ArrayList<TextLayout>();
 		ConsumeText = new ArrayList<TextLayout>();
 		
@@ -45,10 +49,23 @@ public class MapTooltip extends JPanel {
 	}
 	
 	public void SetPort(Port inPort)
-	{		
-		Port = inPort;		
-		PopulateProductionText();
-		repaint();
+	{	
+		if (inPort != Port)
+		{
+			System.out.println("SetPort " + inPort.ID);
+			Port = inPort;		
+		
+			ProductionText.clear();
+			ConsumeText.clear();
+			
+	//		PopulateProductionText();
+			
+			setVisible(true);
+			setMinimumSize(new Dimension(50, 50));
+			setPreferredSize(new Dimension(100, 100));
+			setMaximumSize(new Dimension(100, 100));	
+			repaint();
+		}
 	}
 	
 	private void PopulateProductionText()
@@ -113,10 +130,25 @@ public class MapTooltip extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+    	super.paintComponent(g);
+    	
     	Graphics2D g2d = (Graphics2D) g;
         applyRenderHints(g2d);
         
-        frc = g2d.getFontRenderContext();
+        System.out.println("Painting tooltip");
+        if (frc == null)
+        {
+        	// Fuck this stupid font render context
+        	System.out.println("Generating FRC");
+        	frc = g2d.getFontRenderContext();
+        }
+        
+        if (ProductionText == null || ProductionText.isEmpty())
+        {
+        	System.out.println("Populating production data");
+        	PopulateProductionText();
+        } 
+        
 		HeaderText = new TextLayout(Port.name, HeaderFont, frc);
 		H = (int) HeaderText.getBounds().getHeight();
 		
@@ -152,6 +184,11 @@ public class MapTooltip extends JPanel {
     
     @Override
     public Dimension getPreferredSize() {
+    	if (Width == 0 || Height == 0)
+    	{
+    		Width = 50;
+    		Height = 50;
+    	}
         return new Dimension(Width, Height);
     }
 

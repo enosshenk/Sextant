@@ -179,6 +179,13 @@ public class MapPanel extends JPanel {
 						 OurWindow.MouseOverPort(p, new GridPoint(MousePos.x, MousePos.y));
 					 }
 				 }
+				 else
+				 {
+					 if (OurWindow != null)
+					 {
+						 OurWindow.EndMouseOverPort();
+					 }
+				 }
 	    	}
     	}
     }

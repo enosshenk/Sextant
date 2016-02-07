@@ -187,6 +187,12 @@ public class Window extends JFrame {
 		contentPane.add(MapPanel_1);
 		
 		MapTooltip = new MapTooltip();
+		MapTooltip.setMinimumSize(new Dimension(50, 50));
+		MapTooltip.setPreferredSize(new Dimension(100, 100));
+		MapTooltip.setMaximumSize(new Dimension(100, 100));	
+		MapTooltip.setBounds(0, 0, 50, 50);
+		
+		contentPane.add(MapTooltip);
 		MapTooltip.setVisible(false);
 		
 		sextant.GUILoaded=true;
@@ -196,11 +202,16 @@ public class Window extends JFrame {
 
 	public void MouseOverPort(Port inPort, GridPoint inPoint)
 	{
-	/*	MapTooltip.setLocation(inPoint.X, inPoint.Y);
-		MapTooltip.SetPort(inPort);
+		System.out.println("Mouse over " + inPort.name);
 		MapTooltip.setVisible(true);
+		MapTooltip.setMinimumSize(new Dimension(50, 50));
+		MapTooltip.setPreferredSize(new Dimension(100, 100));
+		MapTooltip.setMaximumSize(new Dimension(100, 100));	
+		MapTooltip.setBounds(0, 0, 50, 50);
 		
-		MapTooltip.setSize(MapTooltip.getPreferredSize());	*/	
+		MapTooltip.setLocation(inPoint.X, inPoint.Y);
+		MapTooltip.SetPort(inPort);		
+		MapTooltip.setSize(MapTooltip.getPreferredSize());
 	}
 	
 	public void EndMouseOverPort()
