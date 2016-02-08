@@ -75,6 +75,8 @@ public class MapPanel extends JPanel {
                 mouseX = me.getXOnScreen();
                 mouseY = me.getYOnScreen();
                 //newY = y;
+                
+                CheckForClickOnPort( new GridPoint(me.getX(), me.getY()) );
             }
             
             @Override
@@ -188,6 +190,25 @@ public class MapPanel extends JPanel {
 				 }
 	    	}
     	}
+    }
+    
+    public void CheckForClickOnPort(GridPoint ClickLocation)
+    {
+    	for (Port p : Ports)
+    	{
+			 GridPoint PortLoc = CoordinateToPixel( p.x, p.y );
+			 PortLoc.X = PortLoc.X + mapX;
+			 PortLoc.Y = PortLoc.Y + mapY;
+			 
+			 if ( (ClickLocation.X > PortLoc.X - 8 && ClickLocation.X < PortLoc.X + 8) 
+					 && (ClickLocation.Y > PortLoc.Y - 8 && ClickLocation.Y < PortLoc.Y) )
+			 {		 
+				 if (OurWindow != null)
+				 {
+					 OurWindow.ClickedOnPort(p, new GridPoint(ClickLocation.X, ClickLocation.Y));
+				 }
+			 }
+    	}    	
     }
     
     public void RenderPorts(Graphics g)

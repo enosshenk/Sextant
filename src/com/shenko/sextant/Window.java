@@ -199,9 +199,18 @@ public class Window extends JFrame {
 		System.out.println("Gui Loaded: window");
 		
 	}
+	
+	public void ClickedOnPort(Port inPort, GridPoint ClickLocation)
+	{
+		// Called from MapPanel when user clicked on a known port on the map
+		
+		System.out.println("User clicked on " + inPort.name);
+	}
 
 	public void MouseOverPort(Port inPort, GridPoint inPoint)
 	{
+		// Called when a port is moused over in MapPanel
+		
 		System.out.println("Mouse over " + inPort.name);
 		MapTooltip.setVisible(true);
 		MapTooltip.setMinimumSize(new Dimension(50, 50));
@@ -216,6 +225,8 @@ public class Window extends JFrame {
 	
 	public void EndMouseOverPort()
 	{
+		// Called when a user stops mousing over a port
+		
 		MapTooltip.setVisible(false);
 	}
 	
