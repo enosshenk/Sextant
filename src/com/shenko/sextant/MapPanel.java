@@ -36,7 +36,7 @@ public class MapPanel extends JPanel {
 	private Window OurWindow;
 	
     private int mapX, mapY, mouseX, mouseY; //(x,y) are the map coords
-    private int width = 400, height = 400;
+    private int width = 8341, height = 6595;
     BufferedImage img;
     private final static RenderingHints textRenderHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     private final static RenderingHints imageRenderHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -152,13 +152,13 @@ public class MapPanel extends JPanel {
         GridPoint Ship = CoordinateToPixel(PlayerLocation.X, PlayerLocation.Y);
 
         // Draw map image
-        g2d.drawImage(img, mapX, mapY, null);
+        g2d.drawImage(img, 0, 0, null);
         
         // Draw ports
         RenderPorts(grphcs);
         
         // Draw player location icon
-        ShipIcon.paintIcon(C, grphcs, Ship.X - 16 + mapX, Ship.Y - 16 + mapY);
+        ShipIcon.paintIcon(C, grphcs, Ship.X - 16, Ship.Y - 16);
     }
     
     public void CheckPortsForMouseover()
@@ -170,8 +170,8 @@ public class MapPanel extends JPanel {
 	    	for (Port p : Ports)
 	    	{
 				 GridPoint PortLoc = CoordinateToPixel( p.x, p.y );
-				 PortLoc.X = PortLoc.X + mapX;
-				 PortLoc.Y = PortLoc.Y + mapY;
+			//	 PortLoc.X = PortLoc.X + mapX;
+			//	 PortLoc.Y = PortLoc.Y + mapY;
 				 
 				 if ( (MousePos.x > PortLoc.X - 8 && MousePos.x < PortLoc.X + 8) 
 						 && (MousePos.y > PortLoc.Y - 8 && MousePos.y < PortLoc.Y) )
@@ -197,8 +197,8 @@ public class MapPanel extends JPanel {
     	for (Port p : Ports)
     	{
 			 GridPoint PortLoc = CoordinateToPixel( p.x, p.y );
-			 PortLoc.X = PortLoc.X + mapX;
-			 PortLoc.Y = PortLoc.Y + mapY;
+		//	 PortLoc.X = PortLoc.X + mapX;
+		//	 PortLoc.Y = PortLoc.Y + mapY;
 			 
 			 if ( (ClickLocation.X > PortLoc.X - 8 && ClickLocation.X < PortLoc.X + 8) 
 					 && (ClickLocation.Y > PortLoc.Y - 8 && ClickLocation.Y < PortLoc.Y) )
@@ -217,8 +217,8 @@ public class MapPanel extends JPanel {
 		 for (Port p : Ports)
 		 {
 			 GridPoint PortLoc = CoordinateToPixel( p.x, p.y );
-			 PortLoc.X = PortLoc.X - 8 + mapX;
-			 PortLoc.Y = PortLoc.Y - 8 + mapY;
+			 PortLoc.X = PortLoc.X - 8;
+			 PortLoc.Y = PortLoc.Y - 8;
 			 PortIcon.paintIcon(this, g, PortLoc.X, PortLoc.Y);
 		 }
     }
