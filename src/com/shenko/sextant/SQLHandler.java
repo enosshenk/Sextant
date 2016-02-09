@@ -260,6 +260,7 @@ public class SQLHandler {
 			}
 			close();
 			System.out.println("Production info found in log, table reveals "+myCount+" existing records.");
+			open();
 			if(myCount==0)
 			{
 			
