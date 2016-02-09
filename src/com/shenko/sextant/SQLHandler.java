@@ -308,6 +308,7 @@ public class SQLHandler {
 		String name = null;
 		//ResultSet rs = null;
 		String id = null;
+		
 		try {
 
 			id = Integer.toString(item.get("TemplateId").getAsInt());		
@@ -680,6 +681,24 @@ public class SQLHandler {
 				e.printStackTrace();
 			}
 			close();
+		}
+		
+		public void cleanSales()
+		{
+			
+			
+			try {
+				open();
+				stmt.executeUpdate("CREATE TABLE mytable_key SELECT id FROM Sales WHERE 1=2; INSERT INTO mytable_key SELECT MIN(id) FROM Sales "
+						+ "GROUP BY PortID, ItemID,DATE_FORMAT(`modified`,'%Y%m%d%H'); ALTER TABLE mytable_key ADD PRIMARY KEY (id);"
+						+ "CREATE TABLE mytable_new LIKE Sales;	INSERT INTO mytable_new SELECT B.* FROM mytable_key A INNER JOIN Sales B USING (id);"
+						+ "ALTER TABLE Sales RENAME mytable_old; ALTER TABLE mytable_new RENAME Sales;DROP TABLE mytable_old;DROP TABLE mytable_key;");
+				close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 }
