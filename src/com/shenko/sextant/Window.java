@@ -161,7 +161,9 @@ public class Window extends JFrame {
         menuBar.add(goXY);
         goXY.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MapPanel_1.CenterViewOnCoordinates(lblX.getText(), lblY.getText());};
+			//	MapPanel_1.CenterViewOnCoordinates(lblX.getText(), lblY.getText());
+				MapPanel_1.MarkLocation( Integer.parseInt(lblX.getText()), Integer.parseInt(lblY.getText()) );
+				};				
 			});
 		
 		// Set sections up

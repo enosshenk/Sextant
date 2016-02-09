@@ -44,9 +44,9 @@ public class MapPanel extends JPanel {
     private final static RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     static int startX, startY;
     
-    private GridPoint PlayerLocation;
+    private GridPoint PlayerLocation, MarkLocation;
     
-    private ImageIcon ShipIcon, PortIcon;
+    private ImageIcon ShipIcon, PortIcon, MarkIcon;
     
     private boolean StartUp = true;
     private boolean Panning = false;
@@ -62,9 +62,11 @@ public class MapPanel extends JPanel {
         mapY = 0;
         this.img = img;
         PlayerLocation = new GridPoint();
+        MarkLocation = new GridPoint();
 
         ShipIcon = new ImageIcon(getClass().getResource("/shipicon.png"));
         PortIcon = new ImageIcon(getClass().getResource("/porticon.png"));
+        MarkIcon = new ImageIcon(getClass().getResource("/markicon.png"));
         
         Ports = new CopyOnWriteArrayList<Port>();
         
@@ -162,6 +164,21 @@ public class MapPanel extends JPanel {
         
         // Draw player location icon
         ShipIcon.paintIcon(C, grphcs, Ship.X - 16, Ship.Y - 16);
+        
+        // Draw marked icon if available
+        if (MarkLocation.X != 0 && MarkLocation.Y != 0)
+        {
+        	MarkIcon.paintIcon(C, grphcs, MarkLocation.X - 16, MarkLocation.Y - 16);
+        }
+    }
+    
+    public void MarkLocation(int inX, int inY)
+    {
+    	GridPoint Mark = CoordinateToPixel(inX, inY);
+    	
+    	MarkLocation.SetLoc(Mark.X, Mark.Y);
+    	
+    	CenterViewOnCoordinates(inX, inY);
     }
     
     public void CheckPortsForMouseover()
@@ -177,7 +194,7 @@ public class MapPanel extends JPanel {
 			//	 PortLoc.Y = PortLoc.Y + mapY;
 				 
 				 if ( (MousePos.x > PortLoc.X - 8 && MousePos.x < PortLoc.X + 8) 
-						 && (MousePos.y > PortLoc.Y - 8 && MousePos.y < PortLoc.Y) )
+						 && (MousePos.y > PortLoc.Y - 8 && MousePos.y < PortLoc.Y + 8) )
 				 {		 
 					 if (OurWindow != null)
 					 {
@@ -204,7 +221,7 @@ public class MapPanel extends JPanel {
 		//	 PortLoc.Y = PortLoc.Y + mapY;
 			 
 			 if ( (ClickLocation.X > PortLoc.X - 8 && ClickLocation.X < PortLoc.X + 8) 
-					 && (ClickLocation.Y > PortLoc.Y - 8 && ClickLocation.Y < PortLoc.Y) )
+					 && (ClickLocation.Y > PortLoc.Y - 8 && ClickLocation.Y < PortLoc.Y + 8) )
 			 {		 
 				 if (OurWindow != null)
 				 {
@@ -212,6 +229,16 @@ public class MapPanel extends JPanel {
 				 }
 			 }
     	}    	
+    }
+    
+    public void CheckForClickOnMark(GridPoint ClickLocation)
+    {
+		 if ( (ClickLocation.X > MarkLocation.X - 16 && ClickLocation.X < MarkLocation.X + 16) 
+				 && (ClickLocation.Y > MarkLocation.Y - 16 && ClickLocation.Y < MarkLocation.Y + 16) )
+		 {		 
+			 MarkLocation.SetLoc(0, 0);
+			 
+		 }    	
     }
     
     public void RenderPorts(Graphics g)
