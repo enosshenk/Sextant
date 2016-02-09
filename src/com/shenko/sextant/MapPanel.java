@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -293,8 +294,16 @@ public class MapPanel extends JPanel {
     	// Center the map image at the given game coordinates
     	GridPoint Pixel = CoordinateToPixel(inX, inZ);
     	
-    	mapX = Pixel.X * -1 + 200;
-    	mapY = Pixel.Y * -1 + 200;
+    	mapX = Pixel.X - (int)getVisibleRect().getWidth()/2;  // + 200;
+    	mapY = Pixel.Y - (int)getVisibleRect().getHeight()/2;  // + 200;
+    	
+        Rectangle visible = getVisibleRect();
+    	visible.y = mapY; 
+    	visible.x = mapX; 
+
+    	scrollRectToVisible(visible);
+    	System.out.println("setting visible(coord) to "+mapX+" "+mapY);
+
     	
     	repaint();
     }
@@ -304,6 +313,20 @@ public class MapPanel extends JPanel {
     	// Center the map image at the given pixel coordinates
     	mapX = inX * -1 + 200;
     	mapY = inY * -1 + 200;
+
+    	        Rectangle visible = getVisibleRect();
+    	//        Rectangle bounds = getBounds();
+    	//
+    	//        visible.y = (bounds.height - visible.height) / 2; 
+    	//        visible.x = (bounds.width - visible.width) / 2; 
+    	//
+    	visible.y = mapY; 
+    	visible.x = mapX; 
+
+    	scrollRectToVisible(visible);
+    	System.out.println("setting visible to "+mapX+" "+mapY);
+
+    	//getParent().getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
     	
     	repaint();
     }
