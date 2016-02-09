@@ -195,44 +195,54 @@ public class SQLHandler {
 	public void writeSale(JsonObject item) {
 		//System.out.println("Starting SQLHandler for WritePort...");
 		
-		try {
+		if(item.get("TemplateId").getAsInt()>=50 && item.get("TemplateId").getAsInt()<=73)
+		{
+		// it's regular shit they have at every port.	
+			
+		}
+		else
+		{
 
-			/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+			try {
+
+				/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
 			System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
 			System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
 			System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
 			System.out.println( "Port:        we don't know");*/
-			
-			
-			String query = "insert into sql5105183.Sales("
-				+ "PortID, "
-				+ "ItemID, "
-				+ "quantity, "
-				+ "sellPrice, "
-				+ "buyPrice, "
-				+ "addedBy) "
-				+ "values ("
-				+ sextant.CurrentPort + ", "
-				+ item.get("TemplateId").getAsInt() + ", "	
-				+ item.get("Quantity").getAsInt() + ", "
-				+ item.get("SellPrice").getAsInt() + ", "
-				+ item.get("BuyPrice").getAsInt() + ", "
-				+ "\""+sextant.playerName+"\")";
-						
-			
-			//System.out.println(query);
-			System.out.println("executing "+query);
-			open();
-			stmt.executeUpdate(query);
-			close();
-			
-			//System.out.println("done.");
-			
-		} catch (Exception e) {
-			System.out.println("onono...writeSale");
-			e.printStackTrace();
-		} finally {
-			//close();
+
+				//TODO check the ItemTable object before checking SQL.
+
+				String query = "insert into sql5105183.Sales("
+						+ "PortID, "
+						+ "ItemID, "
+						+ "quantity, "
+						+ "sellPrice, "
+						+ "buyPrice, "
+						+ "addedBy) "
+						+ "values ("
+						+ sextant.CurrentPort + ", "
+						+ item.get("TemplateId").getAsInt() + ", "	
+						+ item.get("Quantity").getAsInt() + ", "
+						+ item.get("SellPrice").getAsInt() + ", "
+						+ item.get("BuyPrice").getAsInt() + ", "
+						+ "\""+sextant.playerName+"\")";
+
+
+				//System.out.println(query);
+				System.out.println("executing "+query);
+				open();
+				stmt.executeUpdate(query);
+				close();
+
+				//System.out.println("done.");
+
+			} catch (Exception e) {
+				System.out.println("onono...writeSale");
+				e.printStackTrace();
+			} finally {
+				//close();
+			}
 		}
 			
 	}
