@@ -28,6 +28,25 @@ import javax.swing.JPanel;
 
 
 public class MapPanel extends JPanel {
+	
+	// Remember, game coordinates from log and F11 panel have weird signing
+	// CenterViewOnCoordinates() & CoordinateToPixel() 
+	// account for this, so pass them game-proper coordinates
+	//
+	//               ^
+	//               |
+	//      X+       |     X-
+	//      Z-       |     Z-
+	//               |
+	//               |
+	// <-------------+------------->
+	//               |
+	//               | 
+	//      X+       |    X-
+	//      Z+       |    Z+
+	//               |
+	//               \
+	//
 
 	/**
 	 * 
@@ -44,7 +63,7 @@ public class MapPanel extends JPanel {
     private final static RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     static int startX, startY;
     
-    private GridPoint PlayerLocation, MarkLocation;
+    private GridPoint PlayerLocation, MarkLocation, MarkCoordinates;
     
     private ImageIcon ShipIcon, PortIcon, MarkIcon;
     
@@ -63,6 +82,7 @@ public class MapPanel extends JPanel {
         this.img = img;
         PlayerLocation = new GridPoint();
         MarkLocation = new GridPoint();
+        MarkCoordinates = new GridPoint();
 
         ShipIcon = new ImageIcon(getClass().getResource("/shipicon.png"));
         PortIcon = new ImageIcon(getClass().getResource("/porticon.png"));
@@ -177,6 +197,8 @@ public class MapPanel extends JPanel {
     	GridPoint Mark = CoordinateToPixel(inX, inY);
     	
     	MarkLocation.SetLoc(Mark.X, Mark.Y);
+    	MarkCoordinates.SetLoc(inX, inY);
+    	System.out.println("Marked location X:" + MarkCoordinates.X + " Z:" + MarkCoordinates.Y);
     	
     	CenterViewOnCoordinates(inX, inY);
     }
@@ -304,6 +326,19 @@ public class MapPanel extends JPanel {
     	{
     		// This will change later to just update boat location
     		CenterViewOnCoordinates(inX, inZ);
+    	}
+    }
+    
+    public void CenterViewOnPlayer()
+    {
+    	CenterViewOnCoordinates(PlayerLocation.X, PlayerLocation.Y);
+    }
+    
+    public void CenterViewOnMarker()
+    {
+    	if (MarkCoordinates.X != 0 && MarkCoordinates.Y != 0)
+    	{
+    		CenterViewOnCoordinates(MarkCoordinates.X, MarkCoordinates.Y);
     	}
     }
     

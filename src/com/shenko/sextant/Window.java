@@ -82,7 +82,8 @@ public class Window extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("New menu");
+		// System dropdown menu
+		JMenu mnNewMenu = new JMenu("System");
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmLoadLog = new JMenuItem("Update Log File");
@@ -127,6 +128,26 @@ public class Window extends JFrame {
 			}
 		});
 		mnAdmin.add(mntmFilldb);
+		
+		// Map menu dropdown stuff
+		JMenu MapMenu = new JMenu("Map");
+		menuBar.add(MapMenu);
+		
+		JMenuItem MapMenuCenterOnPlayer = new JMenuItem("Center on Me");
+		MapMenuCenterOnPlayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MapPanel_1.CenterViewOnPlayer();
+			}
+		});
+		MapMenu.add(MapMenuCenterOnPlayer);		
+		
+		JMenuItem MapMenuCenterOnMarker = new JMenuItem("Center on My Marker");
+		MapMenuCenterOnMarker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MapPanel_1.CenterViewOnMarker();
+			}
+		});
+		MapMenu.add(MapMenuCenterOnMarker);		
 		
 		JLabel lblNewLabel = new JLabel("       ");
 		menuBar.add(lblNewLabel);
