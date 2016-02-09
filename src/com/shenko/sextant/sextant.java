@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.21";
+	public static String version ="0.02.09.01"; // refactored map, X Y boxes, etc , fixed x y
 
 	public static LogFileHandler Handler;
 	public static SQLHandler mySql;
