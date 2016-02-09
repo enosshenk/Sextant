@@ -108,6 +108,14 @@ public class Window extends JFrame {
 		});
 		mnNewMenu.add(mntnCherno);
 		
+		JMenuItem mntnCherno2 = new JMenuItem("MoreAlive Special");
+		mntnCherno2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sextant.reloadLog(2); //reload with cherno's (morealivethandead) fucking SSD directory
+			}
+		});
+		mnNewMenu.add(mntnCherno2);
+		
 		JMenu mnAdmin = new JMenu("Admin");
 		mnNewMenu.add(mnAdmin);
 		
