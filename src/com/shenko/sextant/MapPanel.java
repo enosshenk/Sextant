@@ -379,8 +379,8 @@ public class MapPanel extends JPanel {
 	public void CenterViewOnCoordinates(String sX, String sY) {
 		int x=0, y=0;
 		try {
-			x=Integer.parseInt(sX);
-			y=Integer.parseInt(sY);
+			x=-Integer.parseInt(sX);
+			y=-Integer.parseInt(sY);
 
 			CenterViewOnCoordinates(x,y);
 			//TODO place breadcrumb
