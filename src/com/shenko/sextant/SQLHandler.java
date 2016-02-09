@@ -297,7 +297,9 @@ public class SQLHandler {
 			
 	}
 	
-	
+	/**verifyItem
+	 * fuck yeah bitches
+	 */
 	public String verifyItem(JsonObject item) { 
 		//feed this an item like {"TemplateId":173,"Quantity":1,"SellPrice":9380,"BuyPrice":10318}, 
 		//get back a name (even if we have to prompt the user)
