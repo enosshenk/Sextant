@@ -68,7 +68,7 @@ public class MapPanel extends JPanel {
         
         Ports = new CopyOnWriteArrayList<Port>();
         
-        addMouseListener(new MouseAdapter() {
+        MouseAdapter ma = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
                 //super.mousePressed(me);
@@ -89,9 +89,7 @@ public class MapPanel extends JPanel {
             	//mouseX = me.getXOnScreen();
                 //mouseY = me.getYOnScreen();
             }
-        });
-
-        addMouseMotionListener(new MouseMotionAdapter() {
+        
             @Override
             public void mouseDragged(MouseEvent me) {
             	int newMouseX, newMouseY;
@@ -108,12 +106,13 @@ public class MapPanel extends JPanel {
                 }*/
                 if (Panning)
                 {
-                	mapX=mapX+(mouseX-newMouseX)*2;
-                	mapY=mapY+(mouseY-newMouseY)*2;
+                	mapX=mapX+(-mouseX+newMouseX)*2;
+                	mapY=mapY+(-mouseY+newMouseY)*2;
                 	CenterViewOnPixel(mapX, mapY);
                 }
                 
                 
+                //.getViewport().setViewPosition(new Point(scrollPane.getViewport().getViewPosition().x + deltaX, scrollPane.getViewport().getViewPosition().y + deltaY));
                 //mouseX=newMouseX;
                 //mouseY=newMouseY;
                 
@@ -122,7 +121,10 @@ public class MapPanel extends JPanel {
               //  repaint();
             }           
             
-        }); 
+        }; 
+        
+        addMouseListener(ma);
+        addMouseMotionListener(ma);
         
         LoadPorts();
         
@@ -132,7 +134,7 @@ public class MapPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				repaint();
+				//repaint();
 				CheckPortsForMouseover();
 			}        	
         };
@@ -305,7 +307,7 @@ public class MapPanel extends JPanel {
     	System.out.println("setting visible(coord) to "+mapX+" "+mapY);
 
     	
-    	repaint();
+    	//repaint();
     }
     
     public void CenterViewOnPixel(int inX, int inY)
@@ -328,7 +330,7 @@ public class MapPanel extends JPanel {
 
     	//getParent().getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
     	
-    	repaint();
+    	//repaint();
     }
     
     public boolean CoordinateIsOnScreen(int inX, int inZ)
