@@ -201,7 +201,11 @@ public class Window extends JFrame {
 		MapPanel_1.setMaximumSize(new Dimension(500, 500));	
 		//MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JScrollPane v= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        add(v);
+         add(v);
+         v.getVerticalScrollBar().setUnitIncrement(20);
+
+         v.getHorizontalScrollBar().setUnitIncrement(20); //doesn't work.
+
 		//contentPane.add(MapPanel_1);
 		
 		MapTooltip = new MapTooltip();
