@@ -66,8 +66,9 @@ public class Window extends JFrame {
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
 	public JLabel lblFileStatus;
-	public JLabel lblX;
-	public JLabel lblY;
+	public JTextField lblX;
+	public JTextField lblY;
+	public JButton goXY;
 	/**
 	 * Create the frame.
 	 */
@@ -146,15 +147,22 @@ public class Window extends JFrame {
 		JLabel label = new JLabel("       ");
 		menuBar.add(label);
 		
-		lblX = new JLabel("X");
+		
+		lblX = new JTextField("X");
 		menuBar.add(lblX);
 		
 		JLabel label_2 = new JLabel("       ");
 		menuBar.add(label_2);
 		
-		lblY = new JLabel("Z");
+		lblY = new JTextField("Z");
 		menuBar.add(lblY);
 		
+		goXY = new JButton("Go to X,Z");
+        menuBar.add(goXY);
+        goXY.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MapPanel_1.CenterViewOnCoordinates(lblX.getText(), lblY.getText());};
+			});
 		
 		// Set sections up
 		contentPane = new JPanel();

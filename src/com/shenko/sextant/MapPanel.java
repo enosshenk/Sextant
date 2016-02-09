@@ -348,6 +348,21 @@ public class MapPanel extends JPanel {
     		return false;
     	}
     }
+
+	public void CenterViewOnCoordinates(String sX, String sY) {
+		int x=0, y=0;
+		try {
+			x=Integer.parseInt(sX);
+			y=Integer.parseInt(sY);
+
+			CenterViewOnCoordinates(x,y);
+			//TODO place breadcrumb
+		} catch (NumberFormatException e) {
+			// nice input, asshole.
+			e.printStackTrace();
+		}
+		
+	}
     
 
 
