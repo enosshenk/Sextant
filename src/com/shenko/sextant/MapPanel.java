@@ -194,6 +194,8 @@ public class MapPanel extends JPanel {
     
     public void MarkLocation(int inX, int inY)
     {
+    	inX=-inX;
+    	inY=-inY;
     	GridPoint Mark = CoordinateToPixel(inX, inY);
     	
     	MarkLocation.SetLoc(Mark.X, Mark.Y);
@@ -425,6 +427,15 @@ public class MapPanel extends JPanel {
 		}
 		
 	}
+	
+    public void MarkLocation(String sX, String sY) { //with strings!
+		int x=0, y=0;
+		double dX=Double.parseDouble(sX);
+		double dY=Double.parseDouble(sY);
+		x=(int)dX;
+		y=(int)dY;
+		MarkLocation(x,y);
+    }
     
 
 
