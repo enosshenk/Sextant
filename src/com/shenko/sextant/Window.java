@@ -188,9 +188,9 @@ public class Window extends JFrame {
 		}
 		MapPanel_1 = new MapPanel( Image, this );
 		MapPanel_1.setBackground(new Color(0, 255, 255));
-		MapPanel_1.setMinimumSize(new Dimension(4000, 4000));
-		MapPanel_1.setPreferredSize(new Dimension(4000, 4000));
-		MapPanel_1.setMaximumSize(new Dimension(5000, 5000));	
+		MapPanel_1.setMinimumSize(new Dimension(400, 400));
+		MapPanel_1.setPreferredSize(new Dimension(400, 400));
+		MapPanel_1.setMaximumSize(new Dimension(500, 500));	
 		//MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JScrollPane v= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         add(v);
