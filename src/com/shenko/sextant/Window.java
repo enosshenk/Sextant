@@ -183,7 +183,7 @@ public class Window extends JFrame {
         goXY.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			//	MapPanel_1.CenterViewOnCoordinates(lblX.getText(), lblY.getText());
-				MapPanel_1.MarkLocation( Integer.parseInt(lblX.getText()), Integer.parseInt(lblY.getText()) );
+				MapPanel_1.MarkLocation( lblX.getText(),lblY.getText() );
 				};				
 			});
 		
