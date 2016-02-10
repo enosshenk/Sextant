@@ -102,13 +102,16 @@ public class Window extends JFrame {
 		});
 		mnNewMenu.add(mntnSyncDB);
 		
+		JMenu mnDick = new JMenu("Dicks");
+		mnNewMenu.add(mnDick);
+		
 		JMenuItem mntnCherno = new JMenuItem("Cherno Special");
 		mntnCherno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sextant.reloadLog(1); //reload with cherno's fucking SSD directory
 			}
 		});
-		mnNewMenu.add(mntnCherno);
+		mnDick.add(mntnCherno);
 		
 		JMenuItem mntnCherno2 = new JMenuItem("MoreAlive Special");
 		mntnCherno2.addActionListener(new ActionListener() {
@@ -116,7 +119,15 @@ public class Window extends JFrame {
 				sextant.reloadLog(2); //reload with cherno's (morealivethandead) fucking SSD directory
 			}
 		});
-		mnNewMenu.add(mntnCherno2);
+		mnDick.add(mntnCherno2);
+		
+		JMenuItem mntnCherno3 = new JMenuItem("Grim Special");
+		mntnCherno3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sextant.reloadLog(3); //reload with cherno's (grim) fucking SSD directory
+			}
+		});
+		mnDick.add(mntnCherno3);
 		
 		JMenu mnAdmin = new JMenu("Admin");
 		mnNewMenu.add(mnAdmin);
@@ -129,6 +140,14 @@ public class Window extends JFrame {
 		});
 		mnAdmin.add(mntmFilldb);
 		
+		
+		JMenuItem mntmVersion = new JMenuItem(sextant.version);
+		mntmFilldb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//sextant.mySql.version();
+			}
+		});
+		mnAdmin.add(mntmVersion);
 		// Map menu dropdown stuff
 		JMenu MapMenu = new JMenu("Map");
 		menuBar.add(MapMenu);

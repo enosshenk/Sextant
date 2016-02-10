@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.09.01"; // refactored map, X Y boxes, etc , fixed x y
+	public static String version ="0.02.09.04"; // refactored map, X Y boxes, etc , fixed x y, grim SSD, fix
 
 	public static LogFileHandler Handler;
 	public static SQLHandler mySql;
@@ -132,6 +132,16 @@ public class sextant {
 		{
 			LogDirectory = "D:\\SteamLibrary\\steamapps\\common\\Naval Action\\logs";
 			System.out.println("MoreAlive Mode");
+			Handler.interrupt();
+			frame.setLogStatus(-1); //loading new log file, and wait.
+			System.out.println(Handler.getState());
+			Handler = new LogFileHandler();
+			Handler.start();
+		}
+		if(cherno==3)
+		{
+			LogDirectory = "E:\\steam library\\steamapps\\common\\Naval Action\\logs";
+			System.out.println("Grim Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
 			System.out.println(Handler.getState());
