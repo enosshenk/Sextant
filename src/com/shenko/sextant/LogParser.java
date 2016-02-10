@@ -1,5 +1,11 @@
 package com.shenko.sextant;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gson.*;
 
 public class LogParser {
@@ -198,4 +204,26 @@ public class LogParser {
 			System.out.println("JSON ERROR: "+inData);
 		}
 	}
+	
+	public void ParseLaborData(String hours, String timestamp)
+	{
+		int hoursInt = new Integer((int) Double.parseDouble(hours));
+		
+		System.out.println("Labor data found: "+hours);
+		DateFormat dateFormat=new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss"); //2016-Feb-10 09:14:54.831209
+		Date parsedDate;
+		try {
+			parsedDate = dateFormat.parse(timestamp);
+		
+		Timestamp timestamp1 = new Timestamp(parsedDate.getTime());
+		System.out.println("timestamp1="+timestamp1+" hoursInt="+hoursInt);
+		sextant.laborHours.insertLabor(timestamp1, hoursInt);
+		System.out.println(sextant.laborHours);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

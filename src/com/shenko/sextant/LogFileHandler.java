@@ -104,6 +104,36 @@ public class LogFileHandler extends Thread {
 			Parser.ParsePlayerData(Line);
 		}
 		
+		if (Line.contains("GetLaborHours")) 
+		{
+			//5980:[2016-Feb-10 09:14:54.831209] Log: Called PlayerService.GetLaborHours(/PlayerService/GetLaborHours/) with: 
+			//{}
+			//Received:
+			//	1025.40663736647
+			
+			//TODO get the timestamp
+			String timestamp = Line.substring(Line.indexOf("[")+1, Line.indexOf("."));
+		
+			for(int i=0;i<3;i++) //read the next 3 lines
+			{
+				try {
+					Line = Reader.readLine();
+					if(Line==null)
+					{
+						i--;
+						Thread.sleep(1*1000);
+					}
+
+				} catch (IOException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			String toPass = Line;
+			Parser.ParseLaborData(toPass, timestamp);
+
+		}
+		
 		if (Line.contains("SellPrice") && Line.contains("BuyPrice")) // only run this if we're realtime. Old-ass items aren't useful here since the time isn't reliable.
 		{
 			if(sextant.logStatus>0 && sextant.CurrentPort>0)

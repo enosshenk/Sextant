@@ -18,6 +18,7 @@ public class sextant {
 	public static Window frame;
 	public static String playerName;
 	public static ItemTable items;
+	public static labor laborHours;
 	public static int logStatus; 
 	public static boolean GUILoaded;
 		//this will be 0 until we hit EOF and then receive a new message. This indicate we've got an active log file.
@@ -36,6 +37,7 @@ public class sextant {
 		
 		mySql = new SQLHandler();
 		
+		laborHours = new labor();
 		
 		items= new ItemTable();
 		//System.out.println(items);
