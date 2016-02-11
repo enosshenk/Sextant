@@ -13,6 +13,17 @@ public class sextant {
 	
 	public static String version ="0.02.09.04"; // refactored map, X Y boxes, etc , fixed x y, grim SSD, fix
 
+	//TODO allow users to set custom path. Save to file. 
+	//TODO add zooming to the map
+	//TODO create tree object. then we can do neat stuff with it. Oh, like click on an item, and print quantity and prices on the map. wow!
+	//TODO sort the tree
+	//TODO implement production into and sales info in a tooltip for each port
+	//TODO make a tree with the ports that users can click on to center the map on it
+	//TODO some sort of indicators showing distance and direction from last location to the item being focused
+	//TODO refine the way that prices are displayed
+	//TODO make the X and Y boxes select text when you click, and hit enter to goto
+	
+	
 	public static LogFileHandler Handler;
 	public static SQLHandler mySql;
 	public static Window frame;

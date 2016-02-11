@@ -33,8 +33,11 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import java.awt.Color;
 import java.awt.Button;
@@ -45,6 +48,7 @@ import javax.swing.JSeparator;
 import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -190,12 +194,46 @@ public class Window extends JFrame {
 		
 		lblX = new JTextField("X");
 		menuBar.add(lblX);
-		
 		JLabel label_2 = new JLabel("       ");
 		menuBar.add(label_2);
-		
 		lblY = new JTextField("Z");
 		menuBar.add(lblY);
+		
+		lblX.addFocusListener(new java.awt.event.FocusAdapter() {
+		    public void focusGained(java.awt.event.FocusEvent evt) {
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+		                lblX.selectAll(); //select all text when the box gains focus
+		            }
+		        });
+		    }
+		});
+		
+		lblY.addFocusListener(new java.awt.event.FocusAdapter() {
+		    public void focusGained(java.awt.event.FocusEvent evt) {
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+		                lblY.selectAll();
+		            }
+		        });
+		    }
+		});
+        
+		Action action = new AbstractAction()
+		{
+		    @Override
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	MapPanel_1.MarkLocation( lblX.getText(),lblY.getText() );
+		    }
+		};
+		
+		lblX.addActionListener(action);
+		lblY.addActionListener(action);
+		
+		
 		
 		goXY = new JButton("Go to X,Z");
         menuBar.add(goXY);
