@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.09.04"; // refactored map, X Y boxes, etc , fixed x y, grim SSD, fix
+	public static String version ="0.02.11"; // refactored map, X Y boxes, etc , fixed x y, grim SSD, fix
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
@@ -22,7 +22,6 @@ public class sextant {
 	//TODO some sort of indicators showing distance and direction from last location to the item being focused
 	//TODO refine the way that prices are displayed
 	//TODO show missions on map
-	
 	
 	public static LogFileHandler Handler;
 	public static SQLHandler mySql;
@@ -40,7 +39,7 @@ public class sextant {
 	public static String LogDirectory = "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Naval Action\\logs";
 	
 	public static void main(String [] args) {
-		System.out.println("Started...");
+		sextant.println("Started...");
 		
 		GUILoaded=false;
 		CurrentPort=0;
@@ -51,7 +50,7 @@ public class sextant {
 		laborHours = new labor();
 		
 		items= new ItemTable();
-		//System.out.println(items);
+		//sextant.println(items);
 		
 		portsHash = mySql.getPorts(); //TODO so we should 1) load gui including map, 2) read log, 3) getPorts, 4) push ports to the GUI
 		 //here's some hash usage examples:
@@ -61,7 +60,7 @@ public class sextant {
 		 {
 			 Integer key = portIterator.next();
 			 Port myPort = portsHash.get(key);
-			 System.out.println(myPort);
+			 sextant.println(myPort.toString()); //wtf why doesn't this just work without toString
 		 }
 		 
 		 mySql.getProduction(portsHash); 
@@ -73,15 +72,15 @@ public class sextant {
 		 {
 			 Integer key = portIterator.next();
 			 Port myPort = portsHash.get(key);
-			 System.out.println(myPort);
+			 sextant.println(myPort.toString());
 			 for(int i=0; i<myPort.productionArray.size(); i++)
 			 {
-				 //System.out.println(myPort.productionArray.get(i));
+				 //sextant.println(myPort.productionArray.get(i));
 			 }
 		 }
 		
 		 
-		 System.out.println("Number of Ports: "+ portsHash.size());
+		 sextant.println("Number of Ports: "+ portsHash.size());
 		 //boolean x=portsHash.isEmpty();
 		 //boolean portsHash.containsKey(24);
 		 //boolean portsHash.containsValue("Islet");
@@ -109,14 +108,14 @@ public class sextant {
 			}
 		}
 		
-		System.out.println("GUI Loaded: main");
+		sextant.println("GUI Loaded: main");
 		
 		
 		Handler = new LogFileHandler();
 		Handler.start();
 
 		// Get latest log
-		System.out.println(Handler.GetLatestLogFile());	
+		sextant.println(Handler.GetLatestLogFile());	
 		
 	}	
 	
@@ -124,7 +123,7 @@ public class sextant {
 			
 		Handler.interrupt();
 		frame.setLogStatus(-1); //loading new log file, and wait.
-		System.out.println(Handler.getState());
+		sextant.println(Handler.getState().toString());
 		Handler = new LogFileHandler();
 		Handler.start();
 	}
@@ -134,30 +133,30 @@ public class sextant {
 		if(cherno==1)
 		{
 			LogDirectory = "D:\\Steam Games\\steamapps\\common\\Naval Action\\logs";
-			System.out.println("Cherno Mode");
+			sextant.println("Cherno Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
-			System.out.println(Handler.getState());
+			sextant.println(Handler.getState().toString());
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
 		if(cherno==2)
 		{
 			LogDirectory = "D:\\SteamLibrary\\steamapps\\common\\Naval Action\\logs";
-			System.out.println("MoreAlive Mode");
+			sextant.println("MoreAlive Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
-			System.out.println(Handler.getState());
+			sextant.println(Handler.getState().toString());
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
 		if(cherno==3)
 		{
 			LogDirectory = "E:\\steam library\\steamapps\\common\\Naval Action\\logs";
-			System.out.println("Grim Mode");
+			sextant.println("Grim Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
-			System.out.println(Handler.getState());
+			sextant.println(Handler.getState().toString());
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
@@ -165,7 +164,7 @@ public class sextant {
 	
 	public static void setPlayerName(String name)
 	{
-		//System.out.println("setting player name: "+name);
+		//sextant.println("setting player name: "+name);
 		//while(!frame.lblPlayerName.isEnabled())
 		frame.lblPlayerName.setText(name);
 		frame.lblPlayerName.setForeground(Color.green);
@@ -175,6 +174,20 @@ public class sextant {
 			mySql.hi(playerName);
 		}
 		hi=true;
+	}
+	
+	public static void println(String toPrint)
+	{
+		if(frame != null)
+		{
+			
+			frame.println(toPrint);
+			
+		}
+		else
+		{
+			System.out.println(toPrint);
+		}
 	}
 
 }

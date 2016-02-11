@@ -21,7 +21,7 @@ public class labor { //record labor hours, etc
 		 int toReturn=0;
 		 
 		 toReturn=(int)((now.getTime()-lastTime.getTime())*42/60/60/1000)+lastHours; //42 per hour
-		 System.out.println("Labor hours: "+toReturn);
+		 sextant.println("Labor hours: "+toReturn);
 		return toReturn; //return the amount of labor hours
 	}
 	

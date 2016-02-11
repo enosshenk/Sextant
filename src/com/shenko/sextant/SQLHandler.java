@@ -61,7 +61,7 @@ public class SQLHandler {
 	}
 	
 	private void executePush(String query) {
-		//System.out.println("Starting SQLHandler with: "+query);
+		//sextant.println("Starting SQLHandler with: "+query);
 		//Connection connect = null;
 		//Statement stmt = null;
 		//ResultSet rs = null;
@@ -71,7 +71,7 @@ public class SQLHandler {
 		// This will load the MySQL driver, each DB has its own driver
 		//Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
-		//System.out.println("Connecting to database...");
+		//sextant.println("Connecting to database...");
 		//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
 		//stmt = connect.createStatement();
@@ -80,14 +80,14 @@ public class SQLHandler {
 		stmt.executeUpdate(query); //that's Update for insert / update / delete, and executeQuery for just queries.
 		//stmt.close();
 		//connect.close();
-		//System.out.println("executed " + query);
+		//sextant.println("executed " + query);
 		close();
 	  }catch(SQLException se){
 	      //Handle errors for JDBC
-		  System.out.println("ono... SQL error");
+		  sextant.println("ono... SQL error");
 	      se.printStackTrace();
 	      	} catch (Exception e) {
-		System.out.println("onono... SQLHandler");
+		sextant.println("onono... SQLHandler");
 		e.printStackTrace();
 			} finally {
 	}
@@ -95,7 +95,7 @@ public class SQLHandler {
 	
 	}
 	private String executePull(String query) {
-		//System.out.println("Starting SQLHandler with: "+query);
+		//sextant.println("Starting SQLHandler with: "+query);
 		//Connection connect = null;
 		//Statement stmt = null;
 		//ResultSet rs = null;
@@ -105,7 +105,7 @@ public class SQLHandler {
 		// This will load the MySQL driver, each DB has its own driver
 		//Class.forName("com.mysql.jdbc.Driver");
 		// Setup the connection with the DB
-		//System.out.println("Connecting to database...");
+		//sextant.println("Connecting to database...");
 		//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
 	
 		//stmt = connect.createStatement();
@@ -120,15 +120,15 @@ public class SQLHandler {
 		close();
 		//stmt.close();
 		//connect.close();
-		//System.out.println("executed " + query);
+		//sextant.println("executed " + query);
 	
 	  }catch(SQLException se){
 	      //Handle errors for JDBC
-		  System.out.println("ono... SQL error");
+		  sextant.println("ono... SQL error");
 	      se.printStackTrace();
 	      return toReturn;
 	} catch (Exception e) {
-		System.out.println("onono... SQLHandler");
+		sextant.println("onono... SQLHandler");
 		e.printStackTrace();
 		return toReturn;
 	} finally {
@@ -138,7 +138,7 @@ public class SQLHandler {
 	}
 	
 	public void writePort(JsonObject Port) {
-		//System.out.println("Starting SQLHandler for WritePort...");
+		//sextant.println("Starting SQLHandler for WritePort...");
 		
 		try {
 
@@ -177,14 +177,14 @@ public class SQLHandler {
 	
 			
 			
-			//System.out.println(query);
+			//sextant.println(query);
 			open();
 			stmt.executeUpdate(query);
 			close();
-			//System.out.println("done.");
+			//sextant.println("done.");
 			
 		} catch (Exception e) {
-			System.out.println("onono...writePort");
+			sextant.println("onono...writePort");
 			e.printStackTrace();
 		} finally {
 			//close();
@@ -193,7 +193,7 @@ public class SQLHandler {
 	}
 
 	public void writeSale(JsonObject item) {
-		//System.out.println("Starting SQLHandler for WritePort...");
+		//sextant.println("Starting SQLHandler for WritePort...");
 		
 		if(item.get("TemplateId").getAsInt()>=50 && item.get("TemplateId").getAsInt()<=73)
 		{
@@ -205,11 +205,11 @@ public class SQLHandler {
 
 			try {
 
-				/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
-			System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
-			System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
-			System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
-			System.out.println( "Port:        we don't know");*/
+				/*sextant.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+			sextant.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
+			sextant.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
+			sextant.println( "Sell:       " + item.get("SellPrice").getAsInt() );
+			sextant.println( "Port:        we don't know");*/
 
 				//TODO check the ItemTable object before checking SQL.
 
@@ -229,16 +229,16 @@ public class SQLHandler {
 						+ "\""+sextant.playerName+"\")";
 
 
-				//System.out.println(query);
-				System.out.println("executing "+query);
+				//sextant.println(query);
+				sextant.println("executing "+query);
 				open();
 				stmt.executeUpdate(query);
 				close();
 
-				//System.out.println("done.");
+				//sextant.println("done.");
 
 			} catch (Exception e) {
-				System.out.println("onono...writeSale");
+				sextant.println("onono...writeSale");
 				e.printStackTrace();
 			} finally {
 				//close();
@@ -250,18 +250,18 @@ public class SQLHandler {
 
 	
 	public void writeProduction(JsonArray productionData) { //TODO: don't replicate existing port production data. 
-		//System.out.println("Starting SQLHandler for WritePort...");
+		//sextant.println("Starting SQLHandler for WritePort...");
 		String query=null;
 		JsonObject item=null;
 		int myCount=0;
 		
 		try {
 
-			/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
-			System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
-			System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
-			System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
-			System.out.println( "Port:        we don't know");*/
+			/*sextant.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+			sextant.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
+			sextant.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
+			sextant.println( "Sell:       " + item.get("SellPrice").getAsInt() );
+			sextant.println( "Port:        we don't know");*/
 			open(); //first, we're going to check and see if it exists already
 			rs=stmt.executeQuery("select count(*) from sql5105183.Production where PortID="+sextant.CurrentPort);
 			if(rs.next())
@@ -269,7 +269,7 @@ public class SQLHandler {
 			myCount = Integer.parseInt(rs.getString("count(*)"));
 			}
 			close();
-			System.out.println("Production info found in log, table reveals "+myCount+" existing records.");
+			sextant.println("Production info found in log, table reveals "+myCount+" existing records.");
 			open();
 			if(myCount==0)
 			{
@@ -289,18 +289,18 @@ public class SQLHandler {
 						+ "\""+sextant.playerName+"\")";
 								
 					
-					//System.out.println(query);
-					System.out.println("executing "+query);
+					//sextant.println(query);
+					sextant.println("executing "+query);
 		
 					stmt.executeUpdate(query);
 				}
 			}
 			close();
 			
-			//System.out.println("done.");
+			//sextant.println("done.");
 			
 		} catch (Exception e) {
-			System.out.println("onono...writeProduction");
+			sextant.println("onono...writeProduction");
 			e.printStackTrace();
 		} finally {
 			//close();
@@ -314,7 +314,7 @@ public class SQLHandler {
 	public String verifyItem(JsonObject item) { 
 		//feed this an item like {"TemplateId":173,"Quantity":1,"SellPrice":9380,"BuyPrice":10318}, 
 		//get back a name (even if we have to prompt the user)
-		//System.out.println("Starting SQLHandler for VerifyItem...");
+		//sextant.println("Starting SQLHandler for VerifyItem...");
 		String name = null;
 		//ResultSet rs = null;
 		String id = null;
@@ -326,13 +326,13 @@ public class SQLHandler {
 			id = Integer.toString(item.get("TemplateId").getAsInt());
 			if(sextant.items.has(item.get("TemplateId").getAsInt()))
 			{ 	
-				System.out.println("item found in table");
+				sextant.println("item found in table");
 			}else
 			{			
 				String query = "select Name from sql5105183.ItemIDs where ItemID="
 						+ id; 
 
-				//System.out.println(query);
+				//sextant.println(query);
 				open();
 				rs = stmt.executeQuery(query);
 				if(rs.next())
@@ -361,17 +361,17 @@ public class SQLHandler {
 					if ((name != null) && (name.length() > 0)) {
 						if (name.contains("item name"))
 						{
-							System.out.println("\"Item Name\" is not the name of that item. You are a bad person.");
+							sextant.println("\"Item Name\" is not the name of that item. You are a bad person.");
 							System.exit(1);
 						}
 						query = "insert into sql5105183.ItemIDs (ItemID, Name, addedBy) values ("+ id +", \""+ name +"\", \""+sextant.playerName+"\") "
 								+ "on duplicate key update Name=\""+name+"\", addedBy=\""+sextant.playerName+"\"";
 						stmt.executeUpdate(query);
-						System.out.println("Thanks! Item name updated / added.");
+						sextant.println("Thanks! Item name updated / added.");
 					}
 					else
 					{
-						System.out.println("Empty box. Enjoy getting that box again and again.");
+						sextant.println("Empty box. Enjoy getting that box again and again.");
 					}
 
 				}	
@@ -380,7 +380,7 @@ public class SQLHandler {
 			close();
 
 		} catch (Exception e) {
-			System.out.println("onono...");
+			sextant.println("onono...");
 			e.printStackTrace();
 		} finally {
 		}
@@ -445,11 +445,11 @@ public class SQLHandler {
 	// Now get some metadata from the database
 	// Result set get the result of the SQL query
 	
-		System.out.println("The columns in the table are: ");
+		sextant.println("The columns in the table are: ");
 	
-		System.out.println("Table: " + resultSet.getMetaData().getTableName(1));
+		sextant.println("Table: " + resultSet.getMetaData().getTableName(1));
 		for(int i = 1; i<= resultSet.getMetaData().getColumnCount(); i++){
-			System.out.println("Column " +i+ " "+ resultSet.getMetaData().getColumnName(i));
+			sextant.println("Column " +i+ " "+ resultSet.getMetaData().getColumnName(i));
 		}
 	}
 
@@ -551,9 +551,9 @@ public class SQLHandler {
 				myProduction = new production(rs.getInt("PortID"), 
 							rs.getInt("ItemID"), rs.getInt("quantity"), 
 							rs.getString("Modified"), rs.getString("AddedBy"));
-				//System.out.println(myProduction);
+				//sextant.println(myProduction);
 				Port myPort=hm.get(myProduction.PortID);		
-				//System.out.println(myPort);
+				//sextant.println(myPort);
 				myPort.productionArray.add(myProduction);
 			}
 			
@@ -577,9 +577,9 @@ public class SQLHandler {
 				mySale = new sale(rs.getInt("PortID"), 
 							rs.getInt("ItemID"),  rs.getInt("quantity"), rs.getInt("sellPrice"), rs.getInt("buyPrice"), 
 							rs.getString("Modified"), rs.getString("AddedBy"));
-				//System.out.println(mySale);
+				//sextant.println(mySale);
 				Port myPort=hm.get(mySale.PortID);		
-				//System.out.println(myPort);
+				//sextant.println(myPort);
 				myPort.salesArray.add(mySale);
 			}
 			
@@ -615,7 +615,7 @@ public class SQLHandler {
 		try {
 			open();
 			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Fine%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
-			//System.out.println("executed " + query);
+			//sextant.println("executed " + query);
 			
 			List<String> Names = new ArrayList<String>();
 			List<Integer> IDs = new ArrayList<Integer>();
@@ -656,32 +656,32 @@ public class SQLHandler {
 				baseName=Names.get(i);
 				baseID=IDs.get(i);
 				//stmt.executeUpdate(
-				//System.out.println(
+				//sextant.println(
 						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + baseID + ", '" + baseName + "', 'abso-fillDB') ");
 				
-				//System.out.println(
+				//sextant.println(
 				stmt.executeUpdate(
 					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+1) + ", '" + baseName +" - Common" +"', 'abso-fillDB')");
-				//System.out.println(
+				//sextant.println(
 				stmt.executeUpdate(
 					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+3) + ", '" + baseName + " - Mastercraft"+"', 'abso-fillDB')");
-				//System.out.println(
+				//sextant.println(
 				stmt.executeUpdate(
 					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+4) + ", '" + baseName + " - Fine" + "', 'abso-fillDB')");
-				//System.out.println("insert into sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+2) + ", '" + baseName + " - Exceptional" + "', 'abso-fillDB')");
+				//sextant.println("insert into sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+2) + ", '" + baseName + " - Exceptional" + "', 'abso-fillDB')");
 				
 				
 				
 			}
-			System.out.println("filled.");
+			sextant.println("filled.");
 			close();
 
 		  }catch(SQLException se){
 		      //Handle errors for JDBC
-			  System.out.println("ono... SQL error");
+			  sextant.println("ono... SQL error");
 		      se.printStackTrace();
 		      	} catch (Exception e) {
-			System.out.println("onono... SQLHandler");
+			sextant.println("onono... SQLHandler");
 			e.printStackTrace();
 				} finally {
 		}

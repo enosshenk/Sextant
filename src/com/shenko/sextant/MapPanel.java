@@ -200,7 +200,7 @@ public class MapPanel extends JPanel {
     	
     	MarkLocation.SetLoc(Mark.X, Mark.Y);
     	MarkCoordinates.SetLoc(inX, inY);
-    	System.out.println("Marked location X:" + MarkCoordinates.X + " Z:" + MarkCoordinates.Y);
+    	sextant.println("Marked location X:" + MarkCoordinates.X + " Z:" + MarkCoordinates.Y);
     	
     	CenterViewOnCoordinates(inX, inY);
     }
@@ -368,7 +368,7 @@ public class MapPanel extends JPanel {
     	visible.x = mapX; 
 
     	scrollRectToVisible(visible);
-    	System.out.println("setting visible(coord) to "+mapX+" "+mapY);
+    	sextant.println("setting visible(coord) to "+mapX+" "+mapY);
 
     	
     	//repaint();
@@ -390,7 +390,7 @@ public class MapPanel extends JPanel {
     	visible.x = mapX; 
 
     	scrollRectToVisible(visible);
-    	System.out.println("setting visible to "+mapX+" "+mapY);
+    	sextant.println("setting visible to "+mapX+" "+mapY);
 
     	//getParent().getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
     	

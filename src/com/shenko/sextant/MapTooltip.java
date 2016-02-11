@@ -52,7 +52,7 @@ public class MapTooltip extends JPanel {
 	{	
 		if (inPort != Port)
 		{
-			System.out.println("SetPort " + inPort.ID);
+			sextant.println("SetPort " + inPort.ID);
 			Port = inPort;		
 		
 			ProductionText.clear();
@@ -135,17 +135,17 @@ public class MapTooltip extends JPanel {
     	Graphics2D g2d = (Graphics2D) g;
         applyRenderHints(g2d);
         
-        System.out.println("Painting tooltip");
+        sextant.println("Painting tooltip");
         if (frc == null)
         {
         	// Fuck this stupid font render context
-        	System.out.println("Generating FRC");
+        	sextant.println("Generating FRC");
         	frc = g2d.getFontRenderContext();
         }
         
         if (ProductionText == null || ProductionText.isEmpty())
         {
-        	System.out.println("Populating production data");
+        	sextant.println("Populating production data");
         	PopulateProductionText();
         } 
         

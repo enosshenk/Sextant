@@ -32,7 +32,7 @@ public class ItemTable {
 		try {
 			return ItemIDs.get(Names.indexOf(Name));
 		} catch (Exception e) {
-			System.out.println("Tried to find "+Name+" but failed because "+Names.indexOf(Name));
+			sextant.println("Tried to find "+Name+" but failed because "+Names.indexOf(Name));
 			e.printStackTrace();
 		}
 		return -1;

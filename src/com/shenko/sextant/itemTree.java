@@ -20,14 +20,14 @@ public class itemTree extends JTree{
 	
 	public itemTree(String type) //"item" or "port"
 	{
-		System.out.println("Tree building started.");
+		sextant.println("Tree building started.");
 		setRootVisible(false);
 		root.removeAllChildren();
 		for(int i=0;i<sextant.items.count();i++)
 		{
-			//System.out.println(i);
+			//sextant.println(i);
 			model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(i))), root, model.getChildCount(root));
-			//System.out.println(sextant.items.get(sextant.items.index(i)));
+			//sextant.println(sextant.items.get(sextant.items.index(i)));
 		}
 		
 		fillTree(type);
@@ -65,7 +65,7 @@ public class itemTree extends JTree{
 			*/
 		
 		this.setVisible(true);
-		System.out.println("Tree building finished.");
+		sextant.println("Tree building finished.");
 	}
 
 	
@@ -79,22 +79,22 @@ public class itemTree extends JTree{
 			{
 				Integer key = portIterator.next();
 				Port myPort = sextant.portsHash.get(key);
-				System.out.println(myPort+ " has "+myPort.salesArray.size()+" sales.");
+				sextant.println(myPort+ " has "+myPort.salesArray.size()+" sales.");
 				for(int i=0;i<root.getChildCount();i++) //this one goes through tree nodes
 				{
 					DefaultMutableTreeNode tempNode =(DefaultMutableTreeNode) root.getChildAt(i);
 					String itemName=tempNode.toString();					
 					int nodeItemID=sextant.items.find(itemName); //numerical ItemID corresponding to the node name, which is an item name from the itemtable.
-					//System.out.println(nodeItemID+" "+itemName +"i");
+					//sextant.println(nodeItemID+" "+itemName +"i");
 					for(int j=0;j<myPort.salesArray.size();j++) //this goes through sales
 					{
-						//System.out.println(myPort.salesArray.get(j));
-						//System.out.println(myPort.salesArray.get(j).ItemID+" "+nodeItemID+" itemid");
+						//sextant.println(myPort.salesArray.get(j));
+						//sextant.println(myPort.salesArray.get(j).ItemID+" "+nodeItemID+" itemid");
 						if(myPort.salesArray.get(j).ItemID==nodeItemID)
 						{
 							String nodeText;
 							sale mySale=myPort.salesArray.get(j);
-							//System.out.println("Inserting "+itemName+" "+myPort+" "+mySale);
+							//sextant.println("Inserting "+itemName+" "+myPort+" "+mySale);
 							nodeText = mySale.quantity+" b"+ mySale.buyPrice+" s"+mySale.sellPrice+" "+myPort.name+ " "+mySale.modified;
 							DefaultMutableTreeNode toInsert = new DefaultMutableTreeNode(nodeText);
 							tempNode.add(toInsert);

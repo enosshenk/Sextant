@@ -22,14 +22,14 @@ public class LogParser {
 	public void ParseSaleData(String inData) //, int portID) //passed the line with multiple items for sale. We'll also need the port location, so add that 
 	{
 		// Parse a port data block
-		//System.out.println("found new sale: " + inData);
+		//sextant.println("found new sale: " + inData);
 		
 		while(inData.contains("{"))
 		{
 			if((inData.indexOf("{")>0) && (inData.indexOf("}")+1>inData.indexOf("{")) ) // trap bad indices
 			{
 				String sale = inData.substring(inData.indexOf("{"), inData.indexOf("}")+1); // set sale to a probably-valid JSON object
-				//System.out.println("sale: " + sale);
+				//sextant.println("sale: " + sale);
 				inData=inData.substring(inData.indexOf("}")+1); //(no longer) recursively call this function with the remaining string, so sale gets processed below, and we run the rest of this shit through this function again
 				if((sale != null) && (sale.length()>0))
 				{
@@ -40,22 +40,22 @@ public class LogParser {
 						JsonObject item = Element.getAsJsonObject();
 						if (!item.isJsonNull())
 						{
-							/*System.out.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
-							System.out.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
-							System.out.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
-							System.out.println( "Sell:       " + item.get("SellPrice").getAsInt() );
-							System.out.println( "Port:        we don't know");
+							/*sextant.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
+							sextant.println( "Quantity:   " + item.get("Quantity").getAsInt() );	
+							sextant.println( "Buy:        " + item.get("BuyPrice").getAsInt() );
+							sextant.println( "Sell:       " + item.get("SellPrice").getAsInt() );
+							sextant.println( "Port:        we don't know");
 							*/
 							
 							String name = sextant.mySql.verifyItem(item);
 	
-							System.out.println( "Item:       " + name +"\n" );	
+							sextant.println( "Item:       " + name +"\n" );	
 							sextant.mySql.writeSale(item);
 						}
 					}
 					else
 					{
-						System.out.println("kill me now");
+						sextant.println("kill me now");
 					}
 				}
 			}
@@ -69,7 +69,7 @@ public class LogParser {
 	
 		JsonElement Element = Parser.parse(inData);
 		
-		//System.out.println("found new Port");
+		//sextant.println("found new Port");
 		
 		if (Element.isJsonObject())
 		{
@@ -81,11 +81,11 @@ public class LogParser {
 			
 			sextant.mySql.writePort(Port);
 			
-			/*System.out.println( "Port Name: " + Port.get("Name").getAsString() );	
-			System.out.println( "Port Nation: " + Port.get("Nation").getAsInt() );	
-			System.out.println( "Port ID: " + Port.get("Id").getAsInt() );
-			System.out.println( "Port Position X " + PortPosition.get("x").getAsInt() );
-			System.out.println( "Port Position Z " + PortPosition.get("z").getAsInt() );*/
+			/*sextant.println( "Port Name: " + Port.get("Name").getAsString() );	
+			sextant.println( "Port Nation: " + Port.get("Nation").getAsInt() );	
+			sextant.println( "Port ID: " + Port.get("Id").getAsInt() );
+			sextant.println( "Port Position X " + PortPosition.get("x").getAsInt() );
+			sextant.println( "Port Position Z " + PortPosition.get("z").getAsInt() );*/
 
 			int ID = Port.get("Id").getAsInt(); 
 			//got a little mixed up on the github and had to merge. Is this shit old, or did you make these changes and recommit?
@@ -107,7 +107,7 @@ public class LogParser {
 		}
 		else
 		{
-			System.out.println("Port JSON data invalid");
+			sextant.println("Port JSON data invalid");
 		}
 	}
 	
@@ -118,11 +118,11 @@ public class LogParser {
 		
 
 		inData = inData.substring(inData.indexOf("{")); // let's just get the JSON
-		//System.out.println(inData);
+		//sextant.println(inData);
 		JsonElement Element = Parser.parse(inData);
 		
 
-		System.out.println("Parsing player data");
+		sextant.println("Parsing player data");
 		
 		if (Element.isJsonObject())
 		{
@@ -132,7 +132,7 @@ public class LogParser {
 			JsonArray PlayerOutposts = Player.get("PortContainers").getAsJsonArray();
 			
 			String Name = Player.get("Name").getAsString();
-			//System.out.println("Player Name: " + Name);
+			//sextant.println("Player Name: " + Name);
 			sextant.setPlayerName(Name);
 			
 			int Nation = Player.get("Nation").getAsInt();
@@ -157,13 +157,13 @@ public class LogParser {
 			if (sextant.CurrentPort != CurrentPortID)
 			{
 				sextant.CurrentPort = CurrentPortID;
-				System.out.println("CurrentPort: "+sextant.CurrentPort);
+				sextant.println("CurrentPort: "+sextant.CurrentPort);
 			}
 			
 		}
 		else
 		{
-			System.out.println("Player JSON data invaid");
+			sextant.println("Player JSON data invaid");
 		}
 	}
 
@@ -191,17 +191,17 @@ public class LogParser {
 				int Value = Data.get("Value").getAsInt();
 				
 				
-				//System.out.println("prod: "+TemplateID+" "+Value);
+				//sextant.println("prod: "+TemplateID+" "+Value);
 				// Value is number produced or consumed per hour. Game displays this as per day
 				// Do we * 24 here or somewhere else?
 			}
 		}
 		else
 		{
-			System.out.println("Port Production/Consumption JSON data invalid or was not JSONArray");
+			sextant.println("Port Production/Consumption JSON data invalid or was not JSONArray");
 		}
 		} catch (Exception e) {
-			System.out.println("JSON ERROR: "+inData);
+			sextant.println("JSON ERROR: "+inData);
 		}
 	}
 	
@@ -209,16 +209,16 @@ public class LogParser {
 	{
 		int hoursInt = new Integer((int) Double.parseDouble(hours));
 		
-		System.out.println("Labor data found: "+hours);
+		sextant.println("Labor data found: "+hours);
 		DateFormat dateFormat=new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss"); //2016-Feb-10 09:14:54.831209
 		Date parsedDate;
 		try {
 			parsedDate = dateFormat.parse(timestamp);
 		
 		Timestamp timestamp1 = new Timestamp(parsedDate.getTime());
-		System.out.println("timestamp1="+timestamp1+" hoursInt="+hoursInt);
+		sextant.println("timestamp1="+timestamp1+" hoursInt="+hoursInt);
 		sextant.laborHours.insertLabor(timestamp1, hoursInt);
-		System.out.println(sextant.laborHours);
+		sextant.println(sextant.laborHours.toString());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

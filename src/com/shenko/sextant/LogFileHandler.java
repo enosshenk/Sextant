@@ -20,16 +20,16 @@ public class LogFileHandler extends Thread {
 		Parser = new LogParser();
 		
 		try {
-			System.out.println("Trying to open log file in "+sextant.LogDirectory);
+			sextant.println("Trying to open log file in "+sextant.LogDirectory);
 			CurrentLog = new File(GetLatestLogFile());
-			System.out.println("Opening "+CurrentLog.getName());
+			sextant.println("Opening "+CurrentLog.getName());
 			FileReader FileReader = new FileReader(CurrentLog);
 			Reader = new BufferedReader(FileReader);
 			
 			LogHandlerLoop();
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("Selected file not found! " + CurrentLog);
+			sextant.println("Selected file not found! " + CurrentLog);
 		}
 	}
 	
@@ -46,7 +46,7 @@ public class LogFileHandler extends Thread {
 		{
 			try {
 					Line = Reader.readLine();
-					//System.out.println("loghandlerloop "+ Line);
+					//sextant.println("loghandlerloop "+ Line);
 					if (Line == null)
 					{
 						if(logStage==0)
@@ -74,16 +74,16 @@ public class LogFileHandler extends Thread {
 					e.printStackTrace();
 					exit=true;
 				} catch (InterruptedException e) {
-					System.out.println("InterruptedException.");
+					sextant.println("InterruptedException.");
 					try {
 						Reader.close();
-						System.out.println("File closed.");
+						sextant.println("File closed.");
 						exit=true;
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						exit=true;
 					}
-					System.out.println("File closed.");
+					sextant.println("File closed.");
 				}
 		}
 		
@@ -94,7 +94,7 @@ public class LogFileHandler extends Thread {
 		if (Line.contains("EntrancePosition"))
 		{
 			// Line is a port data block
-		//	System.out.println(Line);
+		//	sextant.println(Line);
 			Parser.ParsePortData(Line);
 		}
 		
@@ -142,7 +142,7 @@ public class LogFileHandler extends Thread {
 			}
 			else
 			{
-			System.out.println("Log or port status insufficient for buy/sell: "+sextant.logStatus+" "+sextant.CurrentPort);
+			sextant.println("Log or port status insufficient for buy/sell: "+sextant.logStatus+" "+sextant.CurrentPort);
 			}
 			
 		}
@@ -183,7 +183,7 @@ public class LogFileHandler extends Thread {
 		File SelectedLog = null;
 		for (File L : Logs)
 		{
-			//System.out.println(L.getName());
+			//sextant.println(L.getName());
 			if (L.lastModified() > LastModified)
 			{
 				SelectedLog = L;

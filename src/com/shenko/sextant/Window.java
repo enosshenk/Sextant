@@ -67,6 +67,8 @@ public class Window extends JFrame {
 	
 	private MapTooltip MapTooltip;
 	
+	public JTextArea textArea;
+	
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
 	public JLabel lblFileStatus;
@@ -259,10 +261,11 @@ public class Window extends JFrame {
 		itemTree tree = new itemTree("item");
 		JScrollPane treeScrollPane = new JScrollPane(tree);
 		tabbedPane.addTab("Items by Location", null, treeScrollPane, null);
-		
-		JTextArea textArea = new JTextArea();
-		tabbedPane.addTab("New tab", null, textArea, null);
-		
+				
+		textArea = new JTextArea();
+		JScrollPane textAreaScrollPane = new JScrollPane(textArea); //I think JTextArea handles scrolling internally
+		tabbedPane.addTab("debug info", null, textAreaScrollPane, null);
+		//tabbedPane.addTab("debug info", null, textArea, null);
 		// Map panel
 		MapPanel = null;
 		BufferedImage Image = null;
@@ -271,7 +274,7 @@ public class Window extends JFrame {
 			Image = ImageIO.read( getClass().getResourceAsStream("/map.jpg") );
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("Image doesn't exist fucker");
+			sextant.println("Image doesn't exist fucker");
 			e1.printStackTrace();
 		}
 		MapPanel_1 = new MapPanel( Image, this );
@@ -298,7 +301,7 @@ public class Window extends JFrame {
 		MapTooltip.setVisible(false);
 		
 		sextant.GUILoaded=true;
-		System.out.println("Gui Loaded: window");
+		sextant.println("Gui Loaded: window");
 		
 	}
 	
@@ -306,14 +309,14 @@ public class Window extends JFrame {
 	{
 		// Called from MapPanel when user clicked on a known port on the map
 		
-		System.out.println("User clicked on " + inPort.name);
+		sextant.println("User clicked on " + inPort.name);
 	}
 
 	public void MouseOverPort(Port inPort, GridPoint inPoint)
 	{
 		// Called when a port is moused over in MapPanel
 		
-		System.out.println("Mouse over " + inPort.name);
+		sextant.println("Mouse over " + inPort.name);
 		MapTooltip.setVisible(true);
 		MapTooltip.setMinimumSize(new Dimension(50, 50));
 		MapTooltip.setPreferredSize(new Dimension(100, 100));
@@ -334,7 +337,7 @@ public class Window extends JFrame {
 	
 	public void setLogStatus (int num)
 	{
-		//System.out.println("setting log status "+num);
+		//sextant.println("setting log status "+num);
 		if(num==0)
 		{
 			lblFileStatus.setForeground(Color.red);
@@ -353,7 +356,7 @@ public class Window extends JFrame {
 		}
 		else
 		{
-			System.out.println("Someone's trying to pass "+num+" to SetLogStatus, and 0, 1, or 2 is expected.");
+			sextant.println("Someone's trying to pass "+num+" to SetLogStatus, and 0, 1, or 2 is expected.");
 		}
 		sextant.logStatus=num;
 		
@@ -368,7 +371,12 @@ public class Window extends JFrame {
 		
 		MapPanel_1.SetPlayerLocation(x * -1, z * -1);
 		
-		System.out.println("Setting player loc in Window");
+		sextant.println("Setting player loc in Window");
+	}
+	
+	public void println(String toPrint)
+	{
+		textArea.append(toPrint+"\n"); //or insert
 	}
 
 }
