@@ -21,7 +21,7 @@ public class sextant {
 	//TODO make a tree with the ports that users can click on to center the map on it
 	//TODO some sort of indicators showing distance and direction from last location to the item being focused
 	//TODO refine the way that prices are displayed
-	//TODO make the X and Y boxes select text when you click, and hit enter to goto
+	//TODO show missions on map
 	
 	
 	public static LogFileHandler Handler;

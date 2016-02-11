@@ -319,59 +319,66 @@ public class SQLHandler {
 		//ResultSet rs = null;
 		String id = null;
 		
+		
+
 		try {
 
-			id = Integer.toString(item.get("TemplateId").getAsInt());		
-			String query = "select Name from sql5105183.ItemIDs where ItemID="
-				+ id; 
-	
-			//System.out.println(query);
-			open();
-			rs = stmt.executeQuery(query);
-			if(rs.next())
-			{
-			name = rs.getString("Name");
-			}
-			
-			if(name==null || name.isEmpty())
-			{
-				name = (String)JOptionPane.showInputDialog(
-			                    null, //frame, let's see if this works			             
-			                    "You found a new item!\n"
-			                    + "Please find this item and type the name.\n"
-			                    + "Quantity: " + item.get("Quantity").getAsInt() 
-			                    + "\nBuy: " + item.get("BuyPrice").getAsInt() 
-			                    + "\nSell: "+ item.get("SellPrice").getAsInt()
-			                    + "Please be careful and check for multiple items with\n"
-			                    + "the same information",
-			                    "Teach me, O Great One.",
-			                    JOptionPane.PLAIN_MESSAGE,
-			                    null,
-			                    null,
-			                    "item name");
+			id = Integer.toString(item.get("TemplateId").getAsInt());
+			if(sextant.items.has(item.get("TemplateId").getAsInt()))
+			{ 	
+				System.out.println("item found in table");
+			}else
+			{			
+				String query = "select Name from sql5105183.ItemIDs where ItemID="
+						+ id; 
 
-				//If a string was returned, say so.
-				if ((name != null) && (name.length() > 0)) {
-					if (name.contains("item name"))
-					{
-						System.out.println("\"Item Name\" is not the name of that item. You are a bad person.");
-						System.exit(1);
-					}
-					query = "insert into sql5105183.ItemIDs (ItemID, Name, addedBy) values ("+ id +", \""+ name +"\", \""+sextant.playerName+"\") "
-							+ "on duplicate key update Name=\""+name+"\", addedBy=\""+sextant.playerName+"\"";
-					stmt.executeUpdate(query);
-					System.out.println("Thanks! Item name updated / added.");
-				}
-				else
+				//System.out.println(query);
+				open();
+				rs = stmt.executeQuery(query);
+				if(rs.next())
 				{
-					System.out.println("Empty box. Enjoy getting that box again and again.");
+					name = rs.getString("Name");
 				}
-			
-				
-								
+
+				if(name==null || name.isEmpty())
+				{
+					name = (String)JOptionPane.showInputDialog(
+							null, //frame, let's see if this works			             
+							"You found a new item!\n"
+							+ "Please find this item and type the name.\n"
+							+ "Quantity: " + item.get("Quantity").getAsInt() 
+							+ "\nBuy: " + item.get("BuyPrice").getAsInt() 
+							+ "\nSell: "+ item.get("SellPrice").getAsInt()
+							+ "Please be careful and check for multiple items with\n"
+							+ "the same information",
+							"Teach me, O Great One.",
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							null,
+							"item name");
+
+					//If a string was returned, say so.
+					if ((name != null) && (name.length() > 0)) {
+						if (name.contains("item name"))
+						{
+							System.out.println("\"Item Name\" is not the name of that item. You are a bad person.");
+							System.exit(1);
+						}
+						query = "insert into sql5105183.ItemIDs (ItemID, Name, addedBy) values ("+ id +", \""+ name +"\", \""+sextant.playerName+"\") "
+								+ "on duplicate key update Name=\""+name+"\", addedBy=\""+sextant.playerName+"\"";
+						stmt.executeUpdate(query);
+						System.out.println("Thanks! Item name updated / added.");
+					}
+					else
+					{
+						System.out.println("Empty box. Enjoy getting that box again and again.");
+					}
+
+				}	
+
 			}
 			close();
-			
+
 		} catch (Exception e) {
 			System.out.println("onono...");
 			e.printStackTrace();

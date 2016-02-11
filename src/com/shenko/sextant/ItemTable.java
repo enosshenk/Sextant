@@ -58,4 +58,9 @@ public class ItemTable {
 		return toReturn;
 	}
 	
+	public boolean has(int itemID){
+		
+		return ItemIDs.contains(itemID);
+	}
+	
 }
