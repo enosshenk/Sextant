@@ -60,7 +60,7 @@ public class sextant {
 		 {
 			 Integer key = portIterator.next();
 			 Port myPort = portsHash.get(key);
-			 sextant.println(myPort.toString()); //wtf why doesn't this just work without toString
+			 sextant.println(myPort); 
 		 }
 		 
 		 mySql.getProduction(portsHash); 
@@ -72,7 +72,7 @@ public class sextant {
 		 {
 			 Integer key = portIterator.next();
 			 Port myPort = portsHash.get(key);
-			 sextant.println(myPort.toString());
+			 sextant.println(myPort);
 			 for(int i=0; i<myPort.productionArray.size(); i++)
 			 {
 				 //sextant.println(myPort.productionArray.get(i));
@@ -123,7 +123,7 @@ public class sextant {
 			
 		Handler.interrupt();
 		frame.setLogStatus(-1); //loading new log file, and wait.
-		sextant.println(Handler.getState().toString());
+		sextant.println(Handler.getState());
 		Handler = new LogFileHandler();
 		Handler.start();
 	}
@@ -136,7 +136,7 @@ public class sextant {
 			sextant.println("Cherno Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState().toString());
+			sextant.println(Handler.getState());
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
@@ -146,7 +146,7 @@ public class sextant {
 			sextant.println("MoreAlive Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState().toString());
+			sextant.println(Handler.getState());
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
@@ -156,7 +156,7 @@ public class sextant {
 			sextant.println("Grim Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState().toString());
+			sextant.println(Handler.getState());
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
@@ -176,7 +176,7 @@ public class sextant {
 		hi=true;
 	}
 	
-	public static void println(String toPrint)
+	public static void println(Object toPrint)
 	{
 		if(frame != null)
 		{
