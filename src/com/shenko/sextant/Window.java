@@ -81,7 +81,8 @@ public class Window extends JFrame {
 	public Window() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Sextant");
-		setSize(800,600);
+		setSize(1440,900);
+		//setSize(800,600);
 		setResizable(false);
 //		setBounds(100, 100, 450, 300);
 		
@@ -374,7 +375,7 @@ public class Window extends JFrame {
 		sextant.println("Setting player loc in Window");
 	}
 	
-	public void println(String toPrint)
+	public void println(Object toPrint)
 	{
 		textArea.append(toPrint+"\n"); //or insert
 	}
