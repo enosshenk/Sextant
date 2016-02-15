@@ -454,8 +454,8 @@ public final class Gson {
    *  StatsTypeAdapterFactory stats = new StatsTypeAdapterFactory();
    *  Gson gson = new GsonBuilder().registerTypeAdapterFactory(stats).create();
    *  // Call gson.toJson() and fromJson methods on objects
-   *  System.out.println("Num JSON reads" + stats.numReads);
-   *  System.out.println("Num JSON writes" + stats.numWrites);
+   *  sextant.println("Num JSON reads" + stats.numReads);
+   *  sextant.println("Num JSON writes" + stats.numWrites);
    *  }</pre>
    *  Note that this call will skip all factories registered before {@code skipPast}. In case of
    *  multiple TypeAdapterFactories registered it is up to the caller of this function to insure

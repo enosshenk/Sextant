@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.14"; // refactored map, X Y boxes, etc , fixed x y, grim SSD, fix
+	public static String version ="0.02.15.01"; // alphabetized treenode. Clicking on an item will center the map on that city.
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map

@@ -14,6 +14,7 @@ public class sale {
 private int id;
 public int PortID, ItemID, quantity, sellPrice, buyPrice;
 public String modified, addedBy;
+public Port port; //set in sqlhandler. such a bad practice.
 
 
 	public sale(int PortID, int ItemID, int quantity, int sellPrice, int buyPrice, String modified, String addedBy)
@@ -28,7 +29,8 @@ public String modified, addedBy;
 	}
 
 	public String toString() {
-		return "Sale: PortID"+PortID+" ItemID: "+ItemID+ " ("+sellPrice+", "+buyPrice+"), "+modified+"("+addedBy+")"; //TODO add more shit here
+		return quantity+" b"+ buyPrice+" s"+sellPrice+" "+port.name+ " "+modified;
+		//return "Sale: PortID"+PortID+" ItemID: "+ItemID+ " ("+sellPrice+", "+buyPrice+"), "+modified+"("+addedBy+")"; //TODO add more shit here
 	}
 }
 

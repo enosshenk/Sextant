@@ -117,7 +117,7 @@ public class PrettyPrintingTest extends TestCase {
 
   private void print(String msg) {
     if (DEBUG) {
-      System.out.println(msg);
+      sextant.println(msg);
     }
   }
 }

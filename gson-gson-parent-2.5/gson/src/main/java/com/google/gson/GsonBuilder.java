@@ -181,7 +181,7 @@ public final class GsonBuilder {
    *   Map<Point, String> original = new LinkedHashMap<Point, String>();
    *   original.put(new Point(5, 6), "a");
    *   original.put(new Point(8, 8), "b");
-   *   System.out.println(gson.toJson(original, type));
+   *   sextant.println(gson.toJson(original, type));
    * }</pre>
    * The above code prints this JSON object:<pre>  {@code
    *   {
@@ -208,7 +208,7 @@ public final class GsonBuilder {
    *   Map<Point, String> original = new LinkedHashMap<Point, String>();
    *   original.put(new Point(5, 6), "a");
    *   original.put(new Point(8, 8), "b");
-   *   System.out.println(gson.toJson(original, type));
+   *   sextant.println(gson.toJson(original, type));
    * }
    *
    * The JSON output would look as follows:

@@ -580,6 +580,7 @@ public class SQLHandler {
 				//sextant.println(mySale);
 				Port myPort=hm.get(mySale.PortID);		
 				//sextant.println(myPort);
+				mySale.port=myPort;
 				myPort.salesArray.add(mySale);
 			}
 			

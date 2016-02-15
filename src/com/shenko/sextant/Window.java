@@ -57,6 +57,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class Window extends JFrame {
@@ -64,6 +65,7 @@ public class Window extends JFrame {
 	private JPanel contentPane;
 	private MapPanel MapPanel;
 	private MapPanel MapPanel_1;
+	private itemTree tree;
 	
 	private MapTooltip MapTooltip;
 	
@@ -259,12 +261,19 @@ public class Window extends JFrame {
 		tabbedPane.setMaximumSize(new Dimension(250, Short.MAX_VALUE));
 		contentPane.add(tabbedPane);
 		
-		itemTree tree = new itemTree("item");
+		tree = new itemTree("item");
 		JScrollPane treeScrollPane = new JScrollPane(tree);
 		tabbedPane.addTab("Items by Location", null, treeScrollPane, null);
-				
-		textArea = new JTextArea();
-		JScrollPane textAreaScrollPane = new JScrollPane(textArea); //I think JTextArea handles scrolling internally
+		tree.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				processTreeClick(me);
+			}
+		});
+	
+
+
+	textArea = new JTextArea();
+	JScrollPane textAreaScrollPane = new JScrollPane(textArea); //I think JTextArea handles scrolling internally
 		tabbedPane.addTab("debug info", null, textAreaScrollPane, null);
 		//tabbedPane.addTab("debug info", null, textArea, null);
 		// Map panel
@@ -305,6 +314,21 @@ public class Window extends JFrame {
 		sextant.println("Gui Loaded: window");
 		
 	}
+	
+	void processTreeClick(MouseEvent me) {
+		TreePath tp = tree.getPathForLocation(me.getX(), me.getY());
+		DefaultMutableTreeNode node;
+		sale thisSale;
+		if (tp != null)
+		{
+			node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+			thisSale = (sale) node.getUserObject();
+			MapPanel_1.CenterViewOnCoordinates(thisSale.port.x, thisSale.port.y);
+		}	
+		else
+			println("Tree clicked, but treePath null");
+	}
+
 	
 	public void ClickedOnPort(Port inPort, GridPoint ClickLocation)
 	{

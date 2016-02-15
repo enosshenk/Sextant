@@ -60,7 +60,7 @@ public class Cart {
     if (lineItems != null) {
       try {
         Class<?> fieldType = Cart.class.getField("lineItems").getType();
-        System.out.println("LineItems CLASS: " + getSimpleTypeName(fieldType));
+        sextant.println("LineItems CLASS: " + getSimpleTypeName(fieldType));
       } catch (SecurityException e) {
       } catch (NoSuchFieldException e) {
       }

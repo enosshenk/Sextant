@@ -18,6 +18,7 @@ public class itemTree extends JTree{
 
 	//private static final long serialVersionUID = 1L;
 	
+	@SuppressWarnings("unused") //it's smart to think that tempChild==null would exclude code.
 	public itemTree(String type) //"item" or "port"
 	{
 		sextant.println("Tree building started.");
@@ -34,7 +35,8 @@ public class itemTree extends JTree{
 			//sextant.println(i);
 			int nodeCount=0;
 			DefaultMutableTreeNode tempChild=(DefaultMutableTreeNode) root.getFirstChild(); 
-			for(tempChild=(DefaultMutableTreeNode) root.getFirstChild(); tempChild==null || sextant.items.get(sextant.items.index(i)).compareTo(tempChild.toString())>0;tempChild=(DefaultMutableTreeNode) root.getChildAfter(tempChild))
+			for(tempChild=(DefaultMutableTreeNode) root.getFirstChild(); tempChild==null || 
+					sextant.items.get(sextant.items.index(i)).compareTo(tempChild.toString())>0;tempChild=(DefaultMutableTreeNode) root.getChildAfter(tempChild))
 			{
 				//loop until either we find a node where the text is greater than it, or we reach the end
 			}
@@ -53,38 +55,7 @@ public class itemTree extends JTree{
 		}
 		
 		fillTree(type);
-		
-		
-		
-		/*
-		
-		setModel(new DefaultTreeModel(
-				new DefaultMutableTreeNode("JTree") {
-					{
-						DefaultMutableTreeNode node_1;
-						node_1 = new DefaultMutableTreeNode("default");
-							node_1.add(new DefaultMutableTreeNode("bullshit"));
-							node_1.add(new DefaultMutableTreeNode("violet"));
-							node_1.add(new DefaultMutableTreeNode("red"));
-							node_1.add(new DefaultMutableTreeNode("yellow"));
-						add(node_1);
-						node_1 = new DefaultMutableTreeNode("sports");
-							node_1.add(new DefaultMutableTreeNode("basketball"));
-							node_1.add(new DefaultMutableTreeNode("soccer"));
-							node_1.add(new DefaultMutableTreeNode("football"));
-							node_1.add(new DefaultMutableTreeNode("hockey"));
-						add(node_1);
-						node_1 = new DefaultMutableTreeNode("food");
-							node_1.add(new DefaultMutableTreeNode("hot dogs"));
-							node_1.add(new DefaultMutableTreeNode("pizza"));
-							node_1.add(new DefaultMutableTreeNode("ravioli"));
-							node_1.add(new DefaultMutableTreeNode("bananas"));
-						add(node_1);
-					}
-				}
-			));
-			
-			*/
+
 		
 		this.setVisible(true);
 		sextant.println("Tree building finished.");
@@ -118,7 +89,7 @@ public class itemTree extends JTree{
 							sale mySale=myPort.salesArray.get(j);
 							//sextant.println("Inserting "+itemName+" "+myPort+" "+mySale);
 							nodeText = mySale.quantity+" b"+ mySale.buyPrice+" s"+mySale.sellPrice+" "+myPort.name+ " "+mySale.modified;
-							DefaultMutableTreeNode toInsert = new DefaultMutableTreeNode(nodeText);
+							DefaultMutableTreeNode toInsert = new DefaultMutableTreeNode(mySale);
 							tempNode.add(toInsert);
 						}
 					}
@@ -129,6 +100,8 @@ public class itemTree extends JTree{
 		}
 		model.reload(root);
 	}
+	
+	
 	/*private TreePath find(DefaultMutableTreeNode root, String s) {
 	    @SuppressWarnings("unchecked")
 	    Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();

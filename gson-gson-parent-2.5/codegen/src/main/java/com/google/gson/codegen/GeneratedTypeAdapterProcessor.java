@@ -35,7 +35,7 @@ import javax.tools.JavaFileObject;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public final class GeneratedTypeAdapterProcessor extends AbstractProcessor {
   @Override public boolean process(Set<? extends TypeElement> types, RoundEnvironment env) {
-    System.out.println("invoked GeneratedTypeAdapterProcessor");
+    sextant.println("invoked GeneratedTypeAdapterProcessor");
     try {
       for (Element element : env.getElementsAnnotatedWith(GeneratedTypeAdapter.class)) {
         writeAdapter((TypeElement) element);
@@ -50,7 +50,7 @@ public final class GeneratedTypeAdapterProcessor extends AbstractProcessor {
     String typeAdapterName = CodeGen.adapterName(type, "$TypeAdapter");
     JavaFileObject sourceFile = processingEnv.getFiler()
         .createSourceFile(typeAdapterName, type);
-    System.out.println("Generating type adapter: " + typeAdapterName + " in " + sourceFile.getName());
+    sextant.println("Generating type adapter: " + typeAdapterName + " in " + sourceFile.getName());
 
     JavaWriter writer = new JavaWriter(sourceFile.openWriter());
     writer.addPackage(CodeGen.getPackage(type).getQualifiedName().toString());

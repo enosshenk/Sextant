@@ -52,7 +52,7 @@ import java.lang.annotation.Target;
  * MyClass target = new MyClass("v1", "v2", "v3");
  * Gson gson = new Gson();
  * String json = gson.toJson(target);
- * System.out.println(json);
+ * sextant.println(json);
  *
  * ===== OUTPUT =====
  * {"name":"v1","name1":"v2","c":"v3"}
