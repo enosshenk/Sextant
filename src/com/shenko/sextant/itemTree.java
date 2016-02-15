@@ -23,11 +23,33 @@ public class itemTree extends JTree{
 		sextant.println("Tree building started.");
 		setRootVisible(false);
 		root.removeAllChildren();
+		
+		//insert first item
+		if(sextant.items.count()>0)
+		{
+			model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(0))), root, 0);
+		}
 		for(int i=0;i<sextant.items.count();i++)
 		{
 			//sextant.println(i);
-			model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(i))), root, model.getChildCount(root));
-			//sextant.println(sextant.items.get(sextant.items.index(i)));
+			int nodeCount=0;
+			DefaultMutableTreeNode tempChild=(DefaultMutableTreeNode) root.getFirstChild(); 
+			for(tempChild=(DefaultMutableTreeNode) root.getFirstChild(); tempChild==null || sextant.items.get(sextant.items.index(i)).compareTo(tempChild.toString())>0;tempChild=(DefaultMutableTreeNode) root.getChildAfter(tempChild))
+			{
+				//loop until either we find a node where the text is greater than it, or we reach the end
+			}
+			if(tempChild == null)
+			{
+				//then the item to insert is greater than everything, put it at the end
+				model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(i))), root, model.getChildCount(root));
+				
+			} else {
+				//tempChild is the first child greater than the string, so
+				model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(i))), root, model.getIndexOfChild(root, tempChild));
+				
+			}
+				
+				
 		}
 		
 		fillTree(type);
