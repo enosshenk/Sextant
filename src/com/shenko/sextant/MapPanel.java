@@ -18,6 +18,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -155,7 +156,7 @@ public class MapPanel extends JPanel {
         {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+
 				//repaint();
 				CheckPortsForMouseover();
 			}        	
@@ -190,6 +191,9 @@ public class MapPanel extends JPanel {
         {
         	MarkIcon.paintIcon(C, grphcs, MarkLocation.X - 16, MarkLocation.Y - 16);
         }
+        
+        //TODO paint port prices
+        
     }
     
     public void MarkLocation(int inX, int inY)
@@ -436,7 +440,16 @@ public class MapPanel extends JPanel {
 		y=(int)dY;
 		MarkLocation(x,y);
     }
-    
 
+    private void paintPrices(int ItemID)
+    {
+    	ArrayList<sale> sales=new ArrayList<sale>();
+    	//traverse all ports?
+    	//nah, traverse the tree.
+    	
+
+    	//go 
+
+    }
 
 }

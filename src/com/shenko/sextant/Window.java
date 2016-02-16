@@ -67,6 +67,8 @@ public class Window extends JFrame {
 	private MapPanel MapPanel_1;
 	private itemTree tree;
 	
+	public itemTree warehouse;
+	
 	private MapTooltip MapTooltip;
 	
 	public JTextArea textArea;
@@ -270,7 +272,10 @@ public class Window extends JFrame {
 			}
 		});
 	
-
+		warehouse = new itemTree("warehouse");
+		JScrollPane warehouseScrollPane = new JScrollPane(warehouse);
+		tabbedPane.addTab("Warehouse", null, warehouseScrollPane, null);
+		
 
 	textArea = new JTextArea();
 	JScrollPane textAreaScrollPane = new JScrollPane(textArea); //I think JTextArea handles scrolling internally
@@ -283,7 +288,7 @@ public class Window extends JFrame {
 		try {
 			Image = ImageIO.read( getClass().getResourceAsStream("/map.jpg") );
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			// 
 			sextant.println("Image doesn't exist fucker");
 			e1.printStackTrace();
 		}
@@ -322,8 +327,15 @@ public class Window extends JFrame {
 		if (tp != null)
 		{
 			node = (DefaultMutableTreeNode) tp.getLastPathComponent();
-			thisSale = (sale) node.getUserObject();
-			MapPanel_1.CenterViewOnCoordinates(thisSale.port.x, thisSale.port.y);
+			if(node.getParent()==tree.root)
+			{
+				//it's an item
+				println("item?");
+				//TODO MapPanel. draw item prices
+			}else{//it's a sale
+				thisSale = (sale) node.getUserObject();
+				MapPanel_1.CenterViewOnCoordinates(thisSale.port.x, thisSale.port.y);
+			}
 		}	
 		else
 			println("Tree clicked, but treePath null");

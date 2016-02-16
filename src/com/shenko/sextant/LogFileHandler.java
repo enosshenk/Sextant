@@ -111,7 +111,6 @@ public class LogFileHandler extends Thread {
 			//Received:
 			//	1025.40663736647
 			
-			//TODO get the timestamp
 			String timestamp = Line.substring(Line.indexOf("[")+1, Line.indexOf("."));
 		
 			for(int i=0;i<3;i++) //read the next 3 lines
@@ -125,7 +124,7 @@ public class LogFileHandler extends Thread {
 					}
 
 				} catch (IOException | InterruptedException e) {
-					// TODO Auto-generated catch block
+					// 
 					e.printStackTrace();
 				}
 			}
@@ -152,6 +151,14 @@ public class LogFileHandler extends Thread {
 			// Line is consumption/production block for a port
 			Parser.ParsePortProductionData(Line);
 		}
+		
+		if (Line.contains("Services.Items."))
+		{
+			// Line is an item in the warehouse
+			Parser.ParseItemLine(Line);
+		}
+		
+		
 		
 		
 	}

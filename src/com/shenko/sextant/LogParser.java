@@ -111,6 +111,44 @@ public class LogParser {
 		}
 	}
 	
+	
+	public void ParseItemLine(String inData)
+	{
+		// Parse a warehouse item
+		// Expecting a JSON array here
+		JsonElement Element;
+		inData = "{\""+inData.substring(inData.indexOf("Template"), inData.lastIndexOf("}")+1); // let's just get the JSON
+		sextant.println("parsing warehouse: " + inData);
+		try {
+			Element = Parser.parse(inData);
+
+			if (Element.isJsonObject())
+			{
+				// Get json objects
+				JsonObject Obj = Element.getAsJsonObject();
+				//int TemplateID = Obj.get("TemplateId").getAsInt();
+				int TemplateID = Obj.get("TemplateId").getAsInt();
+				//int TemplateID = 27;
+				int Stack = Obj.get("Stack").getAsInt();
+				//int Stack = 69;
+				//sextant.CurrentPort
+				sextant.println("TID: "+TemplateID+ " Stack: "+Stack);
+				
+				sextant.frame.warehouse.insertItems(sextant.portsHash.get(sextant.CurrentPort), TemplateID, Stack);
+
+			}
+
+			else
+			{
+				sextant.println("warehouse item JSON data invalid or was not JSONArray");
+			}
+		} catch (Exception e) {
+			System.out.println("warehouse JSON ERROR: "+inData);
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void ParsePlayerData(String inData)
 	{
 		// Parse player data block
@@ -220,10 +258,11 @@ public class LogParser {
 		sextant.laborHours.insertLabor(timestamp1, hoursInt);
 		sextant.println(sextant.laborHours.toString());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			// 
 			e.printStackTrace();
 		}
 	}
 	
 	
+
 }
