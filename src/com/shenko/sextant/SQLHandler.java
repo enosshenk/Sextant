@@ -346,6 +346,7 @@ public class SQLHandler {
 							null, //frame, let's see if this works			             
 							"You found a new item!\n"
 							+ "Please find this item and type the name.\n"
+							+ "ID: "+ id
 							+ "Quantity: " + item.get("Quantity").getAsInt() 
 							+ "\nBuy: " + item.get("BuyPrice").getAsInt() 
 							+ "\nSell: "+ item.get("SellPrice").getAsInt()

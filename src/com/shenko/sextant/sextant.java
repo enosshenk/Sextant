@@ -159,6 +159,17 @@ public class sextant {
 			Handler = new LogFileHandler();
 			Handler.start();
 		}
+		if(cherno==4)
+		{
+			LogDirectory = "E:\\Steam\\steamapps\\common\\Naval Action\\logs";
+			sextant.println("Grim Mode");
+			Handler.interrupt();
+			frame.setLogStatus(-1); //loading new log file, and wait.
+			sextant.println(Handler.getState());
+			Handler = new LogFileHandler();
+			Handler.start();
+		}
+			
 	}
 	
 	public static void setPlayerName(String name)
