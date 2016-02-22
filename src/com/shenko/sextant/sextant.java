@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.16"; // added warehouse
+	public static String version ="0.02.21"; // changed size, reduced img quality
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
@@ -163,6 +163,16 @@ public class sextant {
 		{
 			LogDirectory = "E:\\Steam\\steamapps\\common\\Naval Action\\logs";
 			sextant.println("Grim Mode");
+			Handler.interrupt();
+			frame.setLogStatus(-1); //loading new log file, and wait.
+			sextant.println(Handler.getState());
+			Handler = new LogFileHandler();
+			Handler.start();
+		}
+		if(cherno==5)
+		{
+			LogDirectory = "I:\\Games\\Steam\\steamapps\\common\\Naval Action\\logs";
+			sextant.println("Wazzy Mode");
 			Handler.interrupt();
 			frame.setLogStatus(-1); //loading new log file, and wait.
 			sextant.println(Handler.getState());

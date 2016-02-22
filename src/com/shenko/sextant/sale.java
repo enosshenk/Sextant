@@ -27,10 +27,25 @@ public Port port; //set in sqlhandler. such a bad practice.
 		this.modified=modified;
 		this.addedBy=addedBy;
 	}
+	
+	public sale()
+	{
+		this.PortID=0;
+		this.ItemID=0;
+		this.quantity=0;
+		this.sellPrice=0;
+		this.buyPrice=0;
+		this.modified=null;
+		this.addedBy=null;
+	}
 
 	public String toString() {
 		return quantity+" b"+ buyPrice+" s"+sellPrice+" "+port.name+ " "+modified;
 		//return "Sale: PortID"+PortID+" ItemID: "+ItemID+ " ("+sellPrice+", "+buyPrice+"), "+modified+"("+addedBy+")"; //TODO add more shit here
+	}
+	
+	public String shortString(){
+		return quantity+" b"+ buyPrice+" s"+sellPrice+" "+modified;
 	}
 }
 

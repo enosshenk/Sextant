@@ -1,6 +1,8 @@
 package com.shenko.sextant;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import com.google.gson.JsonObject;
 
@@ -21,16 +23,58 @@ public class Port {
 	public String capturer=null, modified = null, AddedBy=null;
 	public ArrayList<production> productionArray=new ArrayList<production>();
 	public ArrayList<sale> salesArray=new ArrayList<sale>();
-	
-	
+
+
 	public Port(int ID)
 	{
 		this.ID=ID;
 	}
-	
+
 	public String toString() {
-        return "Port: "+ID+" "+name+ " ("+x+", "+y+") Productions:"+productionArray.size()+" Sales:"+salesArray.size(); //TODO add more shit here
-    }
+		return "Port: "+ID+" "+name+ " ("+x+", "+y+") Productions:"+productionArray.size()+" Sales:"+salesArray.size(); //TODO add more shit here
+	}
+
+	public sale getSale(int ItemID)
+	{
+		sale toReturn=null, tempSale;
+		boolean found=false; //did we find at least 1 result
+		if(salesArray.size()>0)
+		{
+			for(int i=0; i<salesArray.size(); i++)	 
+			{
+
+				tempSale=salesArray.get(i);
+
+				//sextant.println(i+ " "+tempSale.shortString()+" : "+ toReturn.shortString());
+				if(tempSale.ItemID==ItemID)
+				{
+					if(found==false)
+					{
+						found = true;
+						toReturn=tempSale;
+					}else{
+						if(tempSale.modified.compareTo(toReturn.modified)>0)
+						{
+							toReturn = tempSale;
+						}
+					}
+				}
+			}
+		}
+
+
+		if(found)
+		{
+			sextant.println(name+ " "+ toReturn.shortString());
+
+		}else{
+			sextant.println("no sales for "+ItemID+" at "+name);
+		}
+
+		return toReturn;
+	}
+
+
 }
 
 

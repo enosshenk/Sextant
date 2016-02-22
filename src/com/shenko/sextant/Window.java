@@ -85,7 +85,8 @@ public class Window extends JFrame {
 	public Window() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Sextant");
-		setSize(1440,900);
+		setSize(1600,900);
+		//setSize(1440,900);
 		//setSize(800,600);
 		setResizable(false);
 //		setBounds(100, 100, 450, 300);
@@ -139,6 +140,22 @@ public class Window extends JFrame {
 			}
 		});
 		mnDick.add(mntnCherno3);
+		
+		JMenuItem mntnCherno4 = new JMenuItem("Draque Special");
+		mntnCherno3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sextant.reloadLog(4); //reload with cherno's (grim) fucking SSD directory
+			}
+		});
+		mnDick.add(mntnCherno4);
+		
+		JMenuItem mntnCherno5 = new JMenuItem("Wazzy Special");
+		mntnCherno3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sextant.reloadLog(5); //reload with cherno's (grim) fucking SSD directory
+			}
+		});
+		mnDick.add(mntnCherno5);
 		
 		JMenu mnAdmin = new JMenu("Admin");
 		mnNewMenu.add(mnAdmin);
@@ -258,9 +275,9 @@ public class Window extends JFrame {
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setMinimumSize(new Dimension(200, Short.MAX_VALUE));
-		tabbedPane.setPreferredSize(new Dimension(250, Short.MAX_VALUE));
-		tabbedPane.setMaximumSize(new Dimension(250, Short.MAX_VALUE));
+		tabbedPane.setMinimumSize(new Dimension(375, Short.MAX_VALUE));
+		tabbedPane.setPreferredSize(new Dimension(375, Short.MAX_VALUE));
+		tabbedPane.setMaximumSize(new Dimension(375, Short.MAX_VALUE));
 		contentPane.add(tabbedPane);
 		
 		tree = new itemTree("item");
@@ -323,18 +340,22 @@ public class Window extends JFrame {
 	void processTreeClick(MouseEvent me) {
 		TreePath tp = tree.getPathForLocation(me.getX(), me.getY());
 		DefaultMutableTreeNode node;
-		sale thisSale;
+		
 		if (tp != null)
 		{
 			node = (DefaultMutableTreeNode) tp.getLastPathComponent();
 			if(node.getParent()==tree.root)
 			{
 				//it's an item
-				println("item?");
+				int ItemID=sextant.items.find((String)node.getUserObject()); 
+				println("item? "+ItemID + node.getUserObject().toString());
+				
+				MapPanel_1.displayItem(ItemID); 
 				//TODO MapPanel. draw item prices
 			}else{//it's a sale
-				thisSale = (sale) node.getUserObject();
+				sale thisSale = (sale) node.getUserObject();
 				MapPanel_1.CenterViewOnCoordinates(thisSale.port.x, thisSale.port.y);
+				
 			}
 		}	
 		else
@@ -413,7 +434,8 @@ public class Window extends JFrame {
 	
 	public void println(Object toPrint)
 	{
-		textArea.append(toPrint+"\n"); //or insert
+		//textArea.append(toPrint+"\n"); //or insert
+		System.out.println(toPrint);
 	}
 
 }
