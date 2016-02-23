@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.21"; // changed size, reduced img quality
+	public static String version ="0.02.23"; // missions on map
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
@@ -28,6 +28,7 @@ public class sextant {
 	public static String playerName;
 	public static ItemTable items;
 	public static labor laborHours;
+	public static missionList missions;
 	public static int logStatus; 
 	public static boolean GUILoaded;
 		//this will be 0 until we hit EOF and then receive a new message. This indicate we've got an active log file.
@@ -50,6 +51,8 @@ public class sextant {
 		
 		items= new ItemTable();
 		//sextant.println(items);
+		
+		missions = new missionList();
 		
 		portsHash = mySql.getPorts(); //TODO so we should 1) load gui including map, 2) read log, 3) getPorts, 4) push ports to the GUI
 		 //here's some hash usage examples:

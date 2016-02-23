@@ -24,7 +24,14 @@ public class ItemTable {
 	
 	public String get(int ItemID)
 	{
-		return Names.get(ItemIDs.indexOf(ItemID)); 
+		try {
+			return Names.get(ItemIDs.indexOf(ItemID));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			sextant.println("ItemTable get failed on "+ItemID);
+			e.printStackTrace();
+			return null;
+		} 
 	}
 	
 	public int find(String Name)

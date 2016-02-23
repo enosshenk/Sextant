@@ -158,8 +158,33 @@ public class LogFileHandler extends Thread {
 			Parser.ParseItemLine(Line);
 		}
 		
-		
-		
+		if (Line.contains("GetPersonalEvents")) 
+		{
+/*			//11204:[2016-Feb-22 20:57:48.644537] Log: Called PlayerService.GetPersonalEvents(/PlayerService/GetPersonalEvents/) with: 
+			{}
+			Received:
+				[{"TargetPosition":{"x":786400,"y":-106400},"Rank":5,"XpReward":135,"GoldReward":5000},{"TargetPosition":{"x":757600,"y":-54400},"Rank":4,"XpReward":118,"GoldReward":5000}]
+*/			
+			
+			for(int i=0;i<3;i++) //read the next 3 lines
+			{
+				try {
+					Line = Reader.readLine();
+					if(Line==null)
+					{
+						i--;
+						Thread.sleep(1*1000);
+					}
+
+				} catch (IOException | InterruptedException e) {
+					// 
+					e.printStackTrace();
+				}
+			}
+			String toPass = Line;
+			Parser.ParseMissionData(toPass);
+
+		}
 		
 	}
 	

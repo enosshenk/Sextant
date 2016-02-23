@@ -193,6 +193,8 @@ public class MapPanel extends JPanel {
 
 		RenderPrices(grphcs);
 		
+		RenderMissions(grphcs);
+		
 		// Draw marked icon if available
 		if (MarkLocation.X != 0 && MarkLocation.Y != 0)
 		{
@@ -285,6 +287,47 @@ public class MapPanel extends JPanel {
 			PortLoc.X = PortLoc.X - 8;
 			PortLoc.Y = PortLoc.Y - 8;
 			PortIcon.paintIcon(this, g, PortLoc.X, PortLoc.Y);
+		}
+	}
+	
+	public void RenderMissions(Graphics g)
+	{
+		missionList missions = sextant.missions;
+		for(int i=0;i<missions.size(); i++)
+		{
+			//get info
+			int x=missions.x.get(i);
+			int y=missions.y.get(i);
+			int rank=missions.rank.get(i);
+			int xp=missions.xp.get(i);
+			int gold=missions.gold.get(i);
+
+			//draw shit
+			
+			String toPrint = Integer.toString(rank); 
+			
+			g.setFont(new Font("Arial", Font.PLAIN, 32));
+			
+			g.setColor(Color.white); //outline
+			
+			GridPoint point = CoordinateToPixel(-x,-y);
+			
+			
+			g.drawString(toPrint, point.X+1, point.Y+1);
+			g.drawString(toPrint, point.X+1, point.Y-1);
+			g.drawString(toPrint, point.X-1, point.Y+1);
+			g.drawString(toPrint, point.X-1, point.Y-1);
+			
+			g.setColor(Color.blue);
+			g.drawString(toPrint, point.X, point.Y);
+			
+			GridPoint Ship = CoordinateToPixel(PlayerLocation.X, PlayerLocation.Y);
+
+			
+			g.drawLine(point.X+6, point.Y-15, Ship.X, Ship.Y);
+			
+			//sextant.println(point.X+ " "+ point.Y+ " "+ Ship.X+ " "+ Ship.Y);
+			
 		}
 	}
 
