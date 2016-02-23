@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.23"; // missions on map
+	public static String version ="0.02.23.01"; // RichLines
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map

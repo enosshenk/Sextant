@@ -64,7 +64,7 @@ public class MapPanel extends JPanel {
 	private final static RenderingHints renderHints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 	static int startX, startY;
 
-	private GridPoint PlayerLocation, MarkLocation, MarkCoordinates;
+	private GridPoint PlayerLocation, MarkLocation, MarkCoordinates, PortLocation;
 
 	private ImageIcon ShipIcon, PortIcon, MarkIcon;
 
@@ -77,6 +77,8 @@ public class MapPanel extends JPanel {
 
 	public int ItemID; //itemid to show
 
+	//private Graphics g; //this is awful practice. Set by the overloaded refresh method.
+
 	public MapPanel(BufferedImage img, Window inWindow) {
 		OurWindow = inWindow;
 
@@ -86,6 +88,7 @@ public class MapPanel extends JPanel {
 		PlayerLocation = new GridPoint();
 		MarkLocation = new GridPoint();
 		MarkCoordinates = new GridPoint();
+		PortLocation = new GridPoint();
 
 		ItemID=0;
 
@@ -138,12 +141,9 @@ public class MapPanel extends JPanel {
 					CenterViewOnPixel(mapX, mapY);
 				}
 
-
 				//.getViewport().setViewPosition(new Point(scrollPane.getViewport().getViewPosition().x + deltaX, scrollPane.getViewport().getViewPosition().y + deltaY));
 				//mouseX=newMouseX;
 				//mouseY=newMouseY;
-
-
 
 				//  repaint();
 			}           
@@ -172,6 +172,7 @@ public class MapPanel extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics grphcs) {
+		//g=grphcs;
 		Graphics2D g2d = (Graphics2D) grphcs;
 		Component C = null;
 
@@ -192,9 +193,19 @@ public class MapPanel extends JPanel {
 		//grphcs.drawString("hello", Ship.X + 16, Ship.Y + 16);
 
 		RenderPrices(grphcs);
-		
+
 		RenderMissions(grphcs);
-		
+
+		if(!MarkLocation.isNull && !PlayerLocation.isNull)
+		{
+			drawRichLine(grphcs, Ship, MarkLocation, Color.gray);
+		}
+
+		if(!MarkLocation.isNull && !PortLocation.isNull)
+		{
+			drawRichLine(grphcs, PortLocation, MarkLocation, Color.gray);
+		}
+
 		// Draw marked icon if available
 		if (MarkLocation.X != 0 && MarkLocation.Y != 0)
 		{
@@ -216,6 +227,9 @@ public class MapPanel extends JPanel {
 		sextant.println("Marked location X:" + MarkCoordinates.X + " Z:" + MarkCoordinates.Y);
 
 		CenterViewOnCoordinates(inX, inY);
+
+		repaint();
+
 	}
 
 	public void CheckPortsForMouseover()
@@ -289,7 +303,7 @@ public class MapPanel extends JPanel {
 			PortIcon.paintIcon(this, g, PortLoc.X, PortLoc.Y);
 		}
 	}
-	
+
 	public void RenderMissions(Graphics g)
 	{
 		missionList missions = sextant.missions;
@@ -303,33 +317,23 @@ public class MapPanel extends JPanel {
 			int gold=missions.gold.get(i);
 
 			//draw shit
-			
+
 			String toPrint = Integer.toString(rank); 
-			
-			g.setFont(new Font("Arial", Font.PLAIN, 32));
-			
-			g.setColor(Color.white); //outline
-			
+
 			GridPoint point = CoordinateToPixel(-x,-y);
-			
-			
-			g.drawString(toPrint, point.X+1, point.Y+1);
-			g.drawString(toPrint, point.X+1, point.Y-1);
-			g.drawString(toPrint, point.X-1, point.Y+1);
-			g.drawString(toPrint, point.X-1, point.Y-1);
-			
-			g.setColor(Color.blue);
-			g.drawString(toPrint, point.X, point.Y);
-			
+
+			outlineText(g, toPrint, point.X, point.Y, Color.red, new Font("Arial", Font.PLAIN, 32));
+
 			GridPoint Ship = CoordinateToPixel(PlayerLocation.X, PlayerLocation.Y);
 
-			
-			g.drawLine(point.X+6, point.Y-15, Ship.X, Ship.Y);
-			
+
+			drawRichLine(g, Ship.X, Ship.Y, point.X+6, point.Y-15, Color.red);
+
 			//sextant.println(point.X+ " "+ point.Y+ " "+ Ship.X+ " "+ Ship.Y);
-			
+
 		}
 	}
+
 
 	public void RenderPrices(Graphics g)
 	{		 
@@ -339,7 +343,7 @@ public class MapPanel extends JPanel {
 		if(ItemID>0)
 		{
 			sextant.println("rendering item "+ItemID+ " prices. . .");
-			g.setFont(new Font("Arial", Font.BOLD, 12));
+
 			for (Port p : Ports)
 			{
 				GridPoint PortLoc = CoordinateToPixel( p.x, p.y );
@@ -348,25 +352,17 @@ public class MapPanel extends JPanel {
 				if(mySale!=null)
 				{
 					toPrint = mySale.shortString();
-					
-					
+
+
 				}
 				else
 				{
 					toPrint="none";
-					
+
 				}
 				//sextant.println(p.name+ " "+ toPrint);
-				
-				g.setColor(Color.white); //outline
-				g.drawString(toPrint, PortLoc.X+32+1, PortLoc.Y+6+1);
-				g.drawString(toPrint, PortLoc.X+32+1, PortLoc.Y+6-1);
-				g.drawString(toPrint, PortLoc.X+32-1, PortLoc.Y+6+1);
-				g.drawString(toPrint, PortLoc.X+32-1, PortLoc.Y+6-1);
-				
-				g.setColor(Color.blue);
-				g.drawString(toPrint, PortLoc.X+32, PortLoc.Y+6);
-				
+
+				outlineText(g, toPrint, PortLoc.X+32, PortLoc.Y+6, Color.blue, new Font("Arial", Font.BOLD, 12));
 				g.drawLine(PortLoc.X+32, PortLoc.Y+6, PortLoc.X, PortLoc.Y);
 			}
 		}
@@ -541,4 +537,66 @@ public class MapPanel extends JPanel {
 		repaint();
 	}
 
+	public void outlineText(Graphics g, String text, int x, int y, Color c, Font f)
+	{
+		GridPoint loc = new GridPoint();
+		loc.X=x;
+		loc.Y=y;
+		g.setFont(f);
+		g.setColor(Color.white); //outline
+		g.drawString(text, loc.X+1, loc.Y+1);
+		g.drawString(text, loc.X+1, loc.Y-1);
+		g.drawString(text, loc.X-1, loc.Y+1);
+		g.drawString(text, loc.X-1, loc.Y-1);
+
+		g.setColor(c);
+		g.drawString(text, loc.X, loc.Y);
+
+	}
+
+	public void SetPlayerLocation(String sX, String sY) {
+		int x=0, y=0;
+		double dX=Double.parseDouble(sX);
+		double dY=Double.parseDouble(sY);
+		x=(int)dX;
+		y=(int)dY;
+		SetPlayerLocation(-x,-y);
+
+	}
+
+	public void drawRichLine(Graphics g, int x1, int y1, int x2, int y2, Color c)
+	{
+
+		g.setColor(c); //outline
+		g.drawLine(x1, y1, x2, y2);
+		double dist, hdg;
+		String sDist, sHdg;
+		dist = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+		hdg = Math.atan2((y2-y1),(x2-x1)); //get the initial angle
+		hdg = hdg*(180/Math.PI); //to degrees
+		hdg=hdg-270; //fix the orientation
+		if(hdg<0)
+		{
+			hdg=hdg+360;
+		}
+		if(hdg>360)
+		{
+			hdg=hdg-360;
+		}
+		sDist=String.valueOf((int)dist);
+		sHdg=String.valueOf((int)hdg);
+		outlineText(g, sDist+"@"+sHdg, (x1+x2)/2-30, (y1+y2)/2, c,  new Font("TimesRoman", Font.PLAIN, 14));
+
+	}
+
+	public void drawRichLine(Graphics g, GridPoint gp1, GridPoint gp2, Color c)
+	{
+		drawRichLine(g, gp1.X, gp1.Y, gp2.X, gp2.Y, c);
+	}
+
+	public void centerViewOnPort(int x, int y)
+	{
+		CenterViewOnCoordinates(x,y);
+		PortLocation.SetLoc(x, y);
+	}
 }

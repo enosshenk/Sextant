@@ -79,6 +79,7 @@ public class Window extends JFrame {
 	public JTextField lblX;
 	public JTextField lblY;
 	public JButton goXY;
+	public JButton goXYShip;
 	/**
 	 * Create the frame.
 	 */
@@ -259,7 +260,7 @@ public class Window extends JFrame {
 		
 		
 		
-		goXY = new JButton("Go to X,Z");
+		goXY = new JButton("Set Marker");
         menuBar.add(goXY);
         goXY.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -267,7 +268,18 @@ public class Window extends JFrame {
 				MapPanel_1.MarkLocation( lblX.getText(),lblY.getText() );
 				};				
 			});
+        
+        goXYShip = new JButton("Set Ship");
+        menuBar.add(goXYShip);
+        goXYShip.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			//	MapPanel_1.CenterViewOnCoordinates(lblX.getText(), lblY.getText());
+				MapPanel_1.SetPlayerLocation(lblX.getText(),lblY.getText() );
+				};				
+			});
 		
+        
+        
 		// Set sections up
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -354,7 +366,7 @@ public class Window extends JFrame {
 				//TODO MapPanel. draw item prices
 			}else{//it's a sale
 				sale thisSale = (sale) node.getUserObject();
-				MapPanel_1.CenterViewOnCoordinates(thisSale.port.x, thisSale.port.y);
+				MapPanel_1.centerViewOnPort(thisSale.port.x, thisSale.port.y);
 				
 			}
 		}	
@@ -424,8 +436,8 @@ public class Window extends JFrame {
 	
 	public void setLoc(int x, int z)
 	{
-		lblX.setText(Integer.toString(x * -1));
-		lblY.setText(Integer.toString(z * -1));
+		lblX.setText(Integer.toString(x));
+		lblY.setText(Integer.toString(z));
 		
 		MapPanel_1.SetPlayerLocation(x * -1, z * -1);
 		
