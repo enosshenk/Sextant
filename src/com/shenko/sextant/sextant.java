@@ -23,6 +23,7 @@ public class sextant {
 	//TODO show missions on map
 	
 	public static LogFileHandler Handler;
+	public static ShotLogger shots;
 	public static SQLHandler mySql;
 	public static Window frame;
 	public static String playerName;
@@ -115,9 +116,13 @@ public class sextant {
 		
 		Handler = new LogFileHandler();
 		Handler.start();
-
 		// Get latest log
 		sextant.println(Handler.GetLatestLogFile());	
+		
+		shots = new ShotLogger();
+		shots.start();
+		
+		
 		
 	}	
 	

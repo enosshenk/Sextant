@@ -420,6 +420,7 @@ public class MapPanel extends JPanel {
 			// This will change later to just update boat location
 			CenterViewOnCoordinates(inX, inZ);
 		}
+		repaint();
 	}
 
 	public void CenterViewOnPlayer()

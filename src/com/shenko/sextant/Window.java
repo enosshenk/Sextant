@@ -72,6 +72,7 @@ public class Window extends JFrame {
 	private MapTooltip MapTooltip;
 	
 	public JTextArea textArea;
+	public JTextArea shotText;
 	
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
@@ -251,7 +252,7 @@ public class Window extends JFrame {
 		    @Override
 		    public void actionPerformed(ActionEvent e)
 		    {
-		    	MapPanel_1.MarkLocation( lblX.getText(),lblY.getText() );
+		    	MapPanel_1.SetPlayerLocation(lblX.getText(),lblY.getText() );
 		    }
 		};
 		
@@ -326,13 +327,22 @@ public class Window extends JFrame {
 		MapPanel_1.setMinimumSize(new Dimension(400, 400));
 		MapPanel_1.setPreferredSize(new Dimension(400, 400));
 		MapPanel_1.setMaximumSize(new Dimension(500, 500));	
+		
+		JTabbedPane mapTabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		mapTabbedPane.setMinimumSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
+		mapTabbedPane.setPreferredSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
+		mapTabbedPane.setMaximumSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
+		add(mapTabbedPane);
 		//MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JScrollPane v= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-         add(v);
+         mapTabbedPane.addTab("Map", null, v, null);
          v.getVerticalScrollBar().setUnitIncrement(20);
-
          v.getHorizontalScrollBar().setUnitIncrement(20); //doesn't work.
-
+         
+         
+        shotText = new JTextArea();
+     	JScrollPane shotScrollPane = new JScrollPane(shotText); //I think JTextArea handles scrolling internally
+     	mapTabbedPane.addTab("Shot Logger", null, shotScrollPane, null);
 		//contentPane.add(MapPanel_1);
 		
 		MapTooltip = new MapTooltip();
@@ -387,7 +397,7 @@ public class Window extends JFrame {
 		// Called when a port is moused over in MapPanel
 		
 		sextant.println("Mouse over " + inPort.name);
-		MapTooltip.setVisible(true);
+		MapTooltip.setVisible(false);
 		MapTooltip.setMinimumSize(new Dimension(50, 50));
 		MapTooltip.setPreferredSize(new Dimension(100, 100));
 		MapTooltip.setMaximumSize(new Dimension(100, 100));	
@@ -396,6 +406,7 @@ public class Window extends JFrame {
 		MapTooltip.setLocation(inPoint.X, inPoint.Y);
 		MapTooltip.SetPort(inPort);		
 		MapTooltip.setSize(MapTooltip.getPreferredSize());
+		MapTooltip.setVisible(true);
 	}
 	
 	public void EndMouseOverPort()
