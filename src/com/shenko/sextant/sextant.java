@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.24"; // Shot Logger
+	public static String version ="0.02.25"; // prompt for directory, write config file.
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
