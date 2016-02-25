@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.23.01"; // RichLines
+	public static String version ="0.02.24"; // Shot Logger
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
@@ -117,7 +117,7 @@ public class sextant {
 		Handler = new LogFileHandler();
 		Handler.start();
 		// Get latest log
-		sextant.println(Handler.GetLatestLogFile());	
+
 		
 		shots = new ShotLogger();
 		shots.start();
