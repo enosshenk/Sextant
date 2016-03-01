@@ -64,10 +64,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class Window extends JFrame {
 
 	private JPanel contentPane;
-	private MapPanel MapPanel;
+	//private MapPanel MapPanel;
 	private MapPanel MapPanel_1;
+	
 	private itemTree tree;
-
+	public itemTree production;
 	public itemTree warehouse;
 
 	private MapTooltip MapTooltip;
@@ -266,13 +267,16 @@ public class Window extends JFrame {
 		JScrollPane warehouseScrollPane = new JScrollPane(warehouse);
 		tabbedPane.addTab("Warehouse", null, warehouseScrollPane, null);
 
+		production = new itemTree("production");
+		JScrollPane productionScrollPane = new JScrollPane(production);
+		tabbedPane.addTab("production", null, productionScrollPane, null);
 
 		textArea = new JTextArea();
 		JScrollPane textAreaScrollPane = new JScrollPane(textArea); //I think JTextArea handles scrolling internally
 		tabbedPane.addTab("debug info", null, textAreaScrollPane, null);
 		//tabbedPane.addTab("debug info", null, textArea, null);
 		// Map panel
-		MapPanel = null;
+		//MapPanel = null;
 		BufferedImage Image = null;
 		// Load the image
 		try {
@@ -294,10 +298,10 @@ public class Window extends JFrame {
 		mapTabbedPane.setMaximumSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
 		add(mapTabbedPane);
 		//MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JScrollPane v= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		mapTabbedPane.addTab("Map", null, v, null);
-		v.getVerticalScrollBar().setUnitIncrement(20);
-		v.getHorizontalScrollBar().setUnitIncrement(20); //doesn't work.
+		JScrollPane mapPane= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		mapTabbedPane.addTab("Map", null, mapPane, null);
+		mapPane.getVerticalScrollBar().setUnitIncrement(20);
+		mapPane.getHorizontalScrollBar().setUnitIncrement(20); //doesn't work.
 
 
 		shotText = new JTextArea();
@@ -313,7 +317,7 @@ public class Window extends JFrame {
 		MapTooltip.setMaximumSize(new Dimension(100, 100));	
 		MapTooltip.setBounds(0, 0, 50, 50);
 
-		contentPane.add(MapTooltip);
+		mapPane.add(MapTooltip);
 		MapTooltip.setVisible(false);
 
 		sextant.GUILoaded=true;
@@ -339,7 +343,6 @@ public class Window extends JFrame {
 			}else{//it's a sale
 				sale thisSale = (sale) node.getUserObject();
 				MapPanel_1.centerViewOnPort(thisSale.port.x, thisSale.port.y);
-
 			}
 		}	
 		else
@@ -352,6 +355,7 @@ public class Window extends JFrame {
 		// Called from MapPanel when user clicked on a known port on the map
 
 		sextant.println("User clicked on " + inPort.name);
+		MapPanel_1.MarkLocation(-inPort.x, -inPort.y);
 	}
 
 	public void MouseOverPort(Port inPort, GridPoint inPoint)
@@ -370,13 +374,15 @@ public class Window extends JFrame {
 		popup.SetPort(inPort);		
 		popup.setSize(MapTooltip.getPreferredSize());
 		popup.setVisible(true);
+		//MapPanel_1.add(popup);
+		
 	}
 
 	public void EndMouseOverPort()
 	{
 		// Called when a user stops mousing over a port
 
-		MapTooltip.setVisible(false);
+		//MapTooltip.setVisible(false);
 	}
 
 	public void setLogStatus (int num)
