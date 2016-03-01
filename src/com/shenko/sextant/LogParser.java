@@ -313,7 +313,7 @@ public class LogParser {
 	public void ParseClanTag(String inData)
 	{
 		sextant.println("clan tag:"+inData+ inData.length());
-		if(inData.length()>11) //because of spaces and bullshit
+/*		if(inData.length()>11) //because of spaces and bullshit
 		{
 			String clanTag;
 			clanTag = inData.substring(inData.indexOf("\""), inData.indexOf("}")+1);
@@ -322,7 +322,7 @@ public class LogParser {
 			{
 				sextant.mySql.whitelist();
 			}
-		}
+		}*/
 	}
 
 }

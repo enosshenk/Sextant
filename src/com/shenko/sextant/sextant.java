@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 	
-	public static String version ="0.02.29"; // prompt for directory, write config file.
+	public static String version ="0.02.29.01"; // bug with clan tag
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
