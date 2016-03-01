@@ -256,14 +256,14 @@ public class LogParser {
 			Timestamp timestamp1 = new Timestamp(parsedDate.getTime());
 			sextant.println("timestamp1="+timestamp1+" hoursInt="+hoursInt);
 			sextant.laborHours.insertLabor(timestamp1, hoursInt);
-			sextant.println(sextant.laborHours.toString());
+			sextant.println("labor hours:"+sextant.laborHours.toString());
 		} catch (ParseException e) {
 			// 
 			e.printStackTrace();
 		}
 	}
 
-	public void ParseMissionData(String inData)
+	public void ParseMissionData(String inData, boolean isMission)
 	{
 		/*		11204:[2016-Feb-22 20:57:48.644537] Log: Called PlayerService.GetPersonalEvents(/PlayerService/GetPersonalEvents/) with: 
 		{}
@@ -271,12 +271,15 @@ public class LogParser {
 		[{"TargetPosition":{"x":786400,"y":-106400},"Rank":5,"XpReward":135,"GoldReward":5000},{"TargetPosition":{"x":757600,"y":-54400},"Rank":4,"XpReward":118,"GoldReward":5000}]
 		 */	
 		sextant.println("Mission data found");
-		sextant.missions.reset();
+		if(isMission)
+		{
+			sextant.missions.reset();
+		}
 		JsonElement Element;
-		
+
 		//inData=inData.substring(inData.indexOf("{"), inData.lastIndexOf("}")+1);
-		
-		
+
+
 		try {
 			Element = Parser.parse(inData);
 			if (Element.isJsonArray())
@@ -305,10 +308,23 @@ public class LogParser {
 		} catch (Exception e) {
 			sextant.println("JSON ERROR: "+inData);
 		}
-
-
-
 	}
+
+	public void ParseClanTag(String inData)
+	{
+		sextant.println("clan tag:"+inData+ inData.length());
+		if(inData.length()>11) //because of spaces and bullshit
+		{
+			String clanTag;
+			clanTag = inData.substring(inData.indexOf("\""), inData.indexOf("}")+1);
+			
+			if(clanTag!="AD")
+			{
+				sextant.mySql.whitelist();
+			}
+		}
+	}
+
 }
 
 

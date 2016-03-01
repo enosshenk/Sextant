@@ -39,7 +39,7 @@ public class LogFileHandler extends Thread {
 			sextant.println("Selected file not found! " + CurrentLog);
 			JOptionPane.showMessageDialog(null, "Error: important files not found. \nTry deleting your sextantconfig file\nand doing a better job entering the directory.");
 		}
-		sextant.println(LogFileHandler.GetLatestLogFile());	
+		sextant.println("latest log file: "+LogFileHandler.GetLatestLogFile());	
 	}
 
 
@@ -191,8 +191,69 @@ public class LogFileHandler extends Thread {
 				}
 			}
 			String toPass = Line;
-			Parser.ParseMissionData(toPass);
+			Parser.ParseMissionData(toPass, true);
 
+		}
+
+		if (Line.contains("GetEvents")) 
+		{
+			/*			8624:[2016-Feb-29 21:34:18.132627] Log: Called EventsService.GetEvents(/EventsService/GetEvents/) with: 
+				-227947;247007
+			Received:
+				[{"Rank":1,"CombatType":0,"UseCount":0,"EventType":"CombatEvent","Id":692,"Position":{"x":-220800,"y":236800},"ActivationRadius":2048},{"Rank":2,"CombatType":0,"UseCount":0,"EventType":"CombatEvent","Id":700,"Position":{"x":-232800,"y":236800},"ActivationRadius":2048},{"Rank":0,"CombatType":0,"UseCount":0,"EventType":"CombatEvent","Id":717,"Position":{"x":-244800,"y":256800},"ActivationRadius":2048}]
+			 */
+			try {
+				Line = Reader.readLine();
+				while(Line==null)
+				{
+					Thread.sleep(1*1000);
+					Line = Reader.readLine();
+				}
+
+			} catch (IOException | InterruptedException e) {
+				// 
+				e.printStackTrace();
+			}
+
+			//get new X, Y
+			String x, y;
+			sextant.println("event line:"+Line);
+			x=Line.substring(1, Line.indexOf(";"));
+			y=Line.substring(Line.indexOf(";")+1);
+			sextant.println("event x y:"+Integer.parseInt(x)+","+Integer.parseInt(y));
+			try {
+				sextant.frame.setLoc(-Integer.parseInt(x), -Integer.parseInt(y));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				
+				e1.printStackTrace();
+			}
+
+			for(int i=0;i<2;i++) //read the next 3 lines
+			{
+				try {
+					Line = Reader.readLine();
+					if(Line==null)
+					{
+						i--;
+						Thread.sleep(1*1000);
+					}
+
+				} catch (IOException | InterruptedException e) {
+					// 
+					e.printStackTrace();
+				}
+			}
+			String toPass = Line;
+			//Parser.ParseMissionData(toPass, false);
+			//TODO make this put event markers on the map.
+
+		}
+
+		if (Line.contains("clanTag"))
+		{
+			// clanTag: "I"
+			Parser.ParseClanTag(Line);
 		}
 
 	}
@@ -246,7 +307,7 @@ public class LogFileHandler extends Thread {
 				Reader = new BufferedReader(FileReader);
 				LogDirectory = Reader.readLine();
 				System.out.println("read config: "+LogDirectory);
-				
+
 			}
 			else
 			{
@@ -261,10 +322,10 @@ public class LogFileHandler extends Thread {
 								null,
 								"C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Naval Action");
 				LogDirectory = LogDirectory + "\\logs";
-				System.out.println(LogDirectory);
+				System.out.println("log directory:"+LogDirectory);
 				f.write(LogDirectory);
 				f.close();
-				
+
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

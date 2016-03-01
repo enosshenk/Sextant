@@ -722,4 +722,9 @@ public class SQLHandler {
 			
 		}
 		
+		public void whitelist() //verify username for those who have failed clan authentication
+		{
+			
+		}
+		
 }

@@ -339,9 +339,9 @@ public class MapPanel extends JPanel {
 	{		 
 		String toPrint=null;
 		// Iterate ports and render icon at their locations
-		sextant.println(ItemID);
 		if(ItemID>0)
 		{
+			sextant.println("renderPrices itemid:"+ItemID);
 			sextant.println("rendering item "+ItemID+ " prices. . .");
 
 			for (Port p : Ports)

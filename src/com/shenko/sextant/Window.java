@@ -117,48 +117,7 @@ public class Window extends JFrame {
 		});
 		mnNewMenu.add(mntnSyncDB);
 
-		JMenu mnDick = new JMenu("Dicks");
-		mnNewMenu.add(mnDick);
 
-		JMenuItem mntnCherno = new JMenuItem("Cherno Special");
-		mntnCherno.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sextant.reloadLog(1); //reload with cherno's fucking SSD directory
-			}
-		});
-		mnDick.add(mntnCherno);
-
-		JMenuItem mntnCherno2 = new JMenuItem("MoreAlive Special");
-		mntnCherno2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sextant.reloadLog(2); //reload with cherno's (morealivethandead) fucking SSD directory
-			}
-		});
-		mnDick.add(mntnCherno2);
-
-		JMenuItem mntnCherno3 = new JMenuItem("Grim Special");
-		mntnCherno3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sextant.reloadLog(3); //reload with cherno's (grim) fucking SSD directory
-			}
-		});
-		mnDick.add(mntnCherno3);
-
-		JMenuItem mntnCherno4 = new JMenuItem("Draque Special");
-		mntnCherno3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sextant.reloadLog(4); //reload with cherno's (grim) fucking SSD directory
-			}
-		});
-		mnDick.add(mntnCherno4);
-
-		JMenuItem mntnCherno5 = new JMenuItem("Wazzy Special");
-		mntnCherno3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sextant.reloadLog(5); //reload with cherno's (grim) fucking SSD directory
-			}
-		});
-		mnDick.add(mntnCherno5);
 
 		JMenu mnAdmin = new JMenu("Admin");
 		mnNewMenu.add(mnAdmin);
@@ -423,21 +382,27 @@ public class Window extends JFrame {
 	public void setLogStatus (int num)
 	{
 		//sextant.println("setting log status "+num);
+		//0 is reading initially loaded file. at 1, we've hit EOF. at 2, we've read new info, confirming that we have a live file.
 		if(num==0)
 		{
 			lblFileStatus.setForeground(Color.red);
+			lblFileStatus.setText("Log: no file");
 		}
 		else if(num==1)
 		{
 			lblFileStatus.setForeground(Color.yellow);
+
+			lblFileStatus.setText("Log: reading");
 		}
 		else if (num==2)
 		{
 			lblFileStatus.setForeground(Color.green);
+			lblFileStatus.setText("Log: live file");
 		}		
 		else if (num==-1)
 		{
 			lblFileStatus.setForeground(Color.orange);
+			lblFileStatus.setText("Log: reloading");			
 		}
 		else
 		{
