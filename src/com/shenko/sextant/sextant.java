@@ -63,7 +63,7 @@ public class sextant {
 		 {
 			 Integer key = portIterator.next();
 			 Port myPort = portsHash.get(key);
-			 sextant.println(myPort); 
+			 sextant.println("myPort:"+myPort); 
 		 }
 		 
 		 mySql.getProduction(portsHash); 
@@ -75,7 +75,7 @@ public class sextant {
 		 {
 			 Integer key = portIterator.next();
 			 Port myPort = portsHash.get(key);
-			 sextant.println(myPort);
+			 sextant.println("myPort:"+myPort);
 			 for(int i=0; i<myPort.productionArray.size(); i++)
 			 {
 				 //sextant.println(myPort.productionArray.get(i));
@@ -135,61 +135,7 @@ public class sextant {
 		Handler.start();
 	}
 	
-	public static void reloadLog(int cherno){
-		
-		if(cherno==1)
-		{
-			LogDirectory = "D:\\Steam Games\\steamapps\\common\\Naval Action\\logs";
-			sextant.println("Cherno Mode");
-			Handler.interrupt();
-			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState());
-			Handler = new LogFileHandler();
-			Handler.start();
-		}
-		if(cherno==2)
-		{
-			LogDirectory = "D:\\SteamLibrary\\steamapps\\common\\Naval Action\\logs";
-			sextant.println("MoreAlive Mode");
-			Handler.interrupt();
-			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState());
-			Handler = new LogFileHandler();
-			Handler.start();
-		}
-		if(cherno==3)
-		{
-			LogDirectory = "E:\\steam library\\steamapps\\common\\Naval Action\\logs";
-			sextant.println("Grim Mode");
-			Handler.interrupt();
-			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState());
-			Handler = new LogFileHandler();
-			Handler.start();
-		}
-		if(cherno==4)
-		{
-			LogDirectory = "E:\\Steam\\steamapps\\common\\Naval Action\\logs";
-			sextant.println("Grim Mode");
-			Handler.interrupt();
-			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState());
-			Handler = new LogFileHandler();
-			Handler.start();
-		}
-		if(cherno==5)
-		{
-			LogDirectory = "I:\\Games\\Steam\\steamapps\\common\\Naval Action\\logs";
-			sextant.println("Wazzy Mode");
-			Handler.interrupt();
-			frame.setLogStatus(-1); //loading new log file, and wait.
-			sextant.println(Handler.getState());
-			Handler = new LogFileHandler();
-			Handler.start();
-		}
-			
-	}
-	
+
 	public static void setPlayerName(String name)
 	{
 		//sextant.println("setting player name: "+name);
