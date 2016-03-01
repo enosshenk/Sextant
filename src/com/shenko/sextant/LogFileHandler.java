@@ -263,6 +263,11 @@ public class LogFileHandler extends Thread {
 			Parser.ParseSteam(Line);
 		}
 		
+		if (Line.contains("playerName"))
+		{
+			Parser.ParseName(Line);
+		}
+		
 	}
 
 

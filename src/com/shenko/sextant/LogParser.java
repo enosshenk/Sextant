@@ -179,6 +179,8 @@ public class LogParser {
 			int WorldPositionX = PlayerPosition.get("x").getAsInt();
 			int WorldPositionY = PlayerPosition.get("y").getAsInt();
 
+			sextant.nation=Nation;
+			
 			sextant.frame.setLoc(PlayerPosition.get("x").getAsInt(), PlayerPosition.get("z").getAsInt());
 
 
@@ -199,6 +201,7 @@ public class LogParser {
 				sextant.CurrentPort = CurrentPortID;
 				sextant.println("CurrentPort: "+sextant.CurrentPort);
 			}
+			sextant.mySql.hi(Name);
 
 		}
 		else
@@ -206,7 +209,6 @@ public class LogParser {
 			sextant.println("Player JSON data invaid");
 		}
 	}
-
 
 	public void ParsePortProductionData(String inData)
 	{
@@ -314,17 +316,15 @@ public class LogParser {
 
 	public void ParseClanTag(String inData)
 	{
-		sextant.println("clan tag:"+inData+ inData.length());
+		sextant.println("clan tag:"+inData+ ","+inData.length());
+		String clanTag=null;
 		if(inData.length()>11) //because of spaces and bullshit
 		{
-			String clanTag;
 			clanTag = inData.substring(inData.indexOf("\""), inData.lastIndexOf("\"")-1);
 			
-			if(clanTag!="AD")
-			{
-				sextant.mySql.whitelist();
-			}
 		}
+		sextant.clan=clanTag;
+		sextant.mySql.whitelist(); //also hi, because we'll have steamName, name, and clan.
 	}
 	
 	public void ParseSteam(String inData)
@@ -332,7 +332,17 @@ public class LogParser {
 		//8824:[2016-Feb-29 22:12:58.639353] Log: [Default] [ClientApplicationStateManager]: OnLogon: SteamID = 76561197980847483 SteamName = absolain UserId = 6bc71687-7c00-4307-a1e5-2d9bdfb30a66.3751
 		String steamName;
 		steamName = inData.substring(inData.indexOf("SteamName")+12, inData.indexOf("UserId")-1);
+		sextant.steam=steamName;
+		sextant.println("got name.");
 		//TODO finish this
+	}
+	
+	public void ParseName(String inData)
+	{
+		  //playerName: "absolain"
+		sextant.playerName=inData.substring(inData.indexOf("\""), inData.lastIndexOf("\""));
+		sextant.println("hi "+inData.substring(inData.indexOf("\""), inData.lastIndexOf("\"")));
+		
 	}
 
 

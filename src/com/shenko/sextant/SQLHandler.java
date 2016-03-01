@@ -1,5 +1,8 @@
 package com.shenko.sextant;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -694,8 +697,12 @@ public class SQLHandler {
 		public void hi(String name)
 		{
 			open();
+			sextant.println("hi.");
 			try {
-				stmt.executeUpdate("insert ignore sql5105183.users (name, version) values ('" + name + "', '" + sextant.version + "')");
+				String myQuery = "insert ignore sql5105183.users (name, version, clan, nation, steamID) values"
+						+ " ('" + name + "', '" + sextant.version  + "', '" + sextant.clan + "', '" + sextant.nation + "', '" + sextant.steam + "')";
+				sextant.println(myQuery);
+				stmt.executeUpdate(myQuery);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -724,23 +731,76 @@ public class SQLHandler {
 		
 		public void whitelist() //verify username for those who have failed clan authentication
 		{
-			
+			if(!sextant.hi)
+			{
+				hi(sextant.playerName);
+			}
+			sextant.hi=true;
+			open();
 		}
 		
 		public String getVersion()
 		{
 			//returns a HashMap of Ports with basic info. Does not include production or sales.
 			
-			open();
+
 			String version=null;
+			sextant.println("getting version");
 			try {
+				open();
 				rs=stmt.executeQuery("SELECT * FROM sql5105183.version");
-				version = rs.getString(version);
-				
+				while(rs.next())
+				{
+					version = rs.getString("version");
+				}
+				close();
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			sextant.println("this version:"+sextant.version+", server version:"+version);
+			int comp = sextant.version.compareTo(version);
+			if(comp<0)
+			{
+				JOptionPane.showMessageDialog(null, "<html>You've got version "+sextant.version+" but the current version is "+version+". <b>You "
+						+ "gotta upgrade.</B>\n\nI'm sure it's "
+						+ "a lot of work to click download and open the new version. Sorry I keep adding all these features.", "Update please", 
+						JOptionPane.INFORMATION_MESSAGE);
+				try {
+					java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.dropbox.com/s/4lzlrf0ql6etexf/sextant.jar?dl=0"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.exit(0);
+			}
+			else if(comp>0)
+			{
+				int dialogResult = JOptionPane.showConfirmDialog (null, "Upgrade server current version from "+version+" to "+sextant.version+"?","Warning",JOptionPane.YES_NO_OPTION);
+				if(dialogResult == JOptionPane.YES_OPTION){
+					open();
+					sextant.println("Updating version on server.");
+					try {
+						String myQuery = "delete from sql5105183.version where 1";
+						sextant.println(myQuery);
+						stmt.executeUpdate(myQuery);
+						myQuery = "insert into sql5105183.version (version) values ('"+sextant.version +"');";
+						sextant.println(myQuery);
+						stmt.executeUpdate(myQuery);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					close();
+					
+				}
+			}
+			
+			sextant.println("getVersion comp: "+comp);
+			
+			
 			
 			close();
 			return version;

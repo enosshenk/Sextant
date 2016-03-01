@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 
-	public static String version ="0.03.01"; // bug with clan tag
+	public static String version ="0.03.01.01"; // bug with clan tag
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
@@ -27,6 +27,9 @@ public class sextant {
 	public static SQLHandler mySql;
 	public static Window frame;
 	public static String playerName;
+	public static String clan;
+	public static String steam;
+	public static int nation; //player's nation
 	public static ItemTable items;
 	public static labor laborHours;
 	public static missionList missions;
@@ -41,6 +44,7 @@ public class sextant {
 
 	public static void main(String [] args) {
 		sextant.println("Started...");
+		
 		//splashScreen splash = new splashScreen(); //fuck this bullshit
 
 		GUILoaded=false;
@@ -117,6 +121,7 @@ public class sextant {
 
 		Handler = new LogFileHandler();
 		Handler.start();
+		mySql.getVersion();
 		// Get latest log
 
 
@@ -144,11 +149,7 @@ public class sextant {
 		frame.lblPlayerName.setText(name);
 		frame.lblPlayerName.setForeground(Color.green);
 		playerName=name;
-		if(!hi)
-		{
-			mySql.hi(playerName);
-		}
-		hi=true;
+
 	}
 
 	public static void println(Object toPrint)

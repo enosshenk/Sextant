@@ -176,7 +176,7 @@ public class MapPanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) grphcs;
 		Component C = null;
 
-		super.repaint();
+		//super.repaint();
 		
 		//turn on some nice effects
 		applyRenderHints(g2d);
