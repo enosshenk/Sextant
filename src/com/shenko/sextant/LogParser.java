@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.*;
 
 public class LogParser {
@@ -313,17 +315,27 @@ public class LogParser {
 	public void ParseClanTag(String inData)
 	{
 		sextant.println("clan tag:"+inData+ inData.length());
-/*		if(inData.length()>11) //because of spaces and bullshit
+		if(inData.length()>11) //because of spaces and bullshit
 		{
 			String clanTag;
-			clanTag = inData.substring(inData.indexOf("\""), inData.indexOf("}")+1);
+			clanTag = inData.substring(inData.indexOf("\""), inData.lastIndexOf("\"")-1);
 			
 			if(clanTag!="AD")
 			{
 				sextant.mySql.whitelist();
 			}
-		}*/
+		}
 	}
+	
+	public void ParseSteam(String inData)
+	{
+		//8824:[2016-Feb-29 22:12:58.639353] Log: [Default] [ClientApplicationStateManager]: OnLogon: SteamID = 76561197980847483 SteamName = absolain UserId = 6bc71687-7c00-4307-a1e5-2d9bdfb30a66.3751
+		String steamName;
+		steamName = inData.substring(inData.indexOf("SteamName")+12, inData.indexOf("UserId")-1);
+		//TODO finish this
+	}
+
+
 
 }
 

@@ -20,7 +20,7 @@ public class itemTree extends JTree{
 	//private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unused") //it's smart to think that tempChild==null would exclude code.
-	public itemTree(String type) //"item" or "port" or "warehouse"
+	public itemTree(String type) //"item" or "port" or "warehouse" or "production"
 	{
 		sextant.println(type+" tree building started.");
 		setRootVisible(false);
@@ -57,6 +57,34 @@ public class itemTree extends JTree{
 		}else if(type=="port"){
 
 		}else if(type=="warehouse"){
+		}else if(type=="production"){
+			if(sextant.items.count()>0)
+			{
+				model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(0))), root, 0);
+			}
+			for(int i=0;i<sextant.items.count();i++)
+			{
+				//sextant.println(i);
+				int nodeCount=0;
+				DefaultMutableTreeNode tempChild=(DefaultMutableTreeNode) root.getFirstChild(); 
+				for(tempChild=(DefaultMutableTreeNode) root.getFirstChild(); tempChild==null || 
+						sextant.items.get(sextant.items.index(i)).compareTo(tempChild.toString())>0;tempChild=(DefaultMutableTreeNode) root.getChildAfter(tempChild))
+				{
+					//loop until either we find a node where the text is greater than it, or we reach the end
+				}
+				if(tempChild == null)
+				{
+					//then the item to insert is greater than everything, put it at the end
+					model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(i))), root, model.getChildCount(root));
+
+				} else {
+					//tempChild is the first child greater than the string, so
+					model.insertNodeInto(new DefaultMutableTreeNode(sextant.items.get(sextant.items.index(i))), root, model.getIndexOfChild(root, tempChild));
+
+				}
+			}
+			
+			
 
 		}
 
@@ -73,7 +101,7 @@ public class itemTree extends JTree{
 	}
 
 
-	public void fillTree(String type) //"item" or "port"
+	public void fillTree(String type) //"item" or "port" or "production"
 	{
 
 		if(type=="item")
@@ -99,7 +127,7 @@ public class itemTree extends JTree{
 							String nodeText;
 							sale mySale=myPort.salesArray.get(j);
 							//sextant.println("Inserting "+itemName+" "+myPort+" "+mySale);
-							nodeText = mySale.quantity+" b"+ mySale.buyPrice+" s"+mySale.sellPrice+" "+myPort.name+ " "+mySale.modified;
+							//nodeText = mySale.quantity+" b"+ mySale.buyPrice+" s"+mySale.sellPrice+" "+myPort.name+ " "+mySale.modified;
 							DefaultMutableTreeNode toInsert = new DefaultMutableTreeNode(mySale);
 							tempNode.add(toInsert);
 						}
@@ -109,6 +137,36 @@ public class itemTree extends JTree{
 			}
 
 		}
+		if(type=="production")
+		{
+			Iterator<Integer> portIterator = sextant.portsHash.keySet().iterator();
+			while(portIterator.hasNext()) //this goes through all the ports
+			{
+				Integer key = portIterator.next();
+				Port myPort = sextant.portsHash.get(key);
+				sextant.println(myPort+ " has "+myPort.productionArray.size()+" sales.");
+				for(int i=0;i<root.getChildCount();i++) //this one goes through tree nodes
+				{
+					DefaultMutableTreeNode tempNode =(DefaultMutableTreeNode) root.getChildAt(i);
+					String itemName=tempNode.toString();					
+					int nodeItemID=sextant.items.find(itemName); //numerical ItemID corresponding to the node name, which is an item name from the itemtable.
+					for(int j=0;j<myPort.productionArray.size();j++) //this goes through productions
+					{
+							if(myPort.productionArray.get(j).ItemID==nodeItemID)
+						{
+							String nodeText;
+							production myProduction=myPort.productionArray.get(j);
+							//nodeText = myProduction.quantity+" "+myPort.name+ " "+myProduction.modified;
+							DefaultMutableTreeNode toInsert = new DefaultMutableTreeNode(myProduction);
+							tempNode.add(toInsert);
+						}
+					}
+				}
+
+			}
+
+		}
+
 		model.reload(root);
 	}
 

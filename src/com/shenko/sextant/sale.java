@@ -40,7 +40,7 @@ public Port port; //set in sqlhandler. such a bad practice.
 	}
 
 	public String toString() {
-		return quantity+" b"+ buyPrice+" s"+sellPrice+" "+port.name+ " "+modified;
+		return quantity+" b"+ buyPrice+" s"+sellPrice+" "+port.name+ " "+modified; //modified so we can use this text for the item tree, yet retain the other properties of the object
 		//return "Sale: PortID"+PortID+" ItemID: "+ItemID+ " ("+sellPrice+", "+buyPrice+"), "+modified+"("+addedBy+")"; //TODO add more shit here
 	}
 	

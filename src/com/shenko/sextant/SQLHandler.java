@@ -727,4 +727,25 @@ public class SQLHandler {
 			
 		}
 		
+		public String getVersion()
+		{
+			//returns a HashMap of Ports with basic info. Does not include production or sales.
+			
+			open();
+			String version=null;
+			try {
+				rs=stmt.executeQuery("SELECT * FROM sql5105183.version");
+				version = rs.getString(version);
+				
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			close();
+			return version;
+			
+			
+		}
+		
 }

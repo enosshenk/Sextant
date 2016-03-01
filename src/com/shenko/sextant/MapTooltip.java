@@ -5,14 +5,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
-public class MapTooltip extends JPanel {
+public class MapTooltip extends JPanel {//  JPopupMenu{//   
 
 	// A JPanel that encapsulates all information drawn on the map when player
 	// hovers mouse over a known port
@@ -64,6 +66,7 @@ public class MapTooltip extends JPanel {
 			setMinimumSize(new Dimension(50, 50));
 			setPreferredSize(new Dimension(100, 100));
 			setMaximumSize(new Dimension(100, 100));	
+			setLocation(new Point(10,10)); //let's try this out.
 			repaint();
 		}
 	}

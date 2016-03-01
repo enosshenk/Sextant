@@ -255,7 +255,14 @@ public class LogFileHandler extends Thread {
 			// clanTag: "I"
 			Parser.ParseClanTag(Line);
 		}
+		
 
+		if (Line.contains("SteamName "))
+		{
+			//8824:[2016-Feb-29 22:12:58.639353] Log: [Default] [ClientApplicationStateManager]: OnLogon: SteamID = 76561197980847483 SteamName = absolain UserId = 6bc71687-7c00-4307-a1e5-2d9bdfb30a66.3751
+			Parser.ParseSteam(Line);
+		}
+		
 	}
 
 

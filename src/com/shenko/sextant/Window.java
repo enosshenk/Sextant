@@ -256,7 +256,7 @@ public class Window extends JFrame {
 
 		tree = new itemTree("item");
 		JScrollPane treeScrollPane = new JScrollPane(tree);
-		tabbedPane.addTab("Items by Location", null, treeScrollPane, null);
+		tabbedPane.addTab("Items", null, treeScrollPane, null);
 		tree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				processTreeClick(me);
@@ -362,7 +362,7 @@ public class Window extends JFrame {
 	{
 		// Called when a port is moused over in MapPanel
 
-		sextant.println("Mouse over " + inPort.name);
+		/*sextant.println("Mouse over " + inPort.name);
 		MapTooltip popup = new MapTooltip();
 		popup.setVisible(false);
 		popup.setMinimumSize(new Dimension(50, 50));
@@ -375,7 +375,7 @@ public class Window extends JFrame {
 		popup.setSize(MapTooltip.getPreferredSize());
 		popup.setVisible(true);
 		//MapPanel_1.add(popup);
-		
+*/		
 	}
 
 	public void EndMouseOverPort()
