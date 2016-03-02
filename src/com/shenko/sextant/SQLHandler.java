@@ -142,12 +142,12 @@ public class SQLHandler {
 	
 	public void writePort(JsonObject Port) {
 		//sextant.println("Starting SQLHandler for WritePort...");
-		
+		String query=null;
 		try {
 
 			JsonObject PortPosition = Port.get("Position").getAsJsonObject();	
 			
-			String query = "insert into sql5105183.Ports("
+			query = "insert into sql5105183.Ports("
 				+ "Id, "
 				+ "name, "
 				+ "x, "
@@ -187,7 +187,8 @@ public class SQLHandler {
 			//sextant.println("done.");
 			
 		} catch (Exception e) {
-			sextant.println("onono...writePort");
+			sextant.println("onono...writePort "+query);
+			
 			e.printStackTrace();
 		} finally {
 			//close();

@@ -340,8 +340,8 @@ public class LogParser {
 	public void ParseName(String inData)
 	{
 		  //playerName: "absolain"
-		sextant.playerName=inData.substring(inData.indexOf("\""), inData.lastIndexOf("\""));
-		sextant.println("hi "+inData.substring(inData.indexOf("\""), inData.lastIndexOf("\"")));
+		sextant.playerName=inData.substring(inData.indexOf("\"")+1, inData.lastIndexOf("\""));
+		sextant.println("hi "+inData.substring(inData.indexOf("\"")+1, inData.lastIndexOf("\"")));
 		
 	}
 
