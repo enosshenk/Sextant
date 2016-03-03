@@ -259,7 +259,7 @@ public class Window extends JFrame {
 		tabbedPane.addTab("Items", null, treeScrollPane, null);
 		tree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				processTreeClick(me);
+				processTreeClick(me, "item");
 			}
 		});
 
@@ -270,6 +270,11 @@ public class Window extends JFrame {
 		production = new itemTree("production");
 		JScrollPane productionScrollPane = new JScrollPane(production);
 		tabbedPane.addTab("production", null, productionScrollPane, null);
+		production.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent me) {
+				processTreeClick(me, "production");
+			}
+		});
 
 		textArea = new JTextArea();
 		JScrollPane textAreaScrollPane = new JScrollPane(textArea); //I think JTextArea handles scrolling internally
@@ -325,10 +330,12 @@ public class Window extends JFrame {
 
 	}
 
-	void processTreeClick(MouseEvent me) {
+	void processTreeClick(MouseEvent me, String type) {
 		TreePath tp = tree.getPathForLocation(me.getX(), me.getY());
 		DefaultMutableTreeNode node;
-
+		
+		MapPanel_1.toShow=type;
+		
 		if (tp != null)
 		{
 			node = (DefaultMutableTreeNode) tp.getLastPathComponent();

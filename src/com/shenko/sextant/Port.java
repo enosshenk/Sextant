@@ -31,7 +31,7 @@ public class Port {
 	}
 
 	public String toString() {
-		return "Port: "+ID+" "+name+ " ("+x+", "+y+") Productions:"+productionArray.size()+" Sales:"+salesArray.size(); //TODO add more shit here
+		return "Port: "+ID+" "+name+ " ("+x+", "+y+") Productions:"+productionArray.size()+" Sales:"+productionArray.size(); //TODO add more shit here
 	}
 
 	public sale getSale(int ItemID)
@@ -69,6 +69,46 @@ public class Port {
 
 		}else{
 			sextant.println("no sales for "+ItemID+" at "+name);
+		}
+
+		return toReturn;
+	}
+
+	public production getProduction(int itemID) {
+		production toReturn=null;
+		production tempProd=null;
+		boolean found=false; //did we find at least 1 result
+		if(productionArray.size()>0)
+		{
+			for(int i=0; i<productionArray.size(); i++)	 
+			{
+
+				tempProd=productionArray.get(i);
+
+				//sextant.println(i+ " "+tempSale.shortString()+" : "+ toReturn.shortString());
+				if(tempProd.ItemID==itemID)
+				{
+//					if(found==false)
+//					{
+						found = true;
+						toReturn=tempProd;
+//					}else{
+//						if(tempProd.modified.compareTo(toReturn.modified)>0)
+//						{
+//							toReturn = tempProd;
+//						}
+//					}
+				}
+			}
+		}
+
+
+		if(found)
+		{
+			sextant.println(name+ " "+ toReturn.shortString());
+
+		}else{
+			sextant.println("no production for "+itemID+" at "+name);
 		}
 
 		return toReturn;

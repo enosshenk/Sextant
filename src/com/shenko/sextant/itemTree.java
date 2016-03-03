@@ -111,7 +111,7 @@ public class itemTree extends JTree{
 			{
 				Integer key = portIterator.next();
 				Port myPort = sextant.portsHash.get(key);
-				sextant.println(myPort+ " has "+myPort.salesArray.size()+" sales.");
+				//sextant.println(myPort+ " has "+myPort.salesArray.size()+" sales.");
 				for(int i=0;i<root.getChildCount();i++) //this one goes through tree nodes
 				{
 					DefaultMutableTreeNode tempNode =(DefaultMutableTreeNode) root.getChildAt(i);

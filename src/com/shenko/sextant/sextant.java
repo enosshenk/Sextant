@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class sextant {
 
-	public static String version ="0.03.01.04"; // bug with clan tag
+	public static String version ="0.03.01.09"; // production
 
 	//TODO allow users to set custom path. Save to file. 
 	//TODO add zooming to the map
@@ -68,7 +68,7 @@ public class sextant {
 		{
 			Integer key = portIterator.next();
 			Port myPort = portsHash.get(key);
-			sextant.println("myPort:"+myPort); 
+			//sextant.println("myPort:"+myPort); 
 		}
 
 		mySql.getProduction(portsHash); 
@@ -80,7 +80,7 @@ public class sextant {
 		{
 			Integer key = portIterator.next();
 			Port myPort = portsHash.get(key);
-			sextant.println("myPort:"+myPort);
+			//sextant.println("myPort:"+myPort);
 			for(int i=0; i<myPort.productionArray.size(); i++)
 			{
 				//sextant.println(myPort.productionArray.get(i));

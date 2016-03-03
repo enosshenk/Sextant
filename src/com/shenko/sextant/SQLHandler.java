@@ -30,28 +30,28 @@ public class SQLHandler {
 	public ResultSet rs = null;
 
 	private DatabaseCredentials Credentials = new DatabaseCredentials();
-	
+
 	public void open()
 	{
 		// This will load the MySQL driver, each DB has its own driver
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-		
+
 			connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
-		
+
 			stmt = connect.createStatement();
-		
+
 		} catch (ClassNotFoundException e) {
-			
+
 		}
 		catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 
 	}
-	
+
 	private void close()
 	{
 		try {
@@ -60,9 +60,9 @@ public class SQLHandler {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void executePush(String query) {
 		//sextant.println("Starting SQLHandler with: "+query);
 		//Connection connect = null;
@@ -70,32 +70,32 @@ public class SQLHandler {
 		//ResultSet rs = null;
 		String toReturn = null; 
 
-	try {
-		// This will load the MySQL driver, each DB has its own driver
-		//Class.forName("com.mysql.jdbc.Driver");
-		// Setup the connection with the DB
-		//sextant.println("Connecting to database...");
-		//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
-	
-		//stmt = connect.createStatement();
-		open();
-		//String lquery=query.toLowerCase(); //let's make the next statement easier.		
-		stmt.executeUpdate(query); //that's Update for insert / update / delete, and executeQuery for just queries.
-		//stmt.close();
-		//connect.close();
-		//sextant.println("executed " + query);
-		close();
-	  }catch(SQLException se){
-	      //Handle errors for JDBC
-		  sextant.println("ono... SQL error");
-	      se.printStackTrace();
-	      	} catch (Exception e) {
-		sextant.println("onono... SQLHandler");
-		e.printStackTrace();
-			} finally {
-	}
-	
-	
+		try {
+			// This will load the MySQL driver, each DB has its own driver
+			//Class.forName("com.mysql.jdbc.Driver");
+			// Setup the connection with the DB
+			//sextant.println("Connecting to database...");
+			//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
+
+			//stmt = connect.createStatement();
+			open();
+			//String lquery=query.toLowerCase(); //let's make the next statement easier.		
+			stmt.executeUpdate(query); //that's Update for insert / update / delete, and executeQuery for just queries.
+			//stmt.close();
+			//connect.close();
+			//sextant.println("executed " + query);
+			close();
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			sextant.println("ono... SQL error");
+			se.printStackTrace();
+		} catch (Exception e) {
+			sextant.println("onono... SQLHandler");
+			e.printStackTrace();
+		} finally {
+		}
+
+
 	}
 	private String executePull(String query) {
 		//sextant.println("Starting SQLHandler with: "+query);
@@ -104,105 +104,105 @@ public class SQLHandler {
 		//ResultSet rs = null;
 		String toReturn = null; 
 
-	try {
-		// This will load the MySQL driver, each DB has its own driver
-		//Class.forName("com.mysql.jdbc.Driver");
-		// Setup the connection with the DB
-		//sextant.println("Connecting to database...");
-		//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
-	
-		//stmt = connect.createStatement();
-		
-		//String lquery=query.toLowerCase(); //let's make the next statement easier.		
-		open();
-		rs = stmt.executeQuery(query);
-		if(rs.next())
+		try {
+			// This will load the MySQL driver, each DB has its own driver
+			//Class.forName("com.mysql.jdbc.Driver");
+			// Setup the connection with the DB
+			//sextant.println("Connecting to database...");
+			//connect = DriverManager.getConnection("jdbc:mysql://sql5.freemysqlhosting.net?" + Credentials.UserPass);
+
+			//stmt = connect.createStatement();
+
+			//String lquery=query.toLowerCase(); //let's make the next statement easier.		
+			open();
+			rs = stmt.executeQuery(query);
+			if(rs.next())
 			{
-			toReturn = rs.getString("Name");
+				toReturn = rs.getString("Name");
 			}
-		close();
-		//stmt.close();
-		//connect.close();
-		//sextant.println("executed " + query);
-	
-	  }catch(SQLException se){
-	      //Handle errors for JDBC
-		  sextant.println("ono... SQL error");
-	      se.printStackTrace();
-	      return toReturn;
-	} catch (Exception e) {
-		sextant.println("onono... SQLHandler");
-		e.printStackTrace();
+			close();
+			//stmt.close();
+			//connect.close();
+			//sextant.println("executed " + query);
+
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			sextant.println("ono... SQL error");
+			se.printStackTrace();
+			return toReturn;
+		} catch (Exception e) {
+			sextant.println("onono... SQLHandler");
+			e.printStackTrace();
+			return toReturn;
+		} finally {
+		}
+
 		return toReturn;
-	} finally {
 	}
-	
-	return toReturn;
-	}
-	
+
 	public void writePort(JsonObject Port) {
 		//sextant.println("Starting SQLHandler for WritePort...");
 		String query=null;
 		try {
 
 			JsonObject PortPosition = Port.get("Position").getAsJsonObject();	
-			
+
 			query = "insert into sql5105183.Ports("
-				+ "Id, "
-				+ "name, "
-				+ "x, "
-				+ "y, "
-				+ "nation, "
-				+ "capital, "
-				+ "startcity, " // start and starting are both sql reserved keywords haha, bullshit.
-				+ "regional, "
-				+ "size, "
-				+ "depth, "
-				+ "contested, "
-				+ "addedBy) "
-				+ "values ("
-				+ Integer.toString(Port.get("Id").getAsInt()) + ", "
-				+ "\"" + Port.get("Name").getAsString() + "\", " // don't forget the quotes!
-				+ Integer.toString(PortPosition.get("x").getAsInt()) + ", "
-				+ Integer.toString(PortPosition.get("z").getAsInt()) + ", "
-				+ Integer.toString(Port.get("Nation").getAsInt())	+ ", " 
-				+ (Port.get("Capital").getAsBoolean()?1:0) +", " //neat, huh? ?1:0 returns 1 if the preceding is true, 0 if false. I think java does this anyway though. No, in this case, this is necessary
-				+ (Port.get("NationStartingPort").getAsBoolean()?1:0) + ", " // No, in this case, this is necessary
-				+ (Port.get("Regional").getAsBoolean()?1:0) + ", " // No, in this case, this is necessary
-				+ Integer.toString(Port.get("Size").getAsInt()) + ", "
-				+ Integer.toString(Port.get("Depth").getAsInt()) + ", "
-				+ Integer.toString(Port.get("Contested").getAsInt()) + ", \""
-				+ sextant.playerName + "\") "
-				+ "ON DUPLICATE KEY UPDATE "
-				+ "nation="	+ Integer.toString(Port.get("Nation").getAsInt())
-				+ ", addedBy=\"" + sextant.playerName + "\""
-				;
-	
-			
-			
+					+ "Id, "
+					+ "name, "
+					+ "x, "
+					+ "y, "
+					+ "nation, "
+					+ "capital, "
+					+ "startcity, " // start and starting are both sql reserved keywords haha, bullshit.
+					+ "regional, "
+					+ "size, "
+					+ "depth, "
+					+ "contested, "
+					+ "addedBy) "
+					+ "values ("
+					+ Integer.toString(Port.get("Id").getAsInt()) + ", "
+					+ "\"" + Port.get("Name").getAsString() + "\", " // don't forget the quotes!
+					+ Integer.toString(PortPosition.get("x").getAsInt()) + ", "
+					+ Integer.toString(PortPosition.get("z").getAsInt()) + ", "
+					+ Integer.toString(Port.get("Nation").getAsInt())	+ ", " 
+					+ (Port.get("Capital").getAsBoolean()?1:0) +", " //neat, huh? ?1:0 returns 1 if the preceding is true, 0 if false. I think java does this anyway though. No, in this case, this is necessary
+					+ (Port.get("NationStartingPort").getAsBoolean()?1:0) + ", " // No, in this case, this is necessary
+					+ (Port.get("Regional").getAsBoolean()?1:0) + ", " // No, in this case, this is necessary
+					+ Integer.toString(Port.get("Size").getAsInt()) + ", "
+					+ Integer.toString(Port.get("Depth").getAsInt()) + ", "
+					+ Integer.toString(Port.get("Contested").getAsInt()) + ", \""
+					+ sextant.playerName + "\") "
+					+ "ON DUPLICATE KEY UPDATE "
+					+ "nation="	+ Integer.toString(Port.get("Nation").getAsInt())
+					+ ", addedBy=\"" + sextant.playerName + "\""
+					;
+
+
+
 			//sextant.println(query);
 			open();
 			stmt.executeUpdate(query);
 			close();
 			//sextant.println("done.");
-			
+
 		} catch (Exception e) {
 			sextant.println("onono...writePort "+query);
-			
+
 			e.printStackTrace();
 		} finally {
 			//close();
 		}
-			
+
 	}
 
 	public void writeSale(JsonObject item) {
 		//sextant.println("Starting SQLHandler for WritePort...");
-		
+
 		if(item.get("TemplateId").getAsInt()>=50 && item.get("TemplateId").getAsInt()<=73)
 		{
-		// it's regular shit they have at every port.	
-			
+			// it's regular shit they have at every port.	
+
 		}
 		else
 		{
@@ -248,17 +248,17 @@ public class SQLHandler {
 				//close();
 			}
 		}
-			
-	}
-	
 
-	
-	public void writeProduction(JsonArray productionData) { //TODO: don't replicate existing port production data. 
+	}
+
+
+
+	public void writeProduction(JsonArray productionData) { //TODO: what if it changes? 
 		//sextant.println("Starting SQLHandler for WritePort...");
 		String query=null;
 		JsonObject item=null;
 		int myCount=0;
-		
+
 		try {
 
 			/*sextant.println( "TemplateID: " + item.get("TemplateId").getAsInt() );	
@@ -270,48 +270,50 @@ public class SQLHandler {
 			rs=stmt.executeQuery("select count(*) from sql5105183.Production where PortID="+sextant.CurrentPort);
 			if(rs.next())
 			{
-			myCount = Integer.parseInt(rs.getString("count(*)"));
+				myCount = Integer.parseInt(rs.getString("count(*)"));
 			}
 			close();
 			sextant.println("Production info found in log, table reveals "+myCount+" existing records.");
 			open();
-			if(myCount==0)
-			{
 			
+			//if(myCount==0) //eeew
+			{
+				query = "delete from sql5105183.Production where PortID='"+sextant.CurrentPort+"';";
+				stmt.executeUpdate(query);
 				for (int i=0; i < productionData.size(); i++)
 				{
 					item = productionData.get(i).getAsJsonObject();
 					query = "insert into sql5105183.Production("
-						+ "PortID, "
-						+ "ItemID, "
-						+ "quantity, "
-						+ "AddedBy) "
-						+ "values ("
-						+ sextant.CurrentPort + ", "
-						+ item.get("Key").getAsInt() + ", "	
-						+ item.get("Value").getAsInt() + ", "
-						+ "\""+sextant.playerName+"\")";
-								
-					
+							+ "PortID, "
+							+ "ItemID, "
+							+ "quantity, "
+							+ "AddedBy) "
+							+ "values ("
+							+ sextant.CurrentPort + ", "
+							+ item.get("Key").getAsInt() + ", "	
+							+ item.get("Value").getAsInt() + ", "
+							+ "\""+sextant.playerName+"\")";
+
+
 					//sextant.println(query);
 					sextant.println("executing "+query);
-		
+
 					stmt.executeUpdate(query);
 				}
 			}
 			close();
-			
+
 			//sextant.println("done.");
-			
+
 		} catch (Exception e) {
 			sextant.println("onono...writeProduction");
 			e.printStackTrace();
 		} finally {
 			//close();
 		}
-			
+
 	}
-	
+
 	/**verifyItem
 	 * fuck yeah bitches
 	 */
@@ -322,8 +324,8 @@ public class SQLHandler {
 		String name = null;
 		//ResultSet rs = null;
 		String id = null;
-		
-		
+
+
 
 		try {
 
@@ -392,8 +394,8 @@ public class SQLHandler {
 
 		return name;
 	}	
-	
-	
+
+
 	/*
 	public void readDataBase() throws Exception { //this is an example i pasted in here, none of this shit works yet.
 		try {
@@ -433,11 +435,11 @@ public class SQLHandler {
 					.prepareStatement("delete from feedback.comments where myuser= ? ; ");
 			preparedStatement.setString(1, "Test");
 			preparedStatement.executeUpdate();
-	
+
 			resultSet = statement
 					.executeQuery("select * from feedback.comments");
 			writeMetaData(resultSet);
-	
+
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -449,9 +451,9 @@ public class SQLHandler {
 	private void writeMetaData(ResultSet resultSet) throws SQLException {
 	// Now get some metadata from the database
 	// Result set get the result of the SQL query
-	
+
 		sextant.println("The columns in the table are: ");
-	
+
 		sextant.println("Table: " + resultSet.getMetaData().getTableName(1));
 		for(int i = 1; i<= resultSet.getMetaData().getColumnCount(); i++){
 			sextant.println("Column " +i+ " "+ resultSet.getMetaData().getColumnName(i));
@@ -478,23 +480,23 @@ public class SQLHandler {
 
 			}
 		}
-*/
-		
+	 */
+
 	public HashMap<Integer, Port> getPorts()
 	{
 		//returns a HashMap of Ports with basic info. Does not include production or sales.
-		
+
 		HashMap<Integer, Port> toReturn = new HashMap<Integer, Port>();
-		
-		
+
+
 		open();
-		
+
 		try {
 			rs=stmt.executeQuery("SELECT * FROM sql5105183.Ports");
 			while(rs.next())
 			{
 				String[] fields = {"Id", "name", "x", "y", "nation", "capital", "regional", "depth", "size", "contested", "startcity", "capturer", "modified", "addedBy"};
-				
+
 				for(String element:fields)
 				{
 					//toAdd.addProperty(element, rs.getString(element));
@@ -514,35 +516,35 @@ public class SQLHandler {
 					tempPort.modified = rs.getString("modified");
 					tempPort.AddedBy = rs.getString("addedBy");
 					toReturn.put(tempPort.ID, tempPort );
-					
+
 				}
-				
-				
-				
-				
+
+
+
+
 			}
-		
-	
+
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		close();
 		return toReturn;
-		
-		
+
+
 	}
-	
+
 	/*OK, in one fell swoop, we're going to read the whole production table, and push all the results to the ports
 	 * Here's how it looks: 
 	 * read the table
 	 * for each result, identify the port it belongs to, and insert a JsonObject with all the info
 	 * 
 	 */
-	
-	
-	
-	
+
+
+
+
 	public HashMap<Integer, Port> getProduction(HashMap<Integer, Port> hm)
 	{
 		try {
@@ -552,24 +554,24 @@ public class SQLHandler {
 			{
 				//construct the JsonObject
 				production myProduction;
-				
+
 				myProduction = new production(rs.getInt("PortID"), 
-							rs.getInt("ItemID"), rs.getInt("quantity"), 
-							rs.getString("Modified"), rs.getString("AddedBy"));
+						rs.getInt("ItemID"), rs.getInt("quantity"), 
+						rs.getString("Modified"), rs.getString("AddedBy"));
 				//sextant.println(myProduction);
 				Port myPort=hm.get(myProduction.PortID);		
 				//sextant.println(myPort);
 				myPort.productionArray.add(myProduction);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		close();
 		return hm;
 	}
-	
+
 	public HashMap<Integer, Port> getSales(HashMap<Integer, Port> hm)
 	{
 		try {
@@ -578,25 +580,25 @@ public class SQLHandler {
 			while(rs.next())
 			{
 				sale mySale;
-				
+
 				mySale = new sale(rs.getInt("PortID"), 
-							rs.getInt("ItemID"),  rs.getInt("quantity"), rs.getInt("sellPrice"), rs.getInt("buyPrice"), 
-							rs.getString("Modified"), rs.getString("AddedBy"));
+						rs.getInt("ItemID"),  rs.getInt("quantity"), rs.getInt("sellPrice"), rs.getInt("buyPrice"), 
+						rs.getString("Modified"), rs.getString("AddedBy"));
 				//sextant.println(mySale);
 				Port myPort=hm.get(mySale.PortID);		
 				//sextant.println(myPort);
 				mySale.port=myPort;
 				myPort.salesArray.add(mySale);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		close();
 		return hm;
 	}
-	
+
 	public void getItemTable(ItemTable items)
 	{
 		try {
@@ -605,24 +607,24 @@ public class SQLHandler {
 			while(rs.next())
 			{
 				items.add(rs.getInt("ItemID"), rs.getString("Name"), rs.getString("Modified"), rs.getString("AddedBy"));
-				
+
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		close();
 	}
-	
-		public void fillDB() {
-			String baseName=null;
-			int baseID=0;
+
+	public void fillDB() {
+		String baseName=null;
+		int baseID=0;
 		try {
 			open();
 			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Fine%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
 			//sextant.println("executed " + query);
-			
+
 			List<String> Names = new ArrayList<String>();
 			List<Integer> IDs = new ArrayList<Integer>();
 			while(rs.next())
@@ -633,9 +635,9 @@ public class SQLHandler {
 				Names.add(baseName);
 				IDs.add(baseID);
 			}
-			
+
 			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Common%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
-			
+
 			while(rs.next())
 			{
 				baseName=rs.getString("Name");
@@ -644,9 +646,9 @@ public class SQLHandler {
 				Names.add(baseName);
 				IDs.add(baseID);
 			}
-			
+
 			rs = stmt.executeQuery("SELECT * FROM sql5105183.ItemIDs WHERE name LIKE  '%Mastercraft%'"); //that's Update for insert / update / delete, and executeQuery for just queries.
-			
+
 			while(rs.next())
 			{
 				baseName=rs.getString("Name");
@@ -655,50 +657,52 @@ public class SQLHandler {
 				Names.add(baseName);
 				IDs.add(baseID);
 			}
-				
+
 			for(int i=0; i<Names.size(); i++)
 			{
-			
+
 				baseName=Names.get(i);
 				baseID=IDs.get(i);
 				//stmt.executeUpdate(
 				//sextant.println(
-						stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + baseID + ", '" + baseName + "', 'abso-fillDB') ");
-				
+				stmt.executeUpdate("insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + baseID + ", '" + baseName + "', 'abso-fillDB') ");
+
 				//sextant.println(
 				stmt.executeUpdate(
-					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+1) + ", '" + baseName +" - Common" +"', 'abso-fillDB')");
+						"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+1) + ", '" + baseName +" - Common" +"', 'abso-fillDB')");
 				//sextant.println(
 				stmt.executeUpdate(
-					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+3) + ", '" + baseName + " - Mastercraft"+"', 'abso-fillDB')");
+						"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+3) + ", '" + baseName + " - Mastercraft"+"', 'abso-fillDB')");
 				//sextant.println(
 				stmt.executeUpdate(
-					"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+4) + ", '" + baseName + " - Fine" + "', 'abso-fillDB')");
+						"insert ignore sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+4) + ", '" + baseName + " - Fine" + "', 'abso-fillDB')");
 				//sextant.println("insert into sql5105183.ItemIDs (ItemId, Name, AddedBy) values (" + (baseID+2) + ", '" + baseName + " - Exceptional" + "', 'abso-fillDB')");
-				
-				
-				
+
+
+
 			}
 			sextant.println("filled.");
 			close();
 
-		  }catch(SQLException se){
-		      //Handle errors for JDBC
-			  sextant.println("ono... SQL error");
-		      se.printStackTrace();
-		      	} catch (Exception e) {
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			sextant.println("ono... SQL error");
+			se.printStackTrace();
+		} catch (Exception e) {
 			sextant.println("onono... SQLHandler");
 			e.printStackTrace();
-				} finally {
-		}
-		
-	
+		} finally {
 		}
 
-		public void hi(String name)
+
+	}
+
+	public void hi(String name)
+	{
+		if(!sextant.hi)
 		{
+			sextant.println("hi "+name+", "+sextant.clan+"..." );
 			open();
-			sextant.println("hi.");
 			try {
 				String myQuery = "insert ignore sql5105183.users (name, version, clan, nation, steamID) values"
 						+ " ('" + name + "', '" + sextant.version  + "', '" + sextant.clan + "', '" + sextant.nation + "', '" + sextant.steam + "')";
@@ -709,104 +713,106 @@ public class SQLHandler {
 			}
 			close();
 		}
-		
-		public void cleanSales()
-		{
-			
-			
-			try {
-				open();
-				stmt.executeUpdate("CREATE TABLE mytable_key SELECT id FROM Sales WHERE 1=2; INSERT INTO mytable_key SELECT MIN(id) FROM Sales "
-						+ "GROUP BY PortID, ItemID,DATE_FORMAT(`modified`,'%Y%m%d%H'); ALTER TABLE mytable_key ADD PRIMARY KEY (id);"
-						+ "CREATE TABLE mytable_new LIKE Sales;	INSERT INTO mytable_new SELECT B.* FROM mytable_key A INNER JOIN Sales B USING (id);"
-						+ "ALTER TABLE Sales RENAME mytable_old; ALTER TABLE mytable_new RENAME Sales;DROP TABLE mytable_old;DROP TABLE mytable_key;");
-				
-				//"CREATE TABLE mytable_key SELECT id FROM Sales WHERE 1=2; INSERT INTO mytable_key SELECT MIN(id) FROM Sales GROUP BY PortID, ItemID,DATE_FORMAT(`modified`,'%Y%m%d%H'); ALTER TABLE mytable_key ADD PRIMARY KEY (id); CREATE TABLE mytable_new LIKE Sales;	INSERT INTO mytable_new SELECT B.* FROM mytable_key A INNER JOIN Sales B USING (id); ALTER TABLE Sales RENAME mytable_old; ALTER TABLE mytable_new RENAME Sales;DROP TABLE mytable_old;DROP TABLE mytable_key;
-				close();
-			} catch (SQLException e) {
-				// 
-				e.printStackTrace();
-			}
-			
-		}
-		
-		public void whitelist() //verify username for those who have failed clan authentication
-		{
-			if(!sextant.hi)
-			{
-				hi(sextant.playerName);
-			}
-			sextant.hi=true;
-			open();
-		}
-		
-		public String getVersion()
-		{
-			//returns a HashMap of Ports with basic info. Does not include production or sales.
-			
+		sextant.hi=true;
+	}
 
-			String version=null;
-			sextant.println("getting version");
+	public void cleanSales()
+	{
+
+
+		try {
+			open();
+			stmt.executeUpdate("CREATE TABLE mytable_key SELECT id FROM Sales WHERE 1=2; INSERT INTO mytable_key SELECT MIN(id) FROM Sales "
+					+ "GROUP BY PortID, ItemID,DATE_FORMAT(`modified`,'%Y%m%d%H'); ALTER TABLE mytable_key ADD PRIMARY KEY (id);"
+					+ "CREATE TABLE mytable_new LIKE Sales;	INSERT INTO mytable_new SELECT B.* FROM mytable_key A INNER JOIN Sales B USING (id);"
+					+ "ALTER TABLE Sales RENAME mytable_old; ALTER TABLE mytable_new RENAME Sales;DROP TABLE mytable_old;DROP TABLE mytable_key;");
+
+			//"CREATE TABLE mytable_key SELECT id FROM Sales WHERE 1=2; INSERT INTO mytable_key SELECT MIN(id) FROM Sales GROUP BY PortID, ItemID,DATE_FORMAT(`modified`,'%Y%m%d%H'); ALTER TABLE mytable_key ADD PRIMARY KEY (id); CREATE TABLE mytable_new LIKE Sales;	INSERT INTO mytable_new SELECT B.* FROM mytable_key A INNER JOIN Sales B USING (id); ALTER TABLE Sales RENAME mytable_old; ALTER TABLE mytable_new RENAME Sales;DROP TABLE mytable_old;DROP TABLE mytable_key;
+			close();
+		} catch (SQLException e) {
+			// 
+			e.printStackTrace();
+		}
+
+	}
+
+	public void whitelist() //verify username for those who have failed clan authentication
+	{
+		if(!sextant.hi)
+		{
+			hi(sextant.playerName);
+		}
+		sextant.hi=true;
+		open();
+	}
+
+	public String getVersion()
+	{
+		//returns a HashMap of Ports with basic info. Does not include production or sales.
+
+
+		String version=null;
+		sextant.println("getting version");
+		try {
+			open();
+			rs=stmt.executeQuery("SELECT * FROM sql5105183.version");
+			while(rs.next())
+			{
+				version = rs.getString("version");
+			}
+			close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		sextant.println("this version:"+sextant.version+", server version:"+version);
+		int comp = sextant.version.compareTo(version);
+		if(comp<0)
+		{
+			JOptionPane.showMessageDialog(null, "<html>You've got version "+sextant.version+" but the current version is "+version+". <b>You "
+					+ "gotta upgrade.</B>\n\nI'm sure it's "
+					+ "a lot of work to click download and open the new version. Sorry I keep adding all these features.", "Update please", 
+					JOptionPane.INFORMATION_MESSAGE);
 			try {
-				open();
-				rs=stmt.executeQuery("SELECT * FROM sql5105183.version");
-				while(rs.next())
-				{
-					version = rs.getString("version");
-				}
-				close();
-				
-			} catch (SQLException e) {
+				java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.dropbox.com/s/4lzlrf0ql6etexf/sextant.jar?dl=0"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			sextant.println("this version:"+sextant.version+", server version:"+version);
-			int comp = sextant.version.compareTo(version);
-			if(comp<0)
-			{
-				JOptionPane.showMessageDialog(null, "<html>You've got version "+sextant.version+" but the current version is "+version+". <b>You "
-						+ "gotta upgrade.</B>\n\nI'm sure it's "
-						+ "a lot of work to click download and open the new version. Sorry I keep adding all these features.", "Update please", 
-						JOptionPane.INFORMATION_MESSAGE);
-				try {
-					java.awt.Desktop.getDesktop().browse(new java.net.URI("https://www.dropbox.com/s/4lzlrf0ql6etexf/sextant.jar?dl=0"));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.exit(0);
-			}
-			else if(comp>0)
-			{
-				int dialogResult = JOptionPane.showConfirmDialog (null, "Upgrade server current version from "+version+" to "+sextant.version+"?","Warning",JOptionPane.YES_NO_OPTION);
-				if(dialogResult == JOptionPane.YES_OPTION){
-					open();
-					sextant.println("Updating version on server.");
-					try {
-						String myQuery = "delete from sql5105183.version where 1";
-						sextant.println(myQuery);
-						stmt.executeUpdate(myQuery);
-						myQuery = "insert into sql5105183.version (version) values ('"+sextant.version +"');";
-						sextant.println(myQuery);
-						stmt.executeUpdate(myQuery);
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					close();
-					
-				}
-			}
-			
-			sextant.println("getVersion comp: "+comp);
-			
-			
-			
-			close();
-			return version;
-			
-			
+			System.exit(0);
 		}
-		
+		else if(comp>0)
+		{
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Upgrade server current version from "+version+" to "+sextant.version+"?","Warning",JOptionPane.YES_NO_OPTION);
+			if(dialogResult == JOptionPane.YES_OPTION){
+				open();
+				sextant.println("Updating version on server.");
+				try {
+					String myQuery = "delete from sql5105183.version where 1";
+					sextant.println(myQuery);
+					stmt.executeUpdate(myQuery);
+					myQuery = "insert into sql5105183.version (version) values ('"+sextant.version +"');";
+					sextant.println(myQuery);
+					stmt.executeUpdate(myQuery);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				close();
+
+			}
+		}
+
+		sextant.println("getVersion comp: "+comp);
+
+
+
+		close();
+		return version;
+
+
+	}
+
 }

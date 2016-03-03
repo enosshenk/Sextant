@@ -76,6 +76,7 @@ public class MapPanel extends JPanel {
 	private List<Port> Ports;
 
 	public int ItemID; //itemid to show
+	public String toShow="none"; //none, production, price //TODO this and renderPrices
 
 	//private Graphics g; //this is awful practice. Set by the overloaded refresh method.
 
@@ -177,7 +178,7 @@ public class MapPanel extends JPanel {
 		Component C = null;
 
 		//super.repaint();
-		
+
 		//turn on some nice effects
 		applyRenderHints(g2d);
 
@@ -349,26 +350,57 @@ public class MapPanel extends JPanel {
 			for (Port p : Ports)
 			{
 				GridPoint PortLoc = CoordinateToPixel( p.x, p.y );
-				sale mySale = new sale();
-				mySale = p.getSale(ItemID);
-				if(mySale!=null)
+				if(toShow=="item")
 				{
-					toPrint = mySale.shortString();
+					sale mySale = new sale();
+					mySale = p.getSale(ItemID);
+					if(mySale!=null)
+					{
+						toPrint = mySale.shortString();
+					}
+					else
+					{
+						toPrint="none";
+					}
+					//sextant.println(p.name+ " "+ toPrint);
 
-
+					outlineText(g, toPrint, PortLoc.X+32, PortLoc.Y+6, Color.blue, new Font("Arial", Font.BOLD, 12));
 				}
-				else
+				else if(toShow =="production")
 				{
-					toPrint="none";
-
+					production myProduction;
+					myProduction = p.getProduction(ItemID);
+					if(myProduction!=null)
+					{
+						toPrint = myProduction.shortString();
+					}
+					else
+					{
+						toPrint="none";
+					}
+					//sextant.println(p.name+ " "+ toPrint);
+					sextant.println(toPrint);
+					if(toPrint.substring(0,1).compareTo("-")==0)
+							{
+						outlineText(g, toPrint, PortLoc.X+32, PortLoc.Y+6, Color.red, new Font("Arial", Font.BOLD, 18));	
+							}
+					else if(toPrint=="none")
+					{
+						outlineText(g, toPrint, PortLoc.X+32, PortLoc.Y+6, Color.blue, new Font("Arial", Font.BOLD, 12));
+					}
+					else
+					{
+						outlineText(g, toPrint, PortLoc.X+32, PortLoc.Y+6, Color.green, new Font("Arial", Font.BOLD, 18));
+					}
+					
 				}
-				//sextant.println(p.name+ " "+ toPrint);
 
-				outlineText(g, toPrint, PortLoc.X+32, PortLoc.Y+6, Color.blue, new Font("Arial", Font.BOLD, 12));
 				g.drawLine(PortLoc.X+32, PortLoc.Y+6, PortLoc.X, PortLoc.Y);
 			}
 		}
 	}
+
+
 
 	public void LoadPorts()
 	{

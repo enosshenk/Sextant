@@ -51,7 +51,7 @@ public class LogParser {
 
 							String name = sextant.mySql.verifyItem(item);
 
-							sextant.println( "Item:       " + name +"\n" );	
+							//sextant.println( "Item:       " + name +"\n" );	
 							sextant.mySql.writeSale(item);
 						}
 					}
@@ -180,7 +180,7 @@ public class LogParser {
 			int WorldPositionY = PlayerPosition.get("y").getAsInt();
 
 			sextant.nation=Nation;
-			
+
 			sextant.frame.setLoc(PlayerPosition.get("x").getAsInt(), PlayerPosition.get("z").getAsInt());
 
 
@@ -201,7 +201,7 @@ public class LogParser {
 				sextant.CurrentPort = CurrentPortID;
 				sextant.println("CurrentPort: "+sextant.CurrentPort);
 			}
-			sextant.mySql.hi(Name);
+			//sextant.mySql.hi(Name);
 
 		}
 		else
@@ -214,6 +214,7 @@ public class LogParser {
 	{
 		// Parse port consumption and production data
 		// Expecting a JSON array here
+		sextant.println("Parsing production data");
 		JsonElement Element;
 		try {
 			Element = Parser.parse(inData);
@@ -320,29 +321,33 @@ public class LogParser {
 		String clanTag=null;
 		if(inData.length()>11) //because of spaces and bullshit
 		{
-			clanTag = inData.substring(inData.indexOf("\""), inData.lastIndexOf("\"")-1);
-			
+			clanTag = inData.substring(inData.indexOf("\"")+1, inData.lastIndexOf("\""));
 		}
 		sextant.clan=clanTag;
-		sextant.mySql.whitelist(); //also hi, because we'll have steamName, name, and clan.
+		//sextant.mySql.whitelist(); //also hi, because we'll have steamName, name, and clan. //jk don't have name
 	}
-	
+
 	public void ParseSteam(String inData)
 	{
 		//8824:[2016-Feb-29 22:12:58.639353] Log: [Default] [ClientApplicationStateManager]: OnLogon: SteamID = 76561197980847483 SteamName = absolain UserId = 6bc71687-7c00-4307-a1e5-2d9bdfb30a66.3751
 		String steamName;
 		steamName = inData.substring(inData.indexOf("SteamName")+12, inData.indexOf("UserId")-1);
 		sextant.steam=steamName;
-		sextant.println("got name.");
+		sextant.println("got * name.");
 		//TODO finish this
 	}
-	
+
 	public void ParseName(String inData)
 	{
-		  //playerName: "absolain"
-		sextant.playerName=inData.substring(inData.indexOf("\"")+1, inData.lastIndexOf("\""));
-		sextant.println("hi "+inData.substring(inData.indexOf("\"")+1, inData.lastIndexOf("\"")));
-		
+		//playerName: "absolain"
+		if(sextant.playerName!=null)
+		{
+			//String player = inData.substring(inData.indexOf("\"")+1, inData.lastIndexOf("\""));
+			String player=inData.substring(1);
+			sextant.playerName=player;
+			sextant.println("parsename "+player);
+			sextant.mySql.hi(player);
+		}
 	}
 
 

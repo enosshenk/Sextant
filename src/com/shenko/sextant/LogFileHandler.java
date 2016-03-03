@@ -263,9 +263,23 @@ public class LogFileHandler extends Thread {
 			Parser.ParseSteam(Line);
 		}
 		
-		if (Line.contains("playerName"))
+		if (Line.contains("GetPlayerInfo"))
 		{
-			Parser.ParseName(Line);
+			try {
+				Line = Reader.readLine();
+				while(Line==null)
+				{
+					Thread.sleep(1*1000);
+					Line = Reader.readLine();
+				}
+				Parser.ParseName(Line);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}

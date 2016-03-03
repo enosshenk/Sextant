@@ -18,5 +18,9 @@ public class production {
 		return quantity+" "+sextant.portsHash.get(PortID).name+ " "+modified; //modified so we can use this text for the item tree, yet retain the other properties of the object
         //return "Production: PortID: "+PortID+" ItemID: "+ItemID+" Quantity: "+quantity+" AddedBy: "+AddedBy+" Modified: "+modified;
     }
+
+	public String shortString() {
+		return Integer.toString(quantity);
+	}
 	
 }
