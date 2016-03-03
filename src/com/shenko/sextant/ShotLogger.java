@@ -12,11 +12,15 @@ public class ShotLogger extends Thread{
 	public LogParser Parser;
 	static File CurrentLog;
 	BufferedReader Reader;
+	private boolean EOF; //we don't want to activate the tab on startup, so let's read the file until we hit EOF, then all us to activate the tab
+	// because it'll be new shots taking place.
 
 	//public LogFileHandler()
 	public void run()
 	{
 		Parser = new LogParser();
+
+		EOF = false;
 
 		try {
 			sextant.println("Trying to open log file in "+sextant.LogDirectory);
@@ -47,10 +51,15 @@ public class ShotLogger extends Thread{
 				//sextant.println("loghandlerloop "+ Line);
 				if (Line == null)
 				{
-					Thread.sleep(1*1000);
+					Thread.sleep(1*200);
+					EOF = true; //we've read the full file on startup, so now let's activate the shot logger tab if we see new shit
 				}
 				else //not null, read the lines. update the log stage
 				{
+					if(EOF)
+					{
+						sextant.frame.activateShots();
+					}
 					ParseLine(Line);
 				}
 
