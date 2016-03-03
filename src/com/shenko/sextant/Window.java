@@ -75,6 +75,10 @@ public class Window extends JFrame {
 
 	public JTextArea textArea;
 	public JTextArea shotText;
+	JTabbedPane mapTabbedPane; //holds shotScrollPane and mapPane
+	JScrollPane shotScrollPane; //declared here so we can activate this tab when it reads shots
+	JScrollPane mapPane; //declared here to activate map at certain times.
+	
 
 	//this is where everything that needs to get updated goes.
 	public JLabel lblPlayerName;
@@ -259,7 +263,7 @@ public class Window extends JFrame {
 		tabbedPane.addTab("Items", null, treeScrollPane, null);
 		tree.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				processTreeClick(me, "item");
+				processTreeClick(me, "item", tree);
 			}
 		});
 
@@ -272,7 +276,7 @@ public class Window extends JFrame {
 		tabbedPane.addTab("production", null, productionScrollPane, null);
 		production.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				processTreeClick(me, "production");
+				processTreeClick(me, "production", production);
 			}
 		});
 
@@ -297,23 +301,24 @@ public class Window extends JFrame {
 		MapPanel_1.setPreferredSize(new Dimension(400, 400));
 		MapPanel_1.setMaximumSize(new Dimension(500, 500));	
 
-		JTabbedPane mapTabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		mapTabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		mapTabbedPane.setMinimumSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
 		mapTabbedPane.setPreferredSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
 		mapTabbedPane.setMaximumSize(new Dimension(this.getWidth()-388, Short.MAX_VALUE));
 		add(mapTabbedPane);
 		//MapPanel_1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JScrollPane mapPane= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		mapPane= new JScrollPane(MapPanel_1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		mapTabbedPane.addTab("Map", null, mapPane, null);
 		mapPane.getVerticalScrollBar().setUnitIncrement(20);
 		mapPane.getHorizontalScrollBar().setUnitIncrement(20); //doesn't work.
 
 
 		shotText = new JTextArea();
-		JScrollPane shotScrollPane = new JScrollPane(shotText); //I think JTextArea handles scrolling internally
+		shotScrollPane = new JScrollPane(shotText); //I think JTextArea handles scrolling internally
 		mapTabbedPane.addTab("Shot Logger", null, shotScrollPane, null);
 		DefaultCaret caret = (DefaultCaret)shotText.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.OUT_BOTTOM);
+		
 		//contentPane.add(MapPanel_1);
 
 		MapTooltip = new MapTooltip();
@@ -324,13 +329,15 @@ public class Window extends JFrame {
 
 		mapPane.add(MapTooltip);
 		MapTooltip.setVisible(false);
-
+		
+		activateMap();
+		
 		sextant.GUILoaded=true;
 		sextant.println("Gui Loaded: window");
 
 	}
 
-	void processTreeClick(MouseEvent me, String type) {
+	void processTreeClick(MouseEvent me, String type, itemTree tree) {
 		TreePath tp = tree.getPathForLocation(me.getX(), me.getY());
 		DefaultMutableTreeNode node;
 		
@@ -441,6 +448,17 @@ public class Window extends JFrame {
 	{
 		//textArea.append(toPrint+"\n"); //or insert
 		System.out.println(toPrint);
+	}
+	
+	
+	public void activateShots() //set the shot logger tab as active (when the file is updated)
+	{
+		mapTabbedPane.setSelectedComponent(shotScrollPane);
+	}
+	
+	public void activateMap() //set the shot logger tab as active (when the file is updated)
+	{
+		mapTabbedPane.setSelectedComponent(mapPane);
 	}
 
 }
