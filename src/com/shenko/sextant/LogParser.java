@@ -28,6 +28,7 @@ public class LogParser {
 
 		while(inData.contains("{"))
 		{
+			
 			if((inData.indexOf("{")>0) && (inData.indexOf("}")+1>inData.indexOf("{")) ) // trap bad indices
 			{
 				String sale = inData.substring(inData.indexOf("{"), inData.indexOf("}")+1); // set sale to a probably-valid JSON object

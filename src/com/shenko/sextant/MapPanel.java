@@ -345,7 +345,7 @@ public class MapPanel extends JPanel {
 		if(ItemID>0)
 		{
 			sextant.println("renderPrices itemid:"+ItemID);
-			sextant.println("rendering item "+ItemID+ " prices. . .");
+			sextant.println("rendering item "+sextant.items.get(ItemID)+ " prices. . .");
 
 			for (Port p : Ports)
 			{
@@ -370,6 +370,7 @@ public class MapPanel extends JPanel {
 				{
 					production myProduction;
 					myProduction = p.getProduction(ItemID);
+					sextant.println("rendering item "+sextant.items.get(ItemID)+ " production. . .");
 					if(myProduction!=null)
 					{
 						toPrint = myProduction.shortString();

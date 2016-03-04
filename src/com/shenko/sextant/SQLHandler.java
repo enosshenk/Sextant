@@ -300,6 +300,7 @@ public class SQLHandler {
 
 					stmt.executeUpdate(query);
 				}
+				sextant.println("Added "+productionData.size()+" items to the production database.");
 			}
 			close();
 

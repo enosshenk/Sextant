@@ -31,7 +31,7 @@ public class Port {
 	}
 
 	public String toString() {
-		return "Port: "+ID+" "+name+ " ("+x+", "+y+") Productions:"+productionArray.size()+" Sales:"+productionArray.size(); //TODO add more shit here
+		return "Port: "+ID+" "+name+ " ("+x+", "+y+") Productions:"+productionArray.size()+" Sales:"+productionArray.size(); 
 	}
 
 	public sale getSale(int ItemID)
